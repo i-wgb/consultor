@@ -453,7 +453,7 @@ body {
           <input type="radio" name="persona" value="roberto">
           <div class="persona-name">Roberto</div>
           <div class="persona-desc">Já vende em marketplace ou loja física. Quer canal próprio e menos dependência de terceiros.</div>
-          <div class="persona-tag">Marketplace / Físico</div>
+          <div class="persona-tag">Marketplace</div>
         </label>
         <label class="persona-card" onclick="selectPersona('rodrigo',this)">
           <input type="radio" name="persona" value="rodrigo">
@@ -498,6 +498,7 @@ body {
           <label>Faturamento mensal estimado</label>
           <select id="faturamento">
             <option value="">Selecione...</option>
+            <option value="zero">Está iniciando agora</option>
             <option value="ate5k">Até R$ 5 mil</option>
             <option value="5a20k">R$ 5 mil a R$ 20 mil</option>
             <option value="20a80k">R$ 20 mil a R$ 80 mil</option>
@@ -509,6 +510,7 @@ body {
           <label>Ticket médio aproximado</label>
           <select id="ticket">
             <option value="">Selecione...</option>
+            <option value="zero">Está iniciando agora</option>
             <option value="ate50">Até R$ 50</option>
             <option value="50a150">R$ 50 a R$ 150</option>
             <option value="150a500">R$ 150 a R$ 500</option>
@@ -518,10 +520,10 @@ body {
       </div>
     </div>
 
-    <!-- CARD 3: Situação atual -->
-    <div class="card">
+    <!-- CARD 3: Situação atual — oculto para Maraísa -->
+    <div class="card" id="card-canais" style="display:none">
       <div class="card-title">
-        <div class="step-num">3</div>
+        <div class="step-num" id="step-num-canais">3</div>
         Onde o prospect vende hoje?
       </div>
       <div class="chip-group" id="canais-chips">
@@ -535,12 +537,72 @@ body {
         <div class="chip" data-val="outros_mkt" onclick="toggleChip(this,'canais')">Outros marketplaces</div>
         <div class="chip" data-val="loja_propria" onclick="toggleChip(this,'canais')">Loja própria (outra plataforma)</div>
       </div>
+      <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line)" id="fat-split-wrap">
+        <div style="font-size:.8rem;font-weight:600;color:var(--ink2);margin-bottom:12px">Faturamento por canal <span style="font-weight:400;color:var(--muted)">(opcional — ajuda a personalizar os argumentos)</span></div>
+        <div class="row-2">
+          <div class="field" style="margin-bottom:0">
+            <label>Faturamento mensal — Loja física</label>
+            <select id="fat_fisico">
+              <option value="">Selecione...</option>
+              <option value="zero">Não tem loja física</option>
+              <option value="ate5k">Até R$ 5 mil</option>
+              <option value="5a20k">R$ 5 mil a R$ 20 mil</option>
+              <option value="20a80k">R$ 20 mil a R$ 80 mil</option>
+              <option value="80a300k">R$ 80 mil a R$ 300 mil</option>
+              <option value="mais300k">Acima de R$ 300 mil</option>
+            </select>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <label>Faturamento mensal — Online / Marketplace</label>
+            <select id="fat_online">
+              <option value="">Selecione...</option>
+              <option value="zero">Não vende online ainda</option>
+              <option value="ate5k">Até R$ 5 mil</option>
+              <option value="5a20k">R$ 5 mil a R$ 20 mil</option>
+              <option value="20a80k">R$ 20 mil a R$ 80 mil</option>
+              <option value="80a300k">R$ 80 mil a R$ 300 mil</option>
+              <option value="mais300k">Acima de R$ 300 mil</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- CARD 4: Dores percebidas -->
-    <div class="card">
+    <!-- CARD 4: Contexto da conversa — sempre visível quando não é Maraísa -->
+    <div class="card" id="card-contexto" style="display:none">
       <div class="card-title">
-        <div class="step-num">4</div>
+        <div class="step-num" id="step-num-contexto">4</div>
+        Contexto da conversa <span style="font-weight:400;font-size:.82rem;color:var(--muted);">(opcional)</span>
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label>Já teve experiência negativa com e-commerce?</label>
+          <select id="exp_neg">
+            <option value="nao">Não</option>
+            <option value="sim">Sim</option>
+            <option value="nao_sei">Não sei ainda</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Momento da abordagem</label>
+          <select id="momento" onchange="atualizarVisibilidade()">
+            <option value="primeiro">Primeiro contato</option>
+            <option value="pre">Pré-reunião (preparação)</option>
+            <option value="durante">Durante a reunião</option>
+            <option value="pos">Pós-reunião (follow-up)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Observação livre <span>(algo específico que o vendedor quer destacar)</span></label>
+        <textarea id="obs" placeholder="Ex: Tem concorrente no mesmo bairro já vendendo online. Mencionou que testa plataformas..."></textarea>
+      </div>
+    </div>
+
+    <!-- CARD 5: Dores — oculto para Maraísa e em primeiro contato/pré-reunião. Sempre APÓS o contexto. -->
+    <div class="card" id="card-dores" style="display:none">
+      <div class="card-title">
+        <div class="step-num" id="step-num-dores">5</div>
         O que o vendedor já percebeu? <span style="font-weight:400;font-size:.82rem;color:var(--muted);">(opcional, marca o que se aplica)</span>
       </div>
       <div class="chip-group" id="dores-chips">
@@ -556,36 +618,6 @@ body {
         <div class="chip" data-val="tempo" onclick="toggleChip(this,'dores')">Muito tempo operacional / manual</div>
         <div class="chip" data-val="dados" onclick="toggleChip(this,'dores')">Não conhece seu cliente</div>
         <div class="chip" data-val="digital" onclick="toggleChip(this,'dores')">Medo / resistência ao digital</div>
-      </div>
-    </div>
-
-    <!-- CARD 5: Contexto extra -->
-    <div class="card">
-      <div class="card-title">
-        <div class="step-num">5</div>
-        Contexto da conversa <span style="font-weight:400;font-size:.82rem;color:var(--muted);">(opcional)</span>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label>Já teve experiência negativa com e-commerce?</label>
-          <select id="exp_neg">
-            <option value="nao">Não</option>
-            <option value="sim">Sim</option>
-            <option value="nao_sei">Não sei ainda</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Momento da abordagem</label>
-          <select id="momento">
-            <option value="pre">Pré-reunião (preparação)</option>
-            <option value="durante">Durante a reunião</option>
-            <option value="pos">Pós-reunião (follow-up)</option>
-          </select>
-        </div>
-      </div>
-      <div class="field">
-        <label>Observação livre <span>(algo específico que o vendedor quer destacar)</span></label>
-        <textarea id="obs" placeholder="Ex: Tem concorrente no mesmo bairro já vendendo online. Mencionou que testa plataformas..."></textarea>
       </div>
     </div>
 
@@ -627,7 +659,37 @@ function selectPersona(val, el) {
   selectedPersona = val;
   document.querySelectorAll('.persona-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
+  atualizarVisibilidade();
 }
+
+// Controla visibilidade e renumeração de todos os cards condicionais
+function atualizarVisibilidade() {
+  if (!selectedPersona) return;
+
+  const isMarisa  = selectedPersona === 'marisa';
+  const momento   = document.getElementById('momento')?.value || 'primeiro';
+  const mostrarDores = !isMarisa && (momento === 'durante' || momento === 'pos');
+
+  // Mostra/oculta cards
+  document.getElementById('card-canais').style.display   = isMarisa ? 'none' : 'block';
+  document.getElementById('card-contexto').style.display = isMarisa ? 'none' : 'block';
+  document.getElementById('card-dores').style.display    = mostrarDores ? 'block' : 'none';
+
+  // Renumera: percorre apenas cards visíveis e atribui 3, 4, 5...
+  const ordemIds = ['card-canais', 'card-contexto', 'card-dores'];
+  const stepIds  = ['step-num-canais', 'step-num-contexto', 'step-num-dores'];
+  let num = 3;
+  ordemIds.forEach((id, i) => {
+    const card = document.getElementById(id);
+    const step = document.getElementById(stepIds[i]);
+    if (card && card.style.display !== 'none' && step) {
+      step.textContent = num++;
+    }
+  });
+}
+
+// Alias para o onchange do select de momento
+function atualizarVisibilidadeDores() { atualizarVisibilidade(); }
 
 function toggleChip(el, group) {
   const val = el.dataset.val;
@@ -648,28 +710,49 @@ const PERSONAS = {
     nome: 'Maraísa — Iniciante',
     emoji: '🌱',
     cor: 'green',
-    resumo: 'Quer começar do zero. Tem energia e motivação, mas sente insegurança com tecnologia, custos e o que vender. A venda aqui é de sonho, não de plataforma.',
-    gatilho_emocional: 'O primeiro pedido chegando na caixa de entrada.',
-    maior_medo: 'Investir e não ter retorno; não saber o que está fazendo.',
-    o_que_atrai: ['Plataforma simples de configurar sem programar', 'Suporte acessível e tutoriais', 'Custo baixo para começar', '+550 layouts prontos', 'Tray Pagamentos e Tray Envios já integrados', 'Sacolinha do Instagram e WhatsApp Commerce'],
+    resumo: 'Quer começar do zero. Tem energia e motivação, mas sente insegurança com tecnologia, custos e o que vender. A venda aqui é de sonho e de confiança — ela precisa acreditar que consegue, antes de acreditar na plataforma.',
+    gatilho_emocional: 'O primeiro pedido chegando na caixa de entrada. A sensação de "funcionou".',
+    maior_medo: 'Investir e não ter retorno; não saber o que está fazendo; se perder na tecnologia sozinha.',
+    o_que_atrai: [
+      'Tray IA — gera nome da loja, descrições de produto e banners sem precisar escrever nada',
+      '+550 layouts prontos: escolhe um, personaliza as cores, está no ar',
+      'Tray Pulse — painel simples que mostra vendas, estoque e clientes em tempo real, sem planilha',
+      'Tray Pagamentos integrado: Pix, cartão, parcelamento — sem contratar banco',
+      'Tray Envios: etiqueta gerada automaticamente, frete até 60% mais barato — sem ligar para transportadora',
+      'Sacolinha do Instagram e WhatsApp Commerce: seguidores viram compradores com um clique',
+      'Suporte por telefone e chat — nunca ficará sozinha para resolver um problema'
+    ],
+    motivacional: [
+      { stat: '91,3 milhões', desc: 'de brasileiros compram online — o mercado está esperando por mais lojistas' },
+      { stat: '+15%', desc: 'é o crescimento previsto do e-commerce BR em 2025 — quem entra agora pega a onda' },
+      { stat: 'R$ 19/mês', desc: 'é tudo que custa começar — com pagamento, frete e loja já inclusos no plano Start' },
+      { stat: '550+', desc: 'layouts prontos: você não começa do zero, começa de um lugar bonito e profissional' }
+    ],
+    tray_facilidade: [
+      { titulo: 'Tray IA — ela faz o trabalho chato por você', desc: 'Gerou o nome da loja, escreveu as descrições dos produtos e criou os banners. Você só aprova. Sem saber escrever copy, sem contratar designer.' },
+      { titulo: 'Tray Pulse — painel simples, tudo em um lugar', desc: 'Vendas do dia, estoque, clientes — tudo numa tela. Sem planilha, sem módulo complicado. Você abre, entende, age.' },
+      { titulo: 'Setup guiado — a Tray te leva passo a passo', desc: 'O onboarding da Tray conduz você desde o cadastro do primeiro produto até o checkout funcionando. Você não precisa descobrir sozinha — tem um caminho pronto para seguir.' },
+      { titulo: 'Suporte humano — sempre tem alguém do outro lado', desc: 'Telefone, chat, central de tutoriais e comunidade ativa. Se travar em qualquer passo, em minutos tem alguém te ajudando.' }
+    ],
     questoes_sondagem: [
       { q: 'O que te fez querer começar agora? Teve algo que aconteceu e te deu esse empurrão?', tip: 'Se mencionar pressão financeira ou meta, anote — será o gatilho emocional da sua proposta.' },
-      { q: 'O que você mais teme que dê errado quando colocar a loja no ar?', tip: 'Medo de tecnologia → fale de facilidade. Medo de suporte → fale de atendimento humanizado.' },
-      { q: 'Você já imaginou como vai ser quando fizer a primeira venda? A sensação do primeiro pedido chegando?', tip: 'Cria imagem mental positiva. A pessoa começa a imaginar a usabilidade — isso aproxima o fechamento.' },
-      { q: 'Você está tentando montar tudo sozinho ou tem alguém te ajudando nessa jornada?', tip: 'Quem está sozinho precisa de plataforma intuitiva ou que ofereça implantação assistida.' }
+      { q: 'O que você mais teme que dê errado quando colocar a loja no ar?', tip: 'Medo de tecnologia → mostre Tray IA e setup guiado. Medo de suporte → fale do atendimento humanizado e do Pulse.' },
+      { q: 'Você já imaginou como vai ser quando fizer a primeira venda? A sensação do primeiro pedido chegando?', tip: 'Cria imagem mental positiva. A pessoa começa a imaginar — isso aproxima o fechamento.' },
+      { q: 'Você está tentando montar tudo sozinho ou tem alguém te ajudando nessa jornada?', tip: 'Quem está sozinha precisa ouvir que a Tray é o parceiro — não é só uma ferramenta.' }
     ],
     objecoes: [
-      { q: 'Preciso de CNPJ ou posso começar como pessoa física?', a: 'Pode começar como pessoa física tranquilamente. A Tray acompanha o crescimento do negócio. Quando chegar a hora de profissionalizar, a migração é simples.' },
-      { q: 'Eu mesmo consigo montar a loja ou preciso pagar alguém?', a: 'A promessa da Tray é: loja no ar sem ser programadora e sem contratar designer. Mais de 550 layouts prontos e IA que gera descrições automaticamente.' },
-      { q: 'Quanto custa de verdade? Só a mensalidade ou tem outros custos?', a: 'Sem surpresas na fatura. A Tray já inclui mais de 600 recursos nativos — chega de pagar por aplicativos extras. O plano Start começa em R$ 19/mês no anual.' },
-      { q: 'Posso crescer sem precisar trocar de plataforma no futuro?', a: 'Sim! A Tray foi feita para acompanhar o crescimento. Não precisará migrar conforme escala.' }
+      { q: 'Preciso de CNPJ ou posso começar como pessoa física?', a: 'Pode começar como pessoa física tranquilamente. A Tray acompanha o crescimento. Quando vier a hora de profissionalizar, a migração é simples e sem custo extra.' },
+      { q: 'Eu consigo montar a loja ou preciso pagar alguém?', a: 'A Tray IA monta por você: gera o nome, escreve as descrições, cria os banners. Mais de 550 layouts prontos. Você escolhe, aprova e abre. Sem contratar ninguém.' },
+      { q: 'E se eu me perder na tecnologia?', a: 'O setup é guiado passo a passo, tem tutoriais em vídeo e suporte humano por telefone e chat. Nunca vai ficar sozinha travada num problema.' },
+      { q: 'Quanto custa de verdade? Só a mensalidade ou tem outros custos?', a: 'Sem surpresas. A Tray já inclui mais de 600 recursos nativos — pagamento, frete, IA, painel. O plano Start começa em R$19/mês no anual. Tudo dentro.' },
+      { q: 'Posso crescer sem precisar trocar de plataforma no futuro?', a: 'Sim. A Tray foi feita para crescer com você. Do primeiro produto ao milésimo pedido, a plataforma acompanha — sem migrar.' }
     ],
-    argumento_fechamento: 'Você já tem o produto e a vontade. O que falta é a vitrine. Cada dia sem a loja no ar é um dia que o seu futuro cliente compra de outra pessoa. A Tray coloca você no ar hoje, com suporte para não ficar sozinha no caminho.',
-    wpp_pos: 'Oi [nome]! Foi muito bom conversar. Separei aqui o link para você dar uma olhada nos planos da Tray: [link]. O Start começa em R$19/mês no anual — já vem com Tray Pagamentos e Tray Envios integrados. Qualquer dúvida, pode me chamar aqui!'
+    argumento_fechamento: 'Você já tem o produto e a vontade. O que falta é a vitrine. A Tray cuida da tecnologia — a IA escreve, o Tray Envios despacha, o Tray Pagamentos recebe. Você só precisa começar. Cada dia sem a loja no ar é um pedido que vai para outra pessoa.',
+    wpp_pos: 'Oi [nome]! Foi muito bom conversar! Separei o link dos planos da Tray aqui: [link]. O Start começa em R$19/mês no anual — já vem com IA pra montar a loja, pagamento e frete inclusos. Quer que eu te ajude a dar o primeiro passo essa semana? 🌱'
   },
 
   roberto: {
-    nome: 'Roberto — Marketplace / Físico',
+    nome: 'Roberto — Marketplace',
     emoji: '🚀',
     cor: 'green',
     resumo: 'Já vende, já tem produto e operação. A dor central é dependência e custo dos canais terceiros. O argumento mais forte é o canal próprio com marca e margem preservada.',
@@ -720,24 +803,41 @@ const PERSONAS = {
     nome: 'José Carlos — Lojista Físico',
     emoji: '🏪',
     cor: 'warn',
-    resumo: 'Tem negócio consolidado, estoque, fornecedores e clientes. O digital ainda parece distante ou arriscado. A conversa deve honrar o que ele construiu e mostrar que o online expande — não cancela o físico.',
-    gatilho_emocional: 'Vender para o Brasil inteiro sem depender do fluxo da rua.',
-    maior_medo: 'Perder o controle do que funciona; não saber lidar com a tecnologia; investir e não ter retorno.',
-    o_que_atrai: ['Tray PDV — físico e online com gestão centralizada', 'Integração de estoque com centenas de ERPs', '+30 marketplaces para ampliar o alcance', 'Tray Pagamentos e Tray Envios já integrados', 'Onboarding estruturado e suporte humanizado', 'Pacotes "Loja Pronta" — equipe da Tray monta a loja'],
+    resumo: 'Tem negócio consolidado, estoque, fornecedores e clientes. O digital parece distante ou arriscado — mas a estrutura mais difícil já existe. A conversa deve honrar o que ele construiu e mostrar que a Tray expande sem bagunçar o que já funciona.',
+    gatilho_emocional: 'Vender para o Brasil inteiro sem depender do fluxo da rua — e sem precisar fazer isso sozinho.',
+    maior_medo: 'Perder o controle do que já funciona; se perder na tecnologia; investir e não ter retorno.',
+    o_que_atrai: [
+      'Pacote Loja Pronta — equipe da Tray monta a loja em 15 a 45 dias úteis, você só aprova',
+      'Gerente de Contas especialista no segmento — acompanha a operação do início ao crescimento',
+      'Consultor de Sucesso dedicado — não é suporte reativo, é um especialista do seu lado',
+      'Tray Pulse — painel unificado: vendas, estoque, pedidos físico + online em tempo real',
+      'Tray PDV — físico e online com estoque sincronizado automaticamente',
+      'Integração com o ERP ou PDV que já usa — sem redigitar nada',
+      '+30 marketplaces conectados — sua marca em mais canais, gestão em um só lugar',
+      'Tray Pagamentos e Tray Envios já inclusos — sem contratar banco nem transportadora'
+    ],
+    seguranca_operacional: [
+      { titulo: 'Loja Pronta — você não monta nada', desc: 'A equipe da Tray assume a implantação completa: layout, produtos, pagamento, frete, integração com ERP. Em 15 a 45 dias úteis, a loja está no ar. Você só aprova o visual e abre.' },
+      { titulo: 'Gerente de Contas especialista no seu segmento', desc: 'Você tem um profissional que conhece o mercado em que você atua. Não é um atendente genérico — é alguém que entende de moda, pet, ferramentas, autopeças (ou o que for o seu nicho) e sabe como vender isso online.' },
+      { titulo: 'Consultor de Sucesso dedicado no pós-implantação', desc: 'Depois que a loja vai ao ar, não acabou — começa. O Consultor de Sucesso da Tray acompanha os primeiros meses, analisa resultados e sugere ações. É um parceiro de operação, não só suporte.' },
+      { titulo: 'Tray Pulse — controle total em uma tela', desc: 'Painel simples com vendas do dia, estoque, pedidos pendentes e performance. Físico e online juntos, em tempo real. Você entra, vê o que está acontecendo, age. Sem relatório complicado, sem planilha.' },
+      { titulo: 'Integração com o que você já usa — sem começar do zero', desc: 'Se usa Bling, Totvs, Tiny, ou outro ERP, a Tray integra nativamente. Os produtos que você já tem cadastrados importam automaticamente. A operação digital começa de onde a física está hoje.' }
+    ],
     questoes_sondagem: [
-      { q: 'O que você sente quando vê um concorrente seu vendendo pela internet e você não?', tip: 'Não ataca — convida à reflexão. Personalize com o segmento ou região do prospect.' },
-      { q: 'Já teve cliente que perguntou se existe outra forma de comprar sem ser presencial?', tip: 'Ele percebe sozinho a limitação do modelo atual. E que está ficando para trás.' },
-      { q: 'Se a sua loja vendesse 24 horas por dia, 7 dias por semana, sem precisar de você lá — isso mudaria alguma coisa na sua vida?', tip: 'A loja virtual não é mais trabalho — é a loja trabalhando enquanto ele descansa.' },
-      { q: 'O que você faria diferente se fosse começar do zero hoje? O que precisaria existir para você dizer "dessa vez vai"?', tip: 'Se já tentou antes, revela o que falhou. Abre espaço para mostrar como a Tray resolve o problema anterior.' }
+      { q: 'O que você sente quando vê um concorrente seu vendendo pela internet e você não?', tip: 'Não ataca — convida à reflexão. Personalize com o segmento ou região.' },
+      { q: 'Já teve cliente que perguntou se tem outra forma de comprar sem ser presencial?', tip: 'Ele percebe sozinho a limitação do modelo atual.' },
+      { q: 'Se a sua loja vendesse 24h por dia, 7 dias por semana, sem precisar de você lá — isso mudaria alguma coisa na sua vida?', tip: 'A loja online não é mais trabalho — é a loja trabalhando enquanto ele descansa.' },
+      { q: 'Se você pudesse ter alguém especialista no seu segmento te ajudando a montar e operar a loja digital, isso te daria mais segurança para avançar?', tip: 'Abre a conversa sobre o Gerente de Contas e o Consultor de Sucesso — os maiores diferenciais para esse perfil.' }
     ],
     objecoes: [
-      { q: 'Preciso separar estoque físico e online?', a: 'Não. Com o Tray PDV e integração com centenas de ERPs, você tem controle unificado. Vendeu uma unidade online, o estoque é atualizado automaticamente na loja física. "Físico ou online, a gestão é uma só."' },
-      { q: 'Como vou receber os pagamentos online com segurança?', a: 'Sua loja já vem equipada com Tray Pagamentos, tarifa grátis na assinatura. Você controla todo o financeiro no mesmo lugar dos produtos.' },
-      { q: 'Quanto tempo leva para colocar minha loja online?', a: 'Sabemos que seu tempo é curto. Com os pacotes de "Loja Pronta", nossa equipe cuida da implantação e configuração visual em 15 a 45 dias úteis. Você não precisa montar nada sozinho.' },
-      { q: 'Vou conseguir acompanhar vendas e clientes sem ficar sobrecarregado?', a: 'A Tray coloca um fim ao caos operacional. Painel unificado de pedidos, gestão única de clientes. Tudo — loja física, WhatsApp, marketplace — centralizado, organizado e fácil.' }
+      { q: 'Não tenho tempo nem equipe para montar uma loja online.', a: 'É exatamente por isso que existe o pacote Loja Pronta. A equipe da Tray monta tudo — layout, produtos, pagamento, frete — em 15 a 45 dias úteis. Você não precisa fazer nada além de aprovar.' },
+      { q: 'Preciso separar estoque físico e online?', a: 'Não. Com Tray PDV e integração com centenas de ERPs, o estoque é único. Vendeu online, atualizou na loja física automaticamente. "Físico ou online, a gestão é uma só."' },
+      { q: 'Quem vai me ajudar depois que a loja estiver no ar?', a: 'Você terá um Gerente de Contas especialista no seu segmento e um Consultor de Sucesso dedicado. Não é suporte genérico — são pessoas que conhecem o seu mercado e acompanham sua operação.' },
+      { q: 'Como vou acompanhar vendas sem me perder em sistemas complicados?', a: 'O Tray Pulse mostra tudo em uma tela: vendas, estoque, pedidos — físico e online juntos. Simples, visual, em tempo real. Você abre e entende na hora.' },
+      { q: 'E se der problema? Fico sozinho?', a: 'Não. A Tray tem suporte por telefone, chat e Consultor de Sucesso dedicado. Qualquer problema, tem alguém especializado do seu lado para resolver.' }
     ],
-    argumento_fechamento: 'Você já tem o produto, o estoque e os fornecedores. A estrutura mais difícil já existe. O que falta é a vitrine digital. E a Tray monta essa vitrine por você, integrada ao que você já usa — sem bagunçar a operação que já funciona.',
-    wpp_pos: 'Oi [nome]! Ótima conversa hoje. Fiz um resumo rápido do que conversamos: [link]. O que você já tem — estoque, fornecedores, PDV — já é compatível com a Tray. Posso te mostrar como ficaria a loja online em uma demo rápida essa semana?'
+    argumento_fechamento: 'Você já tem o mais difícil: produto, estoque, fornecedores e clientes. A Tray monta a vitrine digital por você — com uma equipe especialista no seu segmento do seu lado. Não é você virando expert em tecnologia. É a Tray cuidando do digital para você focar no que já sabe fazer.',
+    wpp_pos: 'Oi [nome]! Ótima conversa hoje. Fiz um resumo do que discutimos: [link]. O pacote Loja Pronta resolve exatamente o que você mencionou — nossa equipe monta tudo, você aprova e abre. E você fica com um Gerente de Contas do seu segmento do seu lado. Podemos marcar a próxima etapa essa semana?'
   }
 };
 
@@ -784,30 +884,40 @@ async function analisarNichoIA(segmento, categoriaNome, canais, faturamento, tic
     ? `Hoje vende em: ${canais.map(labelCanal).join(', ')}.`
     : 'Ainda não vende online.';
 
-  const prompt = `Você é um especialista em e-commerce brasileiro e inteligência de mercado. 
+  const prompt = `Você é um especialista em e-commerce brasileiro e inteligência de mercado com dados atualizados de 2025 e 2026.
 Um vendedor da Tray Commerce está se preparando para uma reunião com um lojista do nicho: "${segmento}".
-Categoria macro identificada: ${categoriaNome}.
+Categoria macro de referência: ${categoriaNome}.
 Contexto do lojista: ${contextoCanais} Faturamento estimado: ${labelFat(faturamento)}. Ticket médio: ${labelTicket(ticket)}.
 
-Gere uma análise específica e aprofundada DESTE NICHO EXATO ("${segmento}") no Brasil, em formato JSON.
-Seja preciso, use dados reais quando souber, e indique quando é estimativa. Foco total no nicho específico, não na categoria genérica.
+REGRAS CRÍTICAS:
+1. Analise ESTE NICHO EXATO ("${segmento}") — não a categoria genérica. Se for "ração para gato", não fale de "pet" genérico. Se for "moda plus size", não fale de "moda" genérico.
+2. Use APENAS dados de 2025 ou 2026. Se não tiver dado atualizado confirmado, diga "estimativa 2025" ou "projeção 2025". NUNCA invente dados — prefira dizer "dados não disponíveis publicamente" a inventar um número.
+3. O campo "penetracao_regioes" deve trazer como está a penetração digital DESTE NICHO em cada região do Brasil (Sul, Sudeste, Centro-Oeste, Nordeste, Norte) — com contexto real de cada região. Se não tiver dado específico por região, use indicadores gerais do e-commerce regional aplicados ao nicho.
+4. Este sistema é usado pelo time comercial da Tray para QUALQUER segmento do e-commerce brasileiro — pode ser nicho muito específico como "artigos de pesca", "produtos náuticos", "instrumentos musicais", "artigos religiosos", "sementes para jardim", "uniformes profissionais", "colchões", "piscinas", etc. Trate qualquer nicho com seriedade e profundidade.
 
 Responda APENAS com JSON válido, sem markdown, sem texto antes ou depois:
 {
-  "tamanho_nicho": "estimativa do tamanho/faturamento online deste nicho específico no Brasil",
-  "crescimento_nicho": "taxa de crescimento específica deste nicho",
-  "penetracao_nicho": "percentual de vendas online vs total neste nicho",
-  "ticket_nicho": "ticket médio típico para este nicho específico",
-  "perfil_comprador": "quem compra neste nicho (idade, renda, comportamento, frequência de compra)",
-  "sazonalidade": "picos de venda do ano e datas importantes para este nicho",
-  "concorrencia_digital": "como está o nível de concorrência online neste nicho específico",
-  "diferenciais_decisivos": ["3 a 4 fatores que realmente decidem a compra neste nicho específico"],
-  "tendencias_nicho": ["4 tendências específicas deste nicho no Brasil em 2024-2025"],
-  "marketplaces_relevantes": ["quais marketplaces são mais usados por compradores deste nicho"],
-  "dores_operacionais": ["3 principais dores operacionais de quem vende neste nicho online"],
-  "argumento_tray": "argumento comercial específico de como a Tray resolve os problemas de quem vende neste nicho",
+  "tamanho_nicho": "estimativa do tamanho/faturamento online deste nicho específico no Brasil em 2025",
+  "crescimento_nicho": "taxa de crescimento específica deste nicho em 2025",
+  "penetracao_nicho": "percentual de vendas online vs total neste nicho específico em 2025",
+  "ticket_nicho": "ticket médio típico para este nicho específico em 2025",
+  "perfil_comprador": "quem compra neste nicho (faixa etária, renda, comportamento, frequência de compra, motivação principal)",
+  "sazonalidade": "picos de venda do ano e datas importantes para este nicho específico",
+  "concorrencia_digital": "como está o nível de concorrência online neste nicho em 2025 — quem domina, onde está a oportunidade",
+  "penetracao_regioes": {
+    "sudeste": "como este nicho performa na região Sudeste — concentração, maturidade digital, oportunidade",
+    "sul": "como este nicho performa na região Sul",
+    "nordeste": "como este nicho performa no Nordeste — penetração, crescimento, oportunidade específica",
+    "centro_oeste": "como este nicho performa no Centro-Oeste",
+    "norte": "como este nicho performa no Norte — desafios logísticos, potencial"
+  },
+  "diferenciais_decisivos": ["3 a 4 fatores que realmente decidem a compra neste nicho específico em 2025"],
+  "tendencias_nicho": ["4 tendências específicas deste nicho no Brasil em 2025-2026"],
+  "marketplaces_relevantes": ["quais marketplaces são mais relevantes para compradores deste nicho em 2025"],
+  "dores_operacionais": ["3 principais dores operacionais de quem vende neste nicho online em 2025"],
+  "argumento_tray": "argumento comercial específico e atual de como a Tray resolve os problemas de quem vende neste nicho",
   "pergunta_gatilho": "a melhor pergunta que o vendedor pode fazer para revelar a dor principal de quem vende neste nicho",
-  "fonte_nota": "nota sobre as fontes ou bases usadas para esta análise"
+  "fonte_nota": "nota sobre as fontes e bases usadas — seja transparente quando for estimativa ou projeção"
 }`;
 
   try {
@@ -871,6 +981,30 @@ Responda APENAS com JSON válido, sem markdown, sem texto antes ou depois:
     if (parsed.concorrencia_digital) {
       html += `<div class="block-label">Nível de concorrência digital</div>
         <div style="font-size:.82rem;color:var(--ink2);line-height:1.55;margin-bottom:16px">${parsed.concorrencia_digital}</div>`;
+    }
+
+    // Penetração por região
+    if (parsed.penetracao_regioes) {
+      const regs = [
+        { key: 'sudeste',     label: 'Sudeste',      icon: '🏙️' },
+        { key: 'sul',         label: 'Sul',           icon: '🌲' },
+        { key: 'nordeste',    label: 'Nordeste',      icon: '🌊' },
+        { key: 'centro_oeste',label: 'Centro-Oeste',  icon: '🌾' },
+        { key: 'norte',       label: 'Norte',         icon: '🌿' },
+      ];
+      html += `<div class="block-label">Penetração digital do nicho por região do Brasil</div>`;
+      regs.forEach(r => {
+        const txt = parsed.penetracao_regioes[r.key];
+        if (!txt) return;
+        html += `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;padding:10px 12px;border:1px solid var(--line);border-radius:8px">
+          <span style="font-size:1rem;flex-shrink:0">${r.icon}</span>
+          <div>
+            <div style="font-size:.72rem;font-weight:700;color:var(--ink2);margin-bottom:2px">${r.label}</div>
+            <div style="font-size:.8rem;color:var(--ink2);line-height:1.5">${txt}</div>
+          </div>
+        </div>`;
+      });
+      html += `<div style="margin-bottom:16px"></div>`;
     }
 
     // Fatores decisivos de compra
@@ -1345,19 +1479,25 @@ function gerar() {
   const tempo = document.getElementById('tempo').value;
   const faturamento = document.getElementById('faturamento').value;
   const ticket = document.getElementById('ticket').value;
-  const exp_neg = document.getElementById('exp_neg').value;
-  const momento = document.getElementById('momento').value;
-  const obs = document.getElementById('obs').value.trim();
-  const canais = Array.from(chipState.canais);
-  const dores = Array.from(chipState.dores);
+  const exp_neg = document.getElementById('exp_neg')?.value || 'nao';
+  const momento = document.getElementById('momento')?.value || 'pre';
+  const obs = document.getElementById('obs')?.value.trim() || '';
+  const fat_fisico = document.getElementById('fat_fisico')?.value || '';
+  const fat_online = document.getElementById('fat_online')?.value || '';
+  // Maraísa não tem canais/dores preenchidos — usa defaults
+  const canais = selectedPersona === 'marisa' ? [] : Array.from(chipState.canais);
+  const dores  = selectedPersona === 'marisa' ? [] : Array.from(chipState.dores);
 
   const P = PERSONAS[selectedPersona];
   const M = detectarMercado(segmento);
 
   // Header
   document.getElementById('r-titulo').textContent = P.nome;
+  const fatDesc = (fat_fisico && fat_fisico !== '' && fat_online && fat_online !== '')
+    ? `Físico: ${labelFat(fat_fisico)} · Online: ${labelFat(fat_online)}`
+    : labelFat(faturamento);
   document.getElementById('r-subtitulo').textContent =
-    `${segmento} · ${labelTempo(tempo)} · ${labelFat(faturamento)}` +
+    `${segmento} · ${labelTempo(tempo)} · ${fatDesc}` +
     (canais.length ? ' · ' + canais.map(labelCanal).join(', ') : '');
 
   const badges = document.getElementById('r-badges');
@@ -1454,7 +1594,7 @@ function gerar() {
   // 1. Perfil
   addSection(container, '🎯', 'Perfil do prospect', P.resumo, () => {
     const b = document.createElement('div');
-    b.innerHTML = `
+    let html = `
       <div class="insight-box"><strong>Gatilho emocional central:</strong> ${P.gatilho_emocional}</div>
       <div class="warn-box"><strong>Maior medo:</strong> ${P.maior_medo}</div>
       ${exp_neg === 'sim' ? `<div class="warn-box"><strong>Atenção:</strong> Este prospect já teve experiência negativa com e-commerce. Comece mapeando o que falhou antes de apresentar qualquer solução. Use: "Me conta como foi essa experiência — o que você esperava e o que aconteceu?"</div>` : ''}
@@ -1462,6 +1602,42 @@ function gerar() {
       <div class="block-label" style="margin-top:16px">O que mais atrai esse perfil para a Tray</div>
       ${P.o_que_atrai.map(a => `<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:7px"><span style="color:var(--teal);font-size:1rem;margin-top:1px">✓</span><span style="font-size:.83rem;color:var(--ink2)">${a}</span></div>`).join('')}
     `;
+
+    // Ajuste 6 + 11: bloco motivacional e facilidade para Maraísa
+    if (selectedPersona === 'marisa' && P.motivacional) {
+      html += `<div class="divider"></div>
+        <div class="block-label">📈 Mostre que o mercado está esperando por ela</div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px">`;
+      P.motivacional.forEach(m => {
+        html += `<div style="border:1.5px solid var(--teal);border-radius:10px;padding:12px 14px;background:var(--teal-bg)">
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--teal-d);margin-bottom:4px">${m.stat}</div>
+          <div style="font-size:.75rem;color:var(--ink2);line-height:1.4">${m.desc}</div>
+        </div>`;
+      });
+      html += `</div>`;
+
+      html += `<div class="block-label">🤖 Como a Tray faz tudo por ela — sem precisar de tecnologia</div>`;
+      P.tray_facilidade.forEach(f => {
+        html += `<div class="pain-card" style="border-color:var(--teal)">
+          <div class="pain-title"><span style="color:var(--teal)">✦</span><span>${f.titulo}</span></div>
+          <div class="pain-body">${f.desc}</div>
+        </div>`;
+      });
+    }
+
+    // Ajuste 10: bloco de segurança operacional para José Carlos
+    if (selectedPersona === 'jose' && P.seguranca_operacional) {
+      html += `<div class="divider"></div>
+        <div class="block-label">🔒 Como a Tray dá segurança e suporte para a operação dele</div>`;
+      P.seguranca_operacional.forEach(s => {
+        html += `<div class="pain-card" style="border-color:var(--badge-c)">
+          <div class="pain-title"><span style="color:var(--badge-c)">★</span><span>${s.titulo}</span></div>
+          <div class="pain-body">${s.desc}</div>
+        </div>`;
+      });
+    }
+
+    b.innerHTML = html;
     return b;
   }, true);
 
@@ -1737,7 +1913,7 @@ function labelTempo(v) {
   return m[v] || 'Tempo não informado';
 }
 function labelFat(v) {
-  const m = { 'ate5k':'Até R$5k/mês', '5a20k':'R$5–20k/mês', '20a80k':'R$20–80k/mês', '80a300k':'R$80–300k/mês', 'mais300k':'+R$300k/mês' };
+  const m = { zero:'Iniciando agora', 'ate5k':'Até R$5k/mês', '5a20k':'R$5–20k/mês', '20a80k':'R$20–80k/mês', '80a300k':'R$80–300k/mês', 'mais300k':'+R$300k/mês' };
   return m[v] || 'Faturamento não informado';
 }
 function labelCanal(v) {
@@ -1784,8 +1960,19 @@ function resetar() {
   document.getElementById('tempo').value = '';
   document.getElementById('faturamento').value = '';
   document.getElementById('ticket').value = '';
-  document.getElementById('exp_neg').value = 'nao';
-  document.getElementById('obs').value = '';
+  const expNeg = document.getElementById('exp_neg');
+  if (expNeg) expNeg.value = 'nao';
+  const obs = document.getElementById('obs');
+  if (obs) obs.value = '';
+  const fatFis = document.getElementById('fat_fisico');
+  if (fatFis) fatFis.value = '';
+  const fatOnl = document.getElementById('fat_online');
+  if (fatOnl) fatOnl.value = '';
+  // Oculta cards condicionais
+  ['card-canais','card-dores','card-contexto'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
   document.getElementById('form-area').style.display = 'block';
   document.getElementById('result').style.display = 'none';
   window.scrollTo({ top: 0, behavior: 'smooth' });
