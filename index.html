@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consultor de Abordagem · Tray Commerce</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal:    #00C4A0;
+  --teal-d:  #009F83;
+  --teal-bg: #E6FAF6;
+  --ink:     #111827;
+  --ink2:    #374151;
+  --muted:   #6B7280;
+  --line:    #E5E7EB;
+  --bg:      #F9FAFB;
+  --white:   #FFFFFF;
+  --warn-bg: #FFF7ED;
+  --warn:    #D97706;
+  --red-bg:  #FEF2F2;
+  --red:     #DC2626;
+  --badge-h: #EFF6FF;
+  --badge-c: #1D4ED8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--ink);
+  padding: 28px 0 24px;
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 2px solid var(--teal);
+}
+.header-inner {
+  max-width: 860px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.brand-dot {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.brand-dot svg { width: 20px; height: 20px; }
+.brand-text { flex: 1; }
+.brand-text h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--white); letter-spacing: -0.02em; line-height: 1.2;
+}
+.brand-text p {
+  font-size: 0.72rem; color: var(--teal); font-weight: 500; margin-top: 2px;
+}
+.sister-badge {
+  font-size: 0.68rem; font-weight: 600; color: var(--muted);
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px; padding: 4px 10px; white-space: nowrap;
+}
+
+/* ── MAIN LAYOUT ── */
+.main { max-width: 860px; margin: 0 auto; padding: 32px 24px 80px; }
+
+/* ── CARD ── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.card-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem; font-weight: 700;
+  color: var(--ink); margin-bottom: 18px;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-title .step-num {
+  width: 24px; height: 24px; border-radius: 6px;
+  background: var(--teal); color: var(--white);
+  font-size: 0.75rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── FORM ELEMENTS ── */
+.field { margin-bottom: 16px; }
+.field label {
+  display: block; font-size: 0.8rem; font-weight: 600;
+  color: var(--ink2); margin-bottom: 6px;
+}
+.field label span { font-weight: 400; color: var(--muted); }
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: var(--ink);
+  background: var(--white);
+  transition: border-color .15s;
+  outline: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--teal);
+}
+.field select { cursor: pointer; }
+.field textarea { resize: vertical; min-height: 68px; }
+
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+/* ── PERSONA CARDS ── */
+.persona-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+}
+.persona-card {
+  border: 2px solid var(--line);
+  border-radius: 10px; padding: 14px;
+  cursor: pointer; transition: border-color .15s, background .15s;
+  position: relative;
+}
+.persona-card:hover { border-color: var(--teal); background: var(--teal-bg); }
+.persona-card.selected { border-color: var(--teal); background: var(--teal-bg); }
+.persona-card.selected::after {
+  content: '✓';
+  position: absolute; top: 10px; right: 12px;
+  font-size: 0.8rem; font-weight: 700; color: var(--teal);
+}
+.persona-card input[type=radio] { display: none; }
+.persona-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9rem; font-weight: 700; color: var(--ink); margin-bottom: 3px;
+}
+.persona-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+.persona-tag {
+  display: inline-block; margin-top: 6px;
+  font-size: 0.65rem; font-weight: 600;
+  background: rgba(0,196,160,.15); color: var(--teal-d);
+  border-radius: 4px; padding: 2px 7px;
+}
+
+/* ── CHIP CHECKBOXES ── */
+.chip-group { display: flex; flex-wrap: wrap; gap: 7px; }
+.chip {
+  padding: 6px 13px;
+  border: 1.5px solid var(--line);
+  border-radius: 20px;
+  font-size: 0.78rem; font-weight: 500; color: var(--ink2);
+  cursor: pointer; transition: all .15s;
+  user-select: none;
+}
+.chip:hover { border-color: var(--teal); color: var(--teal-d); }
+.chip.active { border-color: var(--teal); background: var(--teal-bg); color: var(--teal-d); font-weight: 600; }
+
+/* ── BUTTON ── */
+.btn-run {
+  width: 100%; padding: 15px;
+  background: var(--teal); color: var(--white);
+  border: none; border-radius: 10px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem; font-weight: 700; letter-spacing: -0.01em;
+  cursor: pointer; transition: background .15s;
+}
+.btn-run:hover { background: var(--teal-d); }
+.btn-run:disabled { background: var(--line); color: var(--muted); cursor: not-allowed; }
+
+.btn-copy {
+  padding: 8px 16px;
+  background: var(--teal-bg); color: var(--teal-d);
+  border: 1.5px solid var(--teal);
+  border-radius: 8px; font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; transition: all .15s;
+}
+.btn-copy:hover { background: var(--teal); color: var(--white); }
+
+.btn-sec {
+  padding: 8px 16px;
+  background: var(--white); color: var(--ink2);
+  border: 1.5px solid var(--line);
+  border-radius: 8px; font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; transition: all .15s;
+}
+.btn-sec:hover { border-color: var(--ink2); }
+
+/* ── RESULT AREA ── */
+#result { display: none; }
+
+.result-header {
+  background: var(--ink);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  display: flex; align-items: flex-start; gap: 20px;
+}
+.result-header-info { flex: 1; }
+.result-header h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem; font-weight: 700; color: var(--white);
+  letter-spacing: -0.02em; margin-bottom: 6px;
+}
+.result-header p { font-size: 0.82rem; color: rgba(255,255,255,.5); line-height: 1.5; }
+.result-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+.rbadge {
+  font-size: 0.72rem; font-weight: 600;
+  padding: 4px 10px; border-radius: 20px;
+  background: rgba(0,196,160,.2); color: var(--teal);
+}
+.rbadge.warn { background: rgba(217,119,6,.2); color: #F59E0B; }
+
+/* ── SECTION BLOCKS ── */
+.section-block {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.section-head {
+  padding: 16px 20px;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; user-select: none;
+}
+.section-head:hover { background: var(--bg); }
+.section-head-left { display: flex; align-items: center; gap: 10px; }
+.section-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+.section-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9rem; font-weight: 700; color: var(--ink);
+}
+.section-sublabel { font-size: 0.75rem; color: var(--muted); margin-top: 1px; }
+.chevron {
+  transition: transform .2s; flex-shrink: 0;
+  width: 20px; height: 20px; color: var(--muted);
+}
+.chevron.open { transform: rotate(180deg); }
+.section-body { padding: 20px; display: none; }
+.section-body.open { display: block; }
+
+/* ── CONTENT ATOMS ── */
+.block-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: .06em;
+  color: var(--teal-d); text-transform: uppercase; margin-bottom: 8px;
+}
+.insight-box {
+  background: var(--teal-bg);
+  border-left: 3px solid var(--teal);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  font-size: 0.83rem; color: var(--ink2); line-height: 1.6;
+  margin-bottom: 10px;
+}
+.warn-box {
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  font-size: 0.83rem; color: var(--ink2); line-height: 1.6;
+  margin-bottom: 10px;
+}
+.pain-card {
+  border: 1px solid var(--line); border-radius: 8px;
+  padding: 14px 16px; margin-bottom: 10px;
+}
+.pain-card:last-child { margin-bottom: 0; }
+.pain-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.87rem; font-weight: 700; color: var(--ink); margin-bottom: 6px;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.pain-num {
+  width: 20px; height: 20px; border-radius: 4px;
+  background: var(--red-bg); color: var(--red);
+  font-size: 0.7rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+}
+.pain-body { font-size: 0.8rem; color: var(--ink2); line-height: 1.55; }
+.tray-solve {
+  margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line);
+  font-size: 0.78rem; color: var(--teal-d); font-weight: 500;
+}
+.tray-solve strong { color: var(--teal-d); }
+
+.question-item {
+  display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start;
+}
+.q-icon {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: var(--badge-h); color: var(--badge-c);
+  font-size: 0.75rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+}
+.q-body { flex: 1; }
+.q-text { font-size: 0.83rem; font-style: italic; color: var(--ink); line-height: 1.5; }
+.q-tip { font-size: 0.75rem; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
+.step-row {
+  display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start;
+}
+.step-n {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: var(--ink); color: var(--white);
+  font-size: 0.78rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+}
+.step-body { flex: 1; }
+.step-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.87rem; font-weight: 700; color: var(--ink); margin-bottom: 3px;
+}
+.step-desc { font-size: 0.8rem; color: var(--ink2); line-height: 1.55; }
+.step-tip {
+  margin-top: 6px; padding: 8px 12px;
+  background: var(--bg); border-radius: 6px;
+  font-size: 0.76rem; color: var(--muted);
+}
+
+.arg-block {
+  border: 1px solid var(--line); border-radius: 8px;
+  padding: 16px; margin-bottom: 10px;
+  position: relative;
+}
+.arg-block:last-child { margin-bottom: 0; }
+.arg-label {
+  font-size: 0.7rem; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px;
+}
+.arg-text { font-size: 0.84rem; color: var(--ink); line-height: 1.55; }
+.copy-btn-mini {
+  position: absolute; top: 12px; right: 12px;
+  padding: 4px 10px; border-radius: 6px;
+  background: var(--bg); border: 1px solid var(--line);
+  font-size: 0.7rem; font-weight: 600; color: var(--muted);
+  cursor: pointer; transition: all .15s;
+}
+.copy-btn-mini:hover { border-color: var(--teal); color: var(--teal-d); }
+
+.objection-item {
+  border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 14px;
+}
+.objection-item:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+.obj-q { font-size: 0.82rem; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.obj-a { font-size: 0.8rem; color: var(--ink2); line-height: 1.55; }
+
+.client-card {
+  background: var(--teal-bg);
+  border: 1.5px solid var(--teal);
+  border-radius: 10px; padding: 18px;
+}
+.client-card p { font-size: 0.84rem; color: var(--ink2); line-height: 1.6; }
+
+.wpp-block {
+  background: #F0FDF4;
+  border: 1.5px solid #22C55E;
+  border-radius: 10px; padding: 16px;
+}
+.wpp-block p { font-size: 0.84rem; color: var(--ink2); line-height: 1.6; }
+
+.result-actions {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  padding: 16px 0 0;
+}
+
+.divider { height: 1px; background: var(--line); margin: 16px 0; }
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.tag {
+  font-size: 0.72rem; font-weight: 600;
+  padding: 3px 9px; border-radius: 4px;
+  background: var(--badge-h); color: var(--badge-c);
+}
+.tag.green { background: var(--teal-bg); color: var(--teal-d); }
+.tag.red { background: var(--red-bg); color: var(--red); }
+.tag.warn { background: var(--warn-bg); color: var(--warn); }
+
+.internal-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.7rem; font-weight: 600; color: var(--warn);
+  background: var(--warn-bg); border: 1px solid #FDE68A;
+  border-radius: 4px; padding: 3px 8px; margin-bottom: 14px;
+}
+
+@media (max-width: 600px) {
+  .row-2, .row-3 { grid-template-columns: 1fr; }
+  .persona-grid { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: 1fr !important; }
+}
+
+/* skeleton loader */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+.skel {
+  background: linear-gradient(90deg, var(--line) 25%, #f3f4f6 50%, var(--line) 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="brand-dot">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 2L17 6V14L10 18L3 14V6L10 2Z" fill="white" opacity=".9"/>
+        <path d="M10 6L14 8.5V13.5L10 16L6 13.5V8.5L10 6Z" fill="#00C4A0"/>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <h1>Consultor de Abordagem</h1>
+      <p>Tray Commerce · Time de Vendas</p>
+    </div>
+    <div class="sister-badge">Ferramenta irmã do Raio-X</div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- FORM -->
+  <div id="form-area">
+
+    <!-- CARD 1: Persona -->
+    <div class="card">
+      <div class="card-title">
+        <div class="step-num">1</div>
+        Qual é o perfil do prospect?
+      </div>
+      <div class="persona-grid" id="persona-grid">
+        <label class="persona-card" onclick="selectPersona('marisa',this)">
+          <input type="radio" name="persona" value="marisa">
+          <div class="persona-name">Maraísa</div>
+          <div class="persona-desc">Quer começar do zero, ainda não tem loja nem produto definido. Busca independência financeira.</div>
+          <div class="persona-tag">Iniciante</div>
+        </label>
+        <label class="persona-card" onclick="selectPersona('roberto',this)">
+          <input type="radio" name="persona" value="roberto">
+          <div class="persona-name">Roberto</div>
+          <div class="persona-desc">Já vende em marketplace ou loja física. Quer canal próprio e menos dependência de terceiros.</div>
+          <div class="persona-tag">Marketplace / Físico</div>
+        </label>
+        <label class="persona-card" onclick="selectPersona('rodrigo',this)">
+          <input type="radio" name="persona" value="rodrigo">
+          <div class="persona-name">Rodrigo</div>
+          <div class="persona-desc">E-commerce já existe, mas a plataforma atual trava o crescimento. Quer migrar.</div>
+          <div class="persona-tag">Migração</div>
+        </label>
+        <label class="persona-card" onclick="selectPersona('jose',this)">
+          <input type="radio" name="persona" value="jose">
+          <div class="persona-name">José Carlos</div>
+          <div class="persona-desc">Lojista físico consolidado, pouca habilidade digital, quer ou precisa ir para o online.</div>
+          <div class="persona-tag">Lojista Físico</div>
+        </label>
+      </div>
+    </div>
+
+    <!-- CARD 2: Negócio -->
+    <div class="card">
+      <div class="card-title">
+        <div class="step-num">2</div>
+        Sobre o negócio
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label>Segmento / Nicho <span>(ex: moda feminina, pet shop, autopeças)</span></label>
+          <input type="text" id="segmento" placeholder="Descreva o que a loja vende">
+        </div>
+        <div class="field">
+          <label>Tempo de mercado</label>
+          <select id="tempo">
+            <option value="">Selecione...</option>
+            <option value="iniciando">Está iniciando agora</option>
+            <option value="menos1">Menos de 1 ano</option>
+            <option value="1a3">1 a 3 anos</option>
+            <option value="3a7">3 a 7 anos</option>
+            <option value="mais7">Mais de 7 anos</option>
+          </select>
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label>Faturamento mensal estimado</label>
+          <select id="faturamento">
+            <option value="">Selecione...</option>
+            <option value="ate5k">Até R$ 5 mil</option>
+            <option value="5a20k">R$ 5 mil a R$ 20 mil</option>
+            <option value="20a80k">R$ 20 mil a R$ 80 mil</option>
+            <option value="80a300k">R$ 80 mil a R$ 300 mil</option>
+            <option value="mais300k">Acima de R$ 300 mil</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Ticket médio aproximado</label>
+          <select id="ticket">
+            <option value="">Selecione...</option>
+            <option value="ate50">Até R$ 50</option>
+            <option value="50a150">R$ 50 a R$ 150</option>
+            <option value="150a500">R$ 150 a R$ 500</option>
+            <option value="mais500">Acima de R$ 500</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3: Situação atual -->
+    <div class="card">
+      <div class="card-title">
+        <div class="step-num">3</div>
+        Onde o prospect vende hoje?
+      </div>
+      <div class="chip-group" id="canais-chips">
+        <div class="chip" data-val="nenhum" onclick="toggleChip(this,'canais')">Não vende ainda</div>
+        <div class="chip" data-val="fisico" onclick="toggleChip(this,'canais')">Loja física</div>
+        <div class="chip" data-val="instagram" onclick="toggleChip(this,'canais')">Instagram / WhatsApp</div>
+        <div class="chip" data-val="mercadolivre" onclick="toggleChip(this,'canais')">Mercado Livre</div>
+        <div class="chip" data-val="shopee" onclick="toggleChip(this,'canais')">Shopee</div>
+        <div class="chip" data-val="magalu" onclick="toggleChip(this,'canais')">Magalu</div>
+        <div class="chip" data-val="amazon" onclick="toggleChip(this,'canais')">Amazon</div>
+        <div class="chip" data-val="outros_mkt" onclick="toggleChip(this,'canais')">Outros marketplaces</div>
+        <div class="chip" data-val="loja_propria" onclick="toggleChip(this,'canais')">Loja própria (outra plataforma)</div>
+      </div>
+    </div>
+
+    <!-- CARD 4: Dores percebidas -->
+    <div class="card">
+      <div class="card-title">
+        <div class="step-num">4</div>
+        O que o vendedor já percebeu? <span style="font-weight:400;font-size:.82rem;color:var(--muted);">(opcional, marca o que se aplica)</span>
+      </div>
+      <div class="chip-group" id="dores-chips">
+        <div class="chip" data-val="comissao" onclick="toggleChip(this,'dores')">Alta comissão do marketplace</div>
+        <div class="chip" data-val="frete" onclick="toggleChip(this,'dores')">Frete caro / sem contrato</div>
+        <div class="chip" data-val="estoque" onclick="toggleChip(this,'dores')">Estoque descontrolado</div>
+        <div class="chip" data-val="pagamento" onclick="toggleChip(this,'dores')">Problema com pagamentos</div>
+        <div class="chip" data-val="marca" onclick="toggleChip(this,'dores')">Não tem identidade / marca própria</div>
+        <div class="chip" data-val="concorrencia" onclick="toggleChip(this,'dores')">Concorrência crescendo online</div>
+        <div class="chip" data-val="tecnologia" onclick="toggleChip(this,'dores')">Plataforma atual trava crescimento</div>
+        <div class="chip" data-val="suporte" onclick="toggleChip(this,'dores')">Sem suporte / atendimento ruim</div>
+        <div class="chip" data-val="integracao" onclick="toggleChip(this,'dores')">Sem integração entre canais</div>
+        <div class="chip" data-val="tempo" onclick="toggleChip(this,'dores')">Muito tempo operacional / manual</div>
+        <div class="chip" data-val="dados" onclick="toggleChip(this,'dores')">Não conhece seu cliente</div>
+        <div class="chip" data-val="digital" onclick="toggleChip(this,'dores')">Medo / resistência ao digital</div>
+      </div>
+    </div>
+
+    <!-- CARD 5: Contexto extra -->
+    <div class="card">
+      <div class="card-title">
+        <div class="step-num">5</div>
+        Contexto da conversa <span style="font-weight:400;font-size:.82rem;color:var(--muted);">(opcional)</span>
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label>Já teve experiência negativa com e-commerce?</label>
+          <select id="exp_neg">
+            <option value="nao">Não</option>
+            <option value="sim">Sim</option>
+            <option value="nao_sei">Não sei ainda</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Momento da abordagem</label>
+          <select id="momento">
+            <option value="pre">Pré-reunião (preparação)</option>
+            <option value="durante">Durante a reunião</option>
+            <option value="pos">Pós-reunião (follow-up)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Observação livre <span>(algo específico que o vendedor quer destacar)</span></label>
+        <textarea id="obs" placeholder="Ex: Tem concorrente no mesmo bairro já vendendo online. Mencionou que testa plataformas..."></textarea>
+      </div>
+    </div>
+
+    <button class="btn-run" id="btn-gerar" onclick="gerar()">Gerar briefing de abordagem →</button>
+
+  </div><!-- /form-area -->
+
+  <!-- RESULT -->
+  <div id="result">
+
+    <div class="result-header" id="result-header">
+      <div class="result-header-info">
+        <h2 id="r-titulo">Briefing de Abordagem</h2>
+        <p id="r-subtitulo"></p>
+        <div class="result-badges" id="r-badges"></div>
+      </div>
+    </div>
+
+    <!-- Seções dinâmicas -->
+    <div id="sections-container"></div>
+
+    <div class="result-actions">
+      <button class="btn-copy" onclick="copiarResumo()">Copiar resumo</button>
+      <button class="btn-sec" onclick="resetar()">Nova análise</button>
+    </div>
+
+  </div><!-- /result -->
+
+</main>
+
+<script>
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let selectedPersona = null;
+const chipState = { canais: new Set(), dores: new Set() };
+
+function selectPersona(val, el) {
+  selectedPersona = val;
+  document.querySelectorAll('.persona-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function toggleChip(el, group) {
+  const val = el.dataset.val;
+  if (chipState[group].has(val)) {
+    chipState[group].delete(val);
+    el.classList.remove('active');
+  } else {
+    chipState[group].add(val);
+    el.classList.add('active');
+  }
+}
+
+// ─────────────────────────────────────────────
+// DATA: PERSONAS
+// ─────────────────────────────────────────────
+const PERSONAS = {
+  marisa: {
+    nome: 'Maraísa — Iniciante',
+    emoji: '🌱',
+    cor: 'green',
+    resumo: 'Quer começar do zero. Tem energia e motivação, mas sente insegurança com tecnologia, custos e o que vender. A venda aqui é de sonho, não de plataforma.',
+    gatilho_emocional: 'O primeiro pedido chegando na caixa de entrada.',
+    maior_medo: 'Investir e não ter retorno; não saber o que está fazendo.',
+    o_que_atrai: ['Plataforma simples de configurar sem programar', 'Suporte acessível e tutoriais', 'Custo baixo para começar', '+550 layouts prontos', 'Tray Pagamentos e Tray Envios já integrados', 'Sacolinha do Instagram e WhatsApp Commerce'],
+    questoes_sondagem: [
+      { q: 'O que te fez querer começar agora? Teve algo que aconteceu e te deu esse empurrão?', tip: 'Se mencionar pressão financeira ou meta, anote — será o gatilho emocional da sua proposta.' },
+      { q: 'O que você mais teme que dê errado quando colocar a loja no ar?', tip: 'Medo de tecnologia → fale de facilidade. Medo de suporte → fale de atendimento humanizado.' },
+      { q: 'Você já imaginou como vai ser quando fizer a primeira venda? A sensação do primeiro pedido chegando?', tip: 'Cria imagem mental positiva. A pessoa começa a imaginar a usabilidade — isso aproxima o fechamento.' },
+      { q: 'Você está tentando montar tudo sozinho ou tem alguém te ajudando nessa jornada?', tip: 'Quem está sozinho precisa de plataforma intuitiva ou que ofereça implantação assistida.' }
+    ],
+    objecoes: [
+      { q: 'Preciso de CNPJ ou posso começar como pessoa física?', a: 'Pode começar como pessoa física tranquilamente. A Tray acompanha o crescimento do negócio. Quando chegar a hora de profissionalizar, a migração é simples.' },
+      { q: 'Eu mesmo consigo montar a loja ou preciso pagar alguém?', a: 'A promessa da Tray é: loja no ar sem ser programadora e sem contratar designer. Mais de 550 layouts prontos e IA que gera descrições automaticamente.' },
+      { q: 'Quanto custa de verdade? Só a mensalidade ou tem outros custos?', a: 'Sem surpresas na fatura. A Tray já inclui mais de 600 recursos nativos — chega de pagar por aplicativos extras. O plano Start começa em R$ 19/mês no anual.' },
+      { q: 'Posso crescer sem precisar trocar de plataforma no futuro?', a: 'Sim! A Tray foi feita para acompanhar o crescimento. Não precisará migrar conforme escala.' }
+    ],
+    argumento_fechamento: 'Você já tem o produto e a vontade. O que falta é a vitrine. Cada dia sem a loja no ar é um dia que o seu futuro cliente compra de outra pessoa. A Tray coloca você no ar hoje, com suporte para não ficar sozinha no caminho.',
+    wpp_pos: 'Oi [nome]! Foi muito bom conversar. Separei aqui o link para você dar uma olhada nos planos da Tray: [link]. O Start começa em R$19/mês no anual — já vem com Tray Pagamentos e Tray Envios integrados. Qualquer dúvida, pode me chamar aqui!'
+  },
+
+  roberto: {
+    nome: 'Roberto — Marketplace / Físico',
+    emoji: '🚀',
+    cor: 'green',
+    resumo: 'Já vende, já tem produto e operação. A dor central é dependência e custo dos canais terceiros. O argumento mais forte é o canal próprio com marca e margem preservada.',
+    gatilho_emocional: 'Parar de pagar comissão e ter controle total das vendas.',
+    maior_medo: 'Mudar e perder o que já funciona (anúncios, reputação, estoque).',
+    o_que_atrai: ['Integração nativa com +30 marketplaces', 'Integração com +1.000 ERPs incluindo Bling', 'Tray Envios — frete até 60% mais barato', 'Gestão centralizada: estoque, pedidos e faturamento', 'Canal próprio com sua marca e sua base de clientes', 'Para quem vem do Mercado Shops: mantém ML + expande para outros canais'],
+    questoes_sondagem: [
+      { q: 'Qual é o percentual de comissão que você paga hoje? Você já calculou quanto isso representa por mês?', tip: 'Deixe o silêncio trabalhar. Quando ele calcula, o custo de NÃO sair fica maior que o custo de migrar.' },
+      { q: 'Quando alguém compra de você no marketplace, essa pessoa se torna seu cliente ou do marketplace?', tip: 'Toca no ponto de posse do cliente — Roberto não tem a base, o marketplace tem.' },
+      { q: 'Se você ficasse suspenso no marketplace amanhã de manhã, o que aconteceria com o seu faturamento?', tip: 'Cria urgência real. A dependência de canal único é um risco de negócio concreto.' },
+      { q: 'Você já tentou vender no Instagram ou WhatsApp de forma mais organizada? Como foi?', tip: 'Abre conversa sobre sacolinha, catálogo e checkout integrado.' }
+    ],
+    objecoes: [
+      { q: 'Vou perder meus anúncios no Mercado Livre ao montar loja própria?', a: 'De forma alguma. Os anúncios continuam ativos e rodando. A loja própria na Tray é um canal a mais, não a troca de um pelo outro. A Tray integra os dois.' },
+      { q: 'Minha reputação no ML continua a mesma?', a: 'Sim. A reputação pertence à sua conta de vendedor do ML, não à plataforma. A Tray espelha a conta e garante que faturamento e estoque funcionem sem falhas.' },
+      { q: 'A integração com o Bling é automática?', a: '100% automática e nativa. O Bling é parceiro homologado da Tray. Você importa todos os cadastros e anúncios sem começar do zero.' },
+      { q: 'Tenho pouco tempo. Não vou conseguir cuidar de mais um canal.', a: 'É exatamente por isso que a Tray centraliza tudo em um painel. Você não administra canais separados — administra o estoque uma vez e ele se distribui para todos os canais automaticamente.' }
+    ],
+    argumento_fechamento: 'Hoje você paga entre 10% e 20% de comissão em cada venda. Com a Tray, esse valor fica com você. Com o seu faturamento atual, a mensalidade da Tray se paga com poucas vendas a mais no canal próprio. E o marketplace continua funcionando em paralelo.',
+    wpp_pos: 'Oi [nome], conforme conversamos: a Tray integra com o Mercado Livre, Shopee, Bling e mais 30 marketplaces — tudo em um painel. Montei um resumo rápido: [link]. Posso te mostrar uma demo de 20 min essa semana? Qual dia fica melhor?'
+  },
+
+  rodrigo: {
+    nome: 'Rodrigo — Migração de Plataforma',
+    emoji: '⚡',
+    cor: 'warn',
+    resumo: 'Já tem e-commerce, tem operação rodando e está frustrado. A conversa é sobre o custo de ficar parado e sobre migração sem trauma. Ele precisa de um parceiro, não só de uma plataforma.',
+    gatilho_emocional: 'Operação que não trava mais. Crescimento sem retrabalho.',
+    maior_medo: 'Loja fora do ar, perda de posicionamento no Google, time sem saber usar a nova ferramenta.',
+    o_que_atrai: ['Migração Assistida (implantação em até 15 dias úteis)', 'Checkout que aprova até 43% mais pedidos', 'SEO nativo avançado + redirecionamento de URLs', 'Infraestrutura para picos de acesso', 'Consultor de Sucesso dedicado pós-implantação', 'Liberdade total de layout: HTML/CSS/JS'],
+    questoes_sondagem: [
+      { q: 'Qual foi a gota d\'água? Quando você disse "chega" da plataforma atual?', tip: 'O problema que ele citar é exatamente o que a Tray precisa resolver primeiro na sua apresentação.' },
+      { q: 'Quanto você acha que já perdeu em vendas por causa das limitações da plataforma atual?', tip: 'Deixe o silêncio trabalhar. Quando ele calcula, o custo de NÃO migrar fica maior que o custo de migrar.' },
+      { q: 'Já teve clientes que não conseguiram finalizar um pedido? Você sabe quantos?', tip: 'Mostra que o site deveria ser ferramenta comercial — e não é.' },
+      { q: 'Até quando você está disposto a gastar sua energia apagando incêndios que a plataforma atual cria?', tip: 'Cria urgência. O custo de continuar é alto demais.' }
+    ],
+    objecoes: [
+      { q: 'Como faço para migrar sem parar minhas vendas?', a: 'Com o Plano Ultra, entregamos Migração Assistida. Nossa equipe assume a implantação em até 15 dias úteis. Toda a construção da nova loja acontece nos bastidores — sua loja atual continua vendendo.' },
+      { q: 'Minha loja vai perder posicionamento no Google ao migrar?', a: 'Não. A Tray tem SEO nativo avançado incluindo redirecionamento de páginas, que garante que todas as URLs ranqueadas sejam mantidas. É algo que priorizamos no processo de migração.' },
+      { q: 'E se eu migrar e perder pedidos durante a transição?', a: 'Esse medo é legítimo e é exatamente por isso que existe a Migração Assistida. Nossa equipe cuida de toda a estrutura técnica. A transição é feita de forma que não haja quebra operacional.' },
+      { q: 'Meu time vai ter dificuldade para aprender a nova plataforma?', a: 'Não será difícil porque treinamos sua equipe. Como parte do processo de implantação, o time recebe treinamento direto com nossos especialistas.' }
+    ],
+    argumento_fechamento: 'Cada mês que você permanece na plataforma atual é um mês pagando o custo invisível das limitações: carrinho abandonado, lentidão em pico, retrabalho da equipe. A Tray entrega Migração Assistida — você não migra sozinho. E do outro lado tem checkout que aprova 43% mais pedidos.',
+    wpp_pos: 'Oi [nome]! Seguindo nossa conversa — separei aqui um resumo do que discutimos sobre a migração: [link]. A Migração Assistida resolve exatamente o que você mencionou sobre [dor específica]. Podemos agendar a próxima etapa ainda essa semana?'
+  },
+
+  jose: {
+    nome: 'José Carlos — Lojista Físico',
+    emoji: '🏪',
+    cor: 'warn',
+    resumo: 'Tem negócio consolidado, estoque, fornecedores e clientes. O digital ainda parece distante ou arriscado. A conversa deve honrar o que ele construiu e mostrar que o online expande — não cancela o físico.',
+    gatilho_emocional: 'Vender para o Brasil inteiro sem depender do fluxo da rua.',
+    maior_medo: 'Perder o controle do que funciona; não saber lidar com a tecnologia; investir e não ter retorno.',
+    o_que_atrai: ['Tray PDV — físico e online com gestão centralizada', 'Integração de estoque com centenas de ERPs', '+30 marketplaces para ampliar o alcance', 'Tray Pagamentos e Tray Envios já integrados', 'Onboarding estruturado e suporte humanizado', 'Pacotes "Loja Pronta" — equipe da Tray monta a loja'],
+    questoes_sondagem: [
+      { q: 'O que você sente quando vê um concorrente seu vendendo pela internet e você não?', tip: 'Não ataca — convida à reflexão. Personalize com o segmento ou região do prospect.' },
+      { q: 'Já teve cliente que perguntou se existe outra forma de comprar sem ser presencial?', tip: 'Ele percebe sozinho a limitação do modelo atual. E que está ficando para trás.' },
+      { q: 'Se a sua loja vendesse 24 horas por dia, 7 dias por semana, sem precisar de você lá — isso mudaria alguma coisa na sua vida?', tip: 'A loja virtual não é mais trabalho — é a loja trabalhando enquanto ele descansa.' },
+      { q: 'O que você faria diferente se fosse começar do zero hoje? O que precisaria existir para você dizer "dessa vez vai"?', tip: 'Se já tentou antes, revela o que falhou. Abre espaço para mostrar como a Tray resolve o problema anterior.' }
+    ],
+    objecoes: [
+      { q: 'Preciso separar estoque físico e online?', a: 'Não. Com o Tray PDV e integração com centenas de ERPs, você tem controle unificado. Vendeu uma unidade online, o estoque é atualizado automaticamente na loja física. "Físico ou online, a gestão é uma só."' },
+      { q: 'Como vou receber os pagamentos online com segurança?', a: 'Sua loja já vem equipada com Tray Pagamentos, tarifa grátis na assinatura. Você controla todo o financeiro no mesmo lugar dos produtos.' },
+      { q: 'Quanto tempo leva para colocar minha loja online?', a: 'Sabemos que seu tempo é curto. Com os pacotes de "Loja Pronta", nossa equipe cuida da implantação e configuração visual em 15 a 45 dias úteis. Você não precisa montar nada sozinho.' },
+      { q: 'Vou conseguir acompanhar vendas e clientes sem ficar sobrecarregado?', a: 'A Tray coloca um fim ao caos operacional. Painel unificado de pedidos, gestão única de clientes. Tudo — loja física, WhatsApp, marketplace — centralizado, organizado e fácil.' }
+    ],
+    argumento_fechamento: 'Você já tem o produto, o estoque e os fornecedores. A estrutura mais difícil já existe. O que falta é a vitrine digital. E a Tray monta essa vitrine por você, integrada ao que você já usa — sem bagunçar a operação que já funciona.',
+    wpp_pos: 'Oi [nome]! Ótima conversa hoje. Fiz um resumo rápido do que conversamos: [link]. O que você já tem — estoque, fornecedores, PDV — já é compatível com a Tray. Posso te mostrar como ficaria a loja online em uma demo rápida essa semana?'
+  }
+};
+
+// ─────────────────────────────────────────────
+// DATA: DORES ESPECÍFICAS POR CANAL
+// ─────────────────────────────────────────────
+const DORES_CANAL = {
+  nenhum: [
+    { titulo: 'Sem presença digital em um mercado de R$ 204 bi', body: 'O e-commerce brasileiro faturou R$ 204,3 bilhões em 2024, com 91 milhões de compradores online (ABComm 2025). Quem não está no online está perdendo participação de mercado todos os dias.', tray: 'Loja própria profissional no ar rapidamente, com checkout, pagamentos e frete integrados.' },
+    { titulo: 'Vendendo só para quem passa na frente ou segue nas redes', body: 'Sem loja própria, o alcance é geográfico ou dependente de algoritmo de rede social. Não há como escalar sistematicamente.', tray: 'Canal de venda próprio, acessível 24h, para qualquer pessoa no Brasil — não depende de algoritmo.' },
+    { titulo: 'Nenhum dado sobre o comportamento dos clientes', body: 'Sem loja própria, o vendedor não sabe quais produtos são mais visitados, qual o abandono de carrinho, quem voltou a comprar.', tray: 'Painel de analytics nativo, integração com GA4 e pixels de conversão.' }
+  ],
+  fisico: [
+    { titulo: 'Faturamento limitado ao fluxo da rua e ao horário de funcionamento', body: 'Uma loja física vende enquanto está aberta e para quem passa pela frente. Online, a vitrine está sempre disponível e o alcance é nacional.', tray: 'Loja online com Tray PDV integrado — mesmo estoque, gestão unificada. Físico ou online, a gestão é uma só.' },
+    { titulo: 'Estoque gerenciado manualmente em dois mundos', body: 'Quem tenta vender online sem integração enfrenta ruptura de estoque, pedidos duplicados e retrabalho constante no controle.', tray: 'Integração nativa com +1.000 ERPs e Tray PDV para estoque unificado em tempo real.' },
+    { titulo: 'Sem dados dos clientes e sem recorrência sistematizada', body: 'Loja física tem clientes, mas raramente captura e-mail, historico de compras e preferências de forma estruturada para reativação.', tray: 'CRM integrado, histórico de pedidos, e-mail marketing e ferramentas de recompra.' }
+  ],
+  instagram: [
+    { titulo: 'Venda no Instagram depende 100% do algoritmo e do DM manual', body: 'Quem vende só pelo Instagram está refém de mudanças de algoritmo e faz checkout fora da plataforma, o que aumenta abandono e fraude.', tray: 'Sacolinha do Instagram integrada à loja Tray — o clique vai direto para o checkout seguro com Tray Pagamentos.' },
+    { titulo: 'Sem checkout próprio = sem confiança e sem conversão', body: 'Pedir dados bancários ou usar links externos gera desconfiança. A taxa de abandono chega a 80%+ no checkout improvisado.', tray: 'Checkout Transparente com Tray Pagamentos — experiência segura, Pix, cartão e parcelamento.' },
+    { titulo: 'Crescimento travado pela limitação de bio e catálogo', body: 'O Instagram limita a navegação e a busca de produtos. Quem tem 100+ itens não consegue expor o catálogo de forma eficiente.', tray: 'Catálogo ilimitado na loja própria com busca, filtros e categorias — o Instagram vira tráfego, a loja vira conversão.' }
+  ],
+  mercadolivre: [
+    { titulo: `Comissão entre 10% e 19% por venda — sobre o faturamento bruto`, body: 'No Mercado Livre, cada venda paga entre 10% e 19% de comissão, mais anúncios patrocinados. Em margens apertadas, isso pode comprometer a rentabilidade.', tray: 'Canal próprio com mensalidade fixa. A comissão que vai para o marketplace fica com o vendedor.' },
+    { titulo: 'O cliente é do Mercado Livre, não do vendedor', body: 'Quem compra no ML não se torna cliente da sua marca — se torna cliente do marketplace. A base de dados e o relacionamento pertencem à plataforma.', tray: 'Loja própria com CRM, base de clientes e e-mail marketing. A marca e os dados ficam com o lojista.' },
+    { titulo: 'Suspensão ou penalidade pode zerar o faturamento do dia para a noite', body: 'Qualquer conta no ML pode ser suspensa por reclamação, política de preço ou mudança de regra. O risco de dependência de canal único é real.', tray: 'Canal próprio funciona em paralelo. Tray integra com o ML para manter os dois canais — sem dependência total.' }
+  ],
+  shopee: [
+    { titulo: 'Comissão de 14% a 20% mais custo de anúncios dentro da plataforma', body: 'A Shopee cobra entre 14% e 20% de comissão e pressiona os vendedores a investirem em anúncios internos para manter visibilidade — custo crescente.', tray: 'Mensalidade fixa na Tray. Canal próprio sem custo variável por venda.' },
+    { titulo: 'Guerras de preço e comparação direta com concorrentes', body: 'No feed da Shopee, seus produtos competem lado a lado com concorrentes de menor preço. É difícil competir por valor de marca.', tray: 'Loja própria com identidade visual, storytelling de marca e política de preço sem pressão de comparação.' },
+    { titulo: 'Frete subsidiado não sustentável no longo prazo', body: 'O modelo de frete gratuito da Shopee é estratégico para aquisição, mas cria expectativa de frete zero que é difícil de sustentar com margem.', tray: 'Tray Envios com até 60% de desconto nas principais transportadoras — frete competitivo sem subsidiar com a margem.' }
+  ]
+};
+
+// ─────────────────────────────────────────────
+// IA: ANÁLISE ESPECÍFICA DO NICHO
+// ─────────────────────────────────────────────
+async function analisarNichoIA(segmento, categoriaNome, canais, faturamento, ticket) {
+  const loadEl   = document.getElementById('ia-nicho-loading');
+  const contentEl = document.getElementById('ia-nicho-content');
+  if (!loadEl || !contentEl) return;
+
+  const contextoCanais = canais.length
+    ? `Hoje vende em: ${canais.map(labelCanal).join(', ')}.`
+    : 'Ainda não vende online.';
+
+  const prompt = `Você é um especialista em e-commerce brasileiro e inteligência de mercado. 
+Um vendedor da Tray Commerce está se preparando para uma reunião com um lojista do nicho: "${segmento}".
+Categoria macro identificada: ${categoriaNome}.
+Contexto do lojista: ${contextoCanais} Faturamento estimado: ${labelFat(faturamento)}. Ticket médio: ${labelTicket(ticket)}.
+
+Gere uma análise específica e aprofundada DESTE NICHO EXATO ("${segmento}") no Brasil, em formato JSON.
+Seja preciso, use dados reais quando souber, e indique quando é estimativa. Foco total no nicho específico, não na categoria genérica.
+
+Responda APENAS com JSON válido, sem markdown, sem texto antes ou depois:
+{
+  "tamanho_nicho": "estimativa do tamanho/faturamento online deste nicho específico no Brasil",
+  "crescimento_nicho": "taxa de crescimento específica deste nicho",
+  "penetracao_nicho": "percentual de vendas online vs total neste nicho",
+  "ticket_nicho": "ticket médio típico para este nicho específico",
+  "perfil_comprador": "quem compra neste nicho (idade, renda, comportamento, frequência de compra)",
+  "sazonalidade": "picos de venda do ano e datas importantes para este nicho",
+  "concorrencia_digital": "como está o nível de concorrência online neste nicho específico",
+  "diferenciais_decisivos": ["3 a 4 fatores que realmente decidem a compra neste nicho específico"],
+  "tendencias_nicho": ["4 tendências específicas deste nicho no Brasil em 2024-2025"],
+  "marketplaces_relevantes": ["quais marketplaces são mais usados por compradores deste nicho"],
+  "dores_operacionais": ["3 principais dores operacionais de quem vende neste nicho online"],
+  "argumento_tray": "argumento comercial específico de como a Tray resolve os problemas de quem vende neste nicho",
+  "pergunta_gatilho": "a melhor pergunta que o vendedor pode fazer para revelar a dor principal de quem vende neste nicho",
+  "fonte_nota": "nota sobre as fontes ou bases usadas para esta análise"
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
+    const raw = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+
+    let parsed;
+    try {
+      const clean = raw.replace(/```json|```/g, '').trim();
+      parsed = JSON.parse(clean);
+    } catch {
+      throw new Error('JSON inválido na resposta da IA');
+    }
+
+    // Render resultado IA
+    let html = '';
+
+    // KPIs específicos do nicho
+    const kpisIA = [
+      { icon: '💰', label: 'Tamanho do nicho',   valor: parsed.tamanho_nicho },
+      { icon: '📈', label: 'Crescimento',         valor: parsed.crescimento_nicho },
+      { icon: '🌐', label: 'Penetração digital',  valor: parsed.penetracao_nicho },
+      { icon: '🛒', label: 'Ticket médio do nicho', valor: parsed.ticket_nicho },
+    ];
+
+    html += `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px">`;
+    kpisIA.forEach(k => {
+      html += `
+        <div style="border:1.5px solid var(--teal);border-radius:10px;padding:14px 16px;background:var(--teal-bg)">
+          <div style="font-size:1.1rem;margin-bottom:4px">${k.icon}</div>
+          <div style="font-size:.7rem;font-weight:600;color:var(--teal-d);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">${k.label}</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:var(--ink);line-height:1.3">${k.valor || '—'}</div>
+        </div>`;
+    });
+    html += `</div>`;
+
+    // Perfil do comprador
+    if (parsed.perfil_comprador) {
+      html += `<div class="block-label">Perfil do comprador neste nicho</div>
+        <div class="insight-box" style="margin-bottom:16px">${parsed.perfil_comprador}</div>`;
+    }
+
+    // Sazonalidade
+    if (parsed.sazonalidade) {
+      html += `<div class="block-label">Sazonalidade e datas-chave</div>
+        <div class="warn-box" style="margin-bottom:16px">📅 ${parsed.sazonalidade}</div>`;
+    }
+
+    // Concorrência
+    if (parsed.concorrencia_digital) {
+      html += `<div class="block-label">Nível de concorrência digital</div>
+        <div style="font-size:.82rem;color:var(--ink2);line-height:1.55;margin-bottom:16px">${parsed.concorrencia_digital}</div>`;
+    }
+
+    // Fatores decisivos de compra
+    if (parsed.diferenciais_decisivos?.length) {
+      html += `<div class="block-label">O que realmente decide a compra neste nicho</div>`;
+      parsed.diferenciais_decisivos.forEach(d => {
+        html += `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px">
+          <span style="color:var(--teal);font-weight:700;flex-shrink:0">✓</span>
+          <span style="font-size:.82rem;color:var(--ink2);line-height:1.55">${d}</span>
+        </div>`;
+      });
+      html += `<div style="margin-bottom:16px"></div>`;
+    }
+
+    // Tendências específicas do nicho
+    if (parsed.tendencias_nicho?.length) {
+      html += `<div class="block-label">Tendências específicas — "${segmento}"</div>`;
+      parsed.tendencias_nicho.forEach(t => {
+        html += `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px">
+          <span style="color:var(--teal);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+          <span style="font-size:.82rem;color:var(--ink2);line-height:1.55">${t}</span>
+        </div>`;
+      });
+      html += `<div style="margin-bottom:16px"></div>`;
+    }
+
+    // Marketplaces relevantes para o nicho
+    if (parsed.marketplaces_relevantes?.length) {
+      html += `<div class="block-label">Marketplaces relevantes para este nicho</div>
+        <div class="tag-row" style="margin-bottom:16px">`;
+      parsed.marketplaces_relevantes.forEach(mk => { html += `<span class="tag green">${mk}</span>`; });
+      html += `</div>`;
+    }
+
+    // Dores operacionais
+    if (parsed.dores_operacionais?.length) {
+      html += `<div class="block-label">Dores operacionais típicas de quem vende neste nicho</div>`;
+      parsed.dores_operacionais.forEach((d, i) => {
+        html += `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px">
+          <span style="background:var(--red-bg);color:var(--red);font-size:.7rem;font-weight:700;width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">${i+1}</span>
+          <span style="font-size:.82rem;color:var(--ink2);line-height:1.55">${d}</span>
+        </div>`;
+      });
+      html += `<div style="margin-bottom:16px"></div>`;
+    }
+
+    // Argumento Tray específico para o nicho
+    if (parsed.argumento_tray) {
+      html += `<div class="divider" style="margin:4px 0 16px"></div>
+        <div class="block-label">Argumento Tray específico para este nicho</div>
+        <div class="insight-box" style="margin-bottom:14px"><strong>Use na reunião:</strong> ${parsed.argumento_tray}</div>`;
+    }
+
+    // Pergunta gatilho
+    if (parsed.pergunta_gatilho) {
+      html += `<div class="block-label">Pergunta-gatilho para revelar a dor principal</div>
+        <div style="border:1.5px solid var(--badge-c);border-radius:8px;padding:14px 16px;background:var(--badge-h);margin-bottom:14px">
+          <span style="font-size:.83rem;font-style:italic;color:var(--ink)">"${parsed.pergunta_gatilho}"</span>
+        </div>`;
+    }
+
+    // Fonte / nota
+    if (parsed.fonte_nota) {
+      html += `<div style="font-size:.7rem;color:var(--muted)">${parsed.fonte_nota}</div>`;
+    }
+
+    loadEl.style.display = 'none';
+    contentEl.style.display = 'block';
+    contentEl.innerHTML = html;
+
+    // Atualiza sublabel da seção
+    const heads = document.querySelectorAll('.section-head');
+    heads.forEach(h => {
+      if (h.querySelector('.section-label')?.textContent === 'Dados de mercado do segmento') {
+        h.querySelector('.section-sublabel').textContent =
+          `Categoria: ${categoriaNome} · Análise específica: "${segmento}"`;
+      }
+    });
+
+  } catch (err) {
+    if (loadEl) {
+      loadEl.innerHTML = `<div style="font-size:.8rem;color:var(--muted)">
+        Não foi possível carregar a análise específica do nicho (${err.message}).
+        Os dados da categoria acima continuam disponíveis.
+      </div>`;
+    }
+  }
+}
+
+function labelTicket(v) {
+  const m = { ate50:'Até R$50', '50a150':'R$50–150', '150a500':'R$150–500', mais500:'Acima de R$500' };
+  return m[v] || 'não informado';
+}
+
+// ─────────────────────────────────────────────
+// DATA: ROTEIRO DE REUNIÃO POR PERSONA
+// ─────────────────────────────────────────────
+const ROTEIROS = {
+  marisa: [
+    { title: 'Abertura com rapport (2–3 min)', desc: 'Pergunte o que motivou o contato hoje. Ouça sem interromper. Valide a iniciativa — começar um negócio é corajoso.', tip: 'Não entre em produto ainda. Cada detalhe que ela contar vira munição para o fechamento.' },
+    { title: 'Entender o sonho, não só o negócio (5 min)', desc: 'Pergunte o que ela quer que o negócio entregue na vida dela (independência, tempo, renda extra). A venda aqui é emocional — você está vendendo o estilo de vida, não uma plataforma.', tip: 'Pergunta-chave: "Como vai ser sua rotina quando a loja estiver faturando?"' },
+    { title: 'Mapear os medos (3 min)', desc: 'Pergunte o que ela mais teme que dê errado. Escute. Cada medo que ela citar será endereçado no passo seguinte com a solução Tray específica.', tip: 'Medo de tecnologia → facilidade. Medo de suporte → atendimento. Medo de retorno → plano de início.' },
+    { title: 'Mostrar o caminho, não a plataforma (10 min)', desc: 'Mostre como alguém que está começando coloca a loja no ar na Tray: escolha do layout, configuração de pagamento, integração com Instagram. Não tour genérico — caminho real de uma loja do zero.', tip: 'Mostre +550 layouts e diga: "Você escolhe um, eu te ajudo a configurar."' },
+    { title: 'Criar a imagem do primeiro pedido (2 min)', desc: '"Imagina você recebendo a notificação do primeiro pedido. Sabe o que acontece depois? A Tray processa o pagamento, o estoque já tá atualizado e o frete já tem etiqueta pronta." Deixe ela imaginar.', tip: 'Silêncio depois dessa imagem. Não quebre o momento.' },
+    { title: 'Endereçar objeções com empatia (5 min)', desc: 'Use as respostas do playbook. Ouça a objeção inteira antes de responder. Confirme que entendeu com "Faz sentido, você está dizendo que..." antes de responder.', tip: 'A principal objeção da Maraísa é custo. Mostre que o plano Start cabe no orçamento.' },
+    { title: 'Proposta específica, não genérica (3 min)', desc: 'Não diga "você pode começar com qualquer plano". Diga: "Para o seu momento, o plano Start é o certo — R$19/mês no anual, já com pagamento e frete inclusos. Vamos começar com isso?"', tip: 'Proposta com nome + valor + próximo passo concreto.' },
+    { title: 'Fechamento e próximo passo imediato (2 min)', desc: 'Defina o que acontece agora: trial, acesso à plataforma, agendamento de setup. Não termine com "fica à vontade para pensar" — termine com "vamos fazer assim..."', tip: 'Urgência real: "Quanto mais rápido você subir a loja, mais rápido chega o primeiro pedido."' }
+  ],
+  roberto: [
+    { title: 'Abertura: honrar o que já foi construído (2 min)', desc: 'Reconheça que ele já vende, já opera, já tem experiência. Ele não é iniciante e não gosta de ser tratado como um. Comece com "Me conta como está o negócio hoje".', tip: 'Roberto tem pouco tempo. Seja direto e mostre que você entende operação de marketplace.' },
+    { title: 'Mapear a dependência atual (5 min)', desc: 'Descubra em quais canais ele vende, qual o percentual de cada canal no faturamento, quanto paga de comissão por mês. Calcule o valor em reais, não em percentual.', tip: '"Se o ML representa 80% do seu faturamento e você paga 15% de comissão, são R$X por mês indo para eles."' },
+    { title: 'Fazer sentir o risco de concentração (3 min)', desc: '"Se você ficasse suspenso no Mercado Livre amanhã, o que aconteceria?" Deixe a pergunta trabalhar. Não responda por ele.', tip: 'Roberto já conhece o risco — ele só nunca parou para calcular o impacto real.' },
+    { title: 'Mostrar a Tray como hub, não como substituto (10 min)', desc: 'O posicionamento correto é: a loja Tray é o canal próprio que funciona em paralelo com o marketplace. Mostre a integração com ML, Shopee, Bling — tudo em um painel.', tip: 'Foco: gestão centralizada, não "sair do marketplace". Roberto não quer abandonar o que funciona.' },
+    { title: 'Calcular o retorno em voz alta (5 min)', desc: 'Com o faturamento e comissão que ele informou, calcule: "Se 30% das suas vendas migram para o canal próprio, você economiza R$X/mês. A mensalidade da Tray é R$Y — o ROI é em Z dias."', tip: 'Deixe ele fazer a conta junto. Número que ele calculou vale mais do que número que você apresentou.' },
+    { title: 'Endereçar medo de perder o que funciona (3 min)', desc: 'Use as respostas do playbook: anúncios continuam no ML, reputação não muda, integração com Bling é nativa. Demonstre — não só afirme.', tip: 'Se possível, mostre ao vivo o painel de integração com ML na Tray.' },
+    { title: 'Proposta + próximo passo (2 min)', desc: 'Defina o plano com base no catálogo e faturamento. Seja específico: "Para o seu volume, o plano Crescimento faz sentido — vamos configurar a integração com o Bling essa semana?"', tip: 'Roberto decide rápido quando vê ROI claro e não sente que vai perder o que tem.' }
+  ],
+  rodrigo: [
+    { title: 'Abertura: valide a frustração (2 min)', desc: 'Reconheça que mudar de plataforma não é uma decisão simples. Abra com "Mudar de plataforma é sério. O que te fez chegar até aqui?" Deixe ele contar.', tip: 'A resposta que ele der é o centro de toda a apresentação. Anote.' },
+    { title: 'Quantificar o custo de ficar (5 min)', desc: 'Pergunte: carrinho abandonado, pedidos não aprovados em pico, horas de retrabalho da equipe, integrações que não funcionam. Transforme em R$ por mês.', tip: '"Quanto você acha que já perdeu em vendas por causa das limitações da plataforma atual?" Silêncio após a pergunta.' },
+    { title: 'Apresentar a Migração Assistida como diferencial principal (5 min)', desc: 'Para Rodrigo, o maior medo é a migração em si. Apresente a Migração Assistida logo: equipe da Tray assume, loja atual continua vendendo, prazo de 15 dias úteis.', tip: 'Não comece pela plataforma — comece pelo processo de migração. Isso remove o maior bloqueio.' },
+    { title: 'Mostrar tecnologia com foco nas dores mapeadas (10 min)', desc: 'Não faça tour genérico. Mostre o que resolve exatamente o que ele citou na abertura: checkout, velocidade, SEO, integração com ERP, suporte.', tip: '"Você mencionou que perde vendas em pico. Vou te mostrar exatamente como a Tray lida com isso."' },
+    { title: 'SEO: endereçar o medo do ranking (3 min)', desc: 'Mostre o recurso de redirecionamento de URLs. Explique que o Google segue o redirect 301 e o ranking é preservado. Se possível, mostre um case de migração com SEO mantido.', tip: 'Esse é um medo técnico — aborde tecnicamente. Rodrigo entende e vai valorizar a precisão.' },
+    { title: 'Checkout e conversão com dados (3 min)', desc: 'Apresente o dado: Checkout Transparente da Tray aprova até 43% mais pedidos. Se ele souber a taxa de aprovação atual, calcule o impacto em R$ de melhorar em X%.', tip: '"Se você aprova 65% hoje e passar para 80%, qual é o impacto no seu faturamento mensal?"' },
+    { title: 'Próximo passo: diagnóstico técnico ou proposta formal (2 min)', desc: 'Com Rodrigo, o próximo passo pode ser um diagnóstico técnico da loja atual antes da proposta. Ou proposta direta com plano Ultra se o contexto já foi mapeado.', tip: 'Não termine sem definir uma data e uma ação concreta.' }
+  ],
+  jose: [
+    { title: 'Abertura: honrar a história (3 min)', desc: 'Pergunte quanto tempo tem o negócio e como começou. José Carlos construiu algo com esforço — reconhecer isso antes de qualquer coisa cria confiança e abre a conversa.', tip: '"Me conta um pouco da sua loja. Quanto tempo você está no mercado?" Genuinidade conta muito aqui.' },
+    { title: 'Entender o contexto físico antes de falar de digital (5 min)', desc: 'Descubra: quantos funcionários tem, como funciona o estoque hoje, se usa ERP ou PDV, e se já teve pedido de clientes por fora do horário ou de outra cidade.', tip: 'Esse mapeamento mostra que você entende negócio, não só plataforma — e levanta a dor de alcance naturalmente.' },
+    { title: 'Criar a visão de expansão, não de mudança (5 min)', desc: '"Imagina sua loja física vendendo para o Brasil inteiro, sem precisar de um ponto a mais, sem contratar mais ninguém — só com o que você já tem." Deixe a imagem trabalhar.', tip: 'A palavra "expansão" funciona. A palavra "migração" assusta. Escolha a framing certa.' },
+    { title: 'Mostrar integração física + digital (10 min)', desc: 'Mostre o Tray PDV e como o estoque é sincronizado. Mostre que os produtos que ele já tem no PDV/ERP entram na loja online sem redigitar. Mostre o painel de pedidos unificado.', tip: 'José Carlos não quer aprender tecnologia — quer ver que o digital não vai bagunçar o que funciona.' },
+    { title: 'Apresentar "Loja Pronta" — a Tray monta por ele (5 min)', desc: 'Para José Carlos, o fato de que a equipe da Tray monta a loja em 15 a 45 dias úteis é frequentemente o fator de fechamento. Ele não precisa aprender a montar — só precisa aprovar.', tip: '"Você não precisa montar nada. Nosso time cuida disso. Você só aprova o visual e abre."' },
+    { title: 'Endereçar o medo do digital com empatia (3 min)', desc: 'Se ele mencionar medo de não saber usar ou de dar trabalho demais, aborde com empatia e suporte: onboarding estruturado, tutoriais, atendimento por telefone, Consultor de Sucesso.', tip: 'Não minimize o medo. Valide: "Faz sentido ter essa preocupação. Por isso a Tray tem..."' },
+    { title: 'Proposta concreta e próximo passo (2 min)', desc: 'Proponha o plano adequado ao porte. Se aplicável, mencione os pacotes de Loja Pronta. Defina o próximo passo: visita técnica, demo ou proposta por escrito com prazo.', tip: '"Podemos fazer assim: semana que vem nossa equipe faz uma análise do que você já tem e te mostra como ficaria."' }
+  ]
+};
+
+// ─────────────────────────────────────────────
+// DATA: RESUMO PARA O LOJISTA (por persona)
+// ─────────────────────────────────────────────
+const RESUMO_CLIENTE = {
+  marisa: {
+    titulo: 'Seu próximo passo no e-commerce',
+    intro: 'Conversamos sobre seu projeto de começar a vender online. Aqui vai um resumo do que a Tray entrega para quem está começando:',
+    pontos: [
+      'Loja no ar sem precisar ser programadora ou contratar designer',
+      '+550 layouts profissionais prontos para personalizar',
+      'Tray Pagamentos integrado — Pix, cartão, parcelamento, sem contratar banco',
+      'Tray Envios com fretes até 60% mais baratos, sem negociar com transportadora',
+      'Sacolinha do Instagram e WhatsApp Commerce para transformar seguidores em compradores',
+      'Suporte humanizado + tutoriais + onboarding — você não fica sozinha'
+    ],
+    fechamento: 'O plano Start começa em R$19/mês no anual e já inclui tudo acima. Quando você estiver pronta para dar o próximo passo, estou aqui.'
+  },
+  roberto: {
+    titulo: 'Canal próprio sem abandonar o marketplace',
+    intro: 'Seguindo nossa conversa: montar um canal próprio na Tray não significa sair do Mercado Livre ou da Shopee — significa ter mais um canal, com mais margem e mais controle.',
+    pontos: [
+      'Seus anúncios no ML continuam ativos — a Tray integra os dois canais',
+      'Integração nativa com Bling, mais de 30 marketplaces e +1.000 ERPs',
+      'Tray Envios com até 60% de desconto nas principais transportadoras',
+      'Gestão centralizada: um painel para todos os canais, estoque único',
+      'Sua marca, sua base de clientes — os dados ficam com você, não com o marketplace',
+      'Frete competitivo sem depender da política de frete subsidiado de terceiros'
+    ],
+    fechamento: 'Posso te mostrar como funciona a integração com o que você já usa em uma demo de 20 minutos. Quando fica melhor?'
+  },
+  rodrigo: {
+    titulo: 'Migração sem trauma — e com crescimento',
+    intro: 'Aqui vai o que a Tray entrega para quem está migrando de plataforma e não pode se dar ao luxo de travar:',
+    pontos: [
+      'Migração Assistida: nossa equipe assume, sua loja atual continua vendendo',
+      'Implantação em até 15 dias úteis — com treinamento do time incluído',
+      'SEO preservado com redirecionamento automático de URLs — sem perder ranking',
+      'Checkout Transparente que aprova até 43% mais pedidos',
+      'Infraestrutura para picos de acesso sem travamento',
+      'Consultor de Sucesso dedicado no pós-implantação'
+    ],
+    fechamento: 'O próximo passo é um diagnóstico técnico da sua loja atual sem custo. Posso agendar ainda essa semana?'
+  },
+  jose: {
+    titulo: 'Sua loja física, agora também no Brasil inteiro',
+    intro: 'O que você já tem — estoque, fornecedores, clientes — é a parte mais difícil. A Tray cuida do resto:',
+    pontos: [
+      'Tray PDV: físico e online com estoque unificado — uma gestão só',
+      'Nossa equipe monta a loja por você em 15 a 45 dias úteis (pacote Loja Pronta)',
+      'Tray Pagamentos integrado — Pix, cartão, boleto, sem complicação',
+      'Tray Envios para enviar para qualquer canto do Brasil com desconto',
+      'Integração com o ERP ou PDV que você já usa',
+      'Suporte por telefone, onboarding e acompanhamento na transição'
+    ],
+    fechamento: 'Você não precisa montar nada. Nossa equipe cuida da implantação. Podemos marcar uma visita técnica para ver o que você já tem e como conectar com a Tray?'
+  }
+};
+
+// ─────────────────────────────────────────────
+// DATA: MERCADO POR SEGMENTO
+// Fontes: ABComm 2024/2025 · Euromonitor · SEBRAE · Ebit|Nielsen · Statista BR · NielsenIQ · IEMI · APET · PetBrasil · IDC · ABCOMM Setorial · GfK · Infovarejo · Associações setoriais
+// ─────────────────────────────────────────────
+const MERCADO = {
+
+  moda: {
+    nome: 'Moda & Vestuário',
+    termos: ['moda','roupa','vestuário','roupas','moda feminina','moda masculina','moda infantil','confecção','lingerie','underwear','pijama','meia','cueca','calcinha','sutiã','moda plus','fast fashion'],
+    faturamento: { valor: 'R$ 28,4 bilhões', detalhe: 'faturamento online do segmento em 2024 (ABComm / Euromonitor)' },
+    crescimento: { valor: '+11,2%', detalhe: 'crescimento anual do e-commerce de moda 2023→2024' },
+    penetracao: { valor: '22%', detalhe: 'das vendas totais de moda já ocorrem online; 78% ainda em loja física' },
+    ticket: { valor: 'R$ 187', detalhe: 'ticket médio de compras de moda online no Brasil (Ebit|Nielsen 2024)' },
+    marketplaces: ['Shopee (líder em moda popular)', 'Mercado Livre', 'Shein', 'Renner Online', 'Dafiti'],
+    tendencias: [
+      'Social commerce em aceleração: 68% das descobertas de moda acontecem no Instagram e TikTok antes da compra',
+      'Moda sustentável e slow fashion crescem 30% a.a. — consumidor pesquisa origem e material do produto',
+      'Live commerce de moda movimentou R$ 2,1 bi em 2024 — formato que a Tray suporta via integração com TikTok Shop',
+      'Tamanhos inclusivos (plus size, tall, petite) são o nicho de maior crescimento dentro do segmento — demanda 2× acima da oferta',
+      'Personalização e drop de coleção limitada aumentam percepção de valor e reduzem guerra de preço'
+    ],
+    oportunidade: 'Apenas 22% da moda brasileira está online — o mercado ainda tem 78% para conquistar. Lojistas que dominam social commerce + checkout sem atrito estão capturando a fatia digital antes dos grandes players.'
+  },
+
+  calcados: {
+    nome: 'Calçados & Acessórios',
+    termos: ['calçado','calçados','sapato','sapatos','tênis','bota','sandália','chinelo','bolsa','bolsas','acessório','acessórios','cinto','carteira','mochila'],
+    faturamento: { valor: 'R$ 8,9 bilhões', detalhe: 'faturamento online de calçados e acessórios em 2024 (ABICALÇADOS / Euromonitor)' },
+    crescimento: { valor: '+9,8%', detalhe: 'crescimento anual do canal online no segmento' },
+    penetracao: { valor: '18%', detalhe: 'das vendas totais já ocorrem online; segmento ainda muito dependente do tato e provador' },
+    ticket: { valor: 'R$ 224', detalhe: 'ticket médio de calçados online (Ebit|Nielsen 2024)' },
+    marketplaces: ['Mercado Livre', 'Shopee', 'Netshoes', 'Zattini', 'Dafiti'],
+    tendencias: [
+      'Tabela de medidas precisa e guia de tamanho reduzem troca em 35% — diferencial competitivo direto',
+      'Conteúdo em vídeo (unboxing, como usar) aumenta conversão em até 40% no segmento',
+      'Colaborações com influenciadores locais de nicho (corrida, lifestyle, streetwear) entregam ROAS superior a campanhas genéricas',
+      'Calçado vegano e sustentável cresce 22% a.a. e tem menor sensibilidade a preço',
+      'Clientes de calçados têm alta recorrência: clube de assinatura e programa de fidelidade têm LTV 3× maior'
+    ],
+    oportunidade: 'O segmento tem alto índice de troca/devolução — quem investe em descrição técnica, guia de medidas e política de troca clara reduz custo operacional e aumenta avaliação, criando vantagem competitiva sustentável.'
+  },
+
+  beleza: {
+    nome: 'Beleza, Cosméticos & Perfumaria',
+    termos: ['beleza','cosmético','cosméticos','perfume','perfumaria','maquiagem','skincare','cuidados com a pele','cabelo','cabelos','salão','estética','creme','sérum','shampoo','condicionador','hidratante','protetor solar','base','batom'],
+    faturamento: { valor: 'R$ 18,7 bilhões', detalhe: 'faturamento online de beleza e cosméticos em 2024 (ABIHPEC / Euromonitor)' },
+    crescimento: { valor: '+16,4%', detalhe: 'um dos segmentos de maior crescimento no e-commerce BR — acelera acima da média' },
+    penetracao: { valor: '31%', detalhe: 'das vendas de beleza já ocorrem online — penetração acima da média do varejo' },
+    ticket: { valor: 'R$ 142', detalhe: 'ticket médio de cosméticos online, com alto índice de recompra (Ebit|Nielsen 2024)' },
+    marketplaces: ['Mercado Livre', 'Shopee', 'Amazon', 'Beleza na Web', 'Época Cosméticos'],
+    tendencias: [
+      'Skincare é o subcategoria de maior crescimento: consumidor pesquisa ativos, INCI e dermatologista antes de comprar',
+      'Tutorial e conteúdo educativo no produto aumentam conversão em 55% — quem ensina, vende',
+      'Assinatura de cosméticos (box mensal) tem LTV médio de 18 meses — modelo que cresce 40% a.a.',
+      'Beleza masculina cresce 25% a.a. e ainda é pouco explorada por pequenos lojistas',
+      'Clean beauty e vegano têm margem 20–30% superior e cliente menos sensível a promoção'
+    ],
+    oportunidade: 'Beleza tem a maior taxa de recompra do e-commerce — cliente que compra uma vez volta em média 4,3× no ano. Quem captura o primeiro pedido e investe em CRM e recompra automatizada constrói receita previsível.'
+  },
+
+  pet: {
+    nome: 'Pet Shop & Produtos para Animais',
+    termos: ['pet','animal','animais','cachorro','gato','pets','ração','petshop','pet shop','aquário','pássaro','roedor','veterinário','banho e tosa','coleira','brinquedo pet'],
+    faturamento: { valor: 'R$ 9,2 bilhões', detalhe: 'faturamento online do mercado pet em 2024 (ABINPET / Euromonitor)' },
+    crescimento: { valor: '+19,1%', detalhe: 'o mercado pet é o de maior crescimento no e-commerce BR nos últimos 3 anos' },
+    penetracao: { valor: '26%', detalhe: 'das vendas pet já ocorrem online, com aceleração pós-pandemia' },
+    ticket: { valor: 'R$ 198', detalhe: 'ticket médio pet online; ração e medicamentos têm compra recorrente mensal' },
+    marketplaces: ['Mercado Livre', 'Shopee', 'PetLove', 'Cobasi Online', 'Amazon'],
+    tendencias: [
+      'Humanização dos pets: produtos premium, orgânicos e naturais crescem 35% a.a. com margens 2× superiores',
+      'Assinatura de ração e produtos recorrentes tem churn < 5% ao mês — modelo ideal para construir receita previsível',
+      'Telemedicina veterinária cresce e cria oportunidade para lojistas que vendem complementos e medicamentos',
+      'Produtos para gatos ultrapassam cachorros em crescimento de busca — nicho ainda pouco atendido',
+      'Conteúdo de tutor (dicas, saúde, alimentação) gera engajamento 3× maior que conteúdo de produto'
+    ],
+    oportunidade: 'Tutor de pet gasta em média R$ 318/mês com o animal. Quem monta um ecossistema de recompra — ração, petiscos, higiene, acessórios — e usa assinatura captura a maior parte desse gasto com LTV altíssimo.'
+  },
+
+  eletronicos: {
+    nome: 'Eletrônicos & Tecnologia',
+    termos: ['eletrônico','eletrônicos','tecnologia','celular','smartphone','notebook','computador','tablet','tv','televisão','fone','headphone','câmera','drone','games','console','acessório tech','informática','periférico'],
+    faturamento: { valor: 'R$ 42,1 bilhões', detalhe: 'o maior segmento do e-commerce BR em valor absoluto em 2024 (IDC / ABComm)' },
+    crescimento: { valor: '+8,3%', detalhe: 'crescimento mais moderado por alta penetração já estabelecida' },
+    penetracao: { valor: '48%', detalhe: 'quase metade das vendas de eletrônicos já ocorre online — segmento mais maduro digitalmente' },
+    ticket: { valor: 'R$ 987', detalhe: 'maior ticket médio do e-commerce BR; parcelamento em 12× é padrão de mercado' },
+    marketplaces: ['Mercado Livre (dominante)', 'Amazon', 'Magalu', 'Americanas', 'Kabum'],
+    tendencias: [
+      'Seminovos e recondicionados crescem 42% a.a. — consumidor busca custo-benefício em contexto de câmbio alto',
+      'Garantia estendida e suporte técnico pós-venda são diferenciais que fidelizam e aumentam margem',
+      'Acessórios têm margem 3–5× superior ao produto principal — estratégia de upsell essencial',
+      'Conteúdo técnico (benchmark, review, unboxing) converte 60% mais que anúncio genérico',
+      'IoT e casa inteligente crescem 28% a.a. — nicho com compra recorrente de dispositivos e assinaturas'
+    ],
+    oportunidade: 'Em eletrônicos, quem ganha não é quem tem o menor preço — é quem tem o melhor checkout (aprovação de parcelamento), conteúdo técnico confiável e pós-venda eficiente. Esses três fatores decidem contra o marketplace.'
+  },
+
+  moveis: {
+    nome: 'Móveis, Casa & Decoração',
+    termos: ['móvel','móveis','decoração','casa','cama','mesa','cadeira','sofá','colchão','tapete','cortina','luminária','utensílio','cozinha','banheiro','organização','jardim','ferramente','ferramenta','construção'],
+    faturamento: { valor: 'R$ 16,8 bilhões', detalhe: 'faturamento online de casa e decoração em 2024 (ABIMÓVEL / Euromonitor)' },
+    crescimento: { valor: '+12,7%', detalhe: 'crescimento impulsionado por busca visual e influência de reformas pós-pandemia' },
+    penetracao: { valor: '19%', detalhe: 'penetração digital ainda baixa — maioria das compras ainda acontece presencialmente' },
+    ticket: { valor: 'R$ 412', detalhe: 'ticket médio de casa e decoração online; produtos grandes têm ticket acima de R$800' },
+    marketplaces: ['Mercado Livre', 'Magalu', 'Americanas', 'Tok&Stok Online', 'Leroy Merlin Online'],
+    tendencias: [
+      'Pinterest e Instagram são os maiores drivers de descoberta — 74% dos compradores buscam inspiração visual antes de comprar',
+      'Realidade aumentada para "ver o móvel em casa" reduz devolução em 32% — tendência chegando ao médio varejo',
+      'Home office permanente sustenta demanda por cadeiras ergonômicas, mesas e organização — mercado que não voltou ao pré-pandemia',
+      'Kits e combos temáticos (quarto completo, sala integrada) têm ticket 2,8× maior que venda unitária',
+      'Frete é o maior gargalo: parceria com transportadora especializada em volume/frágil é diferencial competitivo real'
+    ],
+    oportunidade: 'O segmento tem baixa penetração digital (19%) mas alta intenção de compra online — quem oferece descrição técnica precisa, foto em ambiente real e frete previsível captura um comprador que a concorrência ainda não atendeu bem.'
+  },
+
+  alimentos: {
+    nome: 'Alimentos, Bebidas & Gastronomia',
+    termos: ['alimento','alimentos','comida','bebida','bebidas','gastronomia','gourmet','orgânico','natural','saudável','suplemento','whey','proteína','chocolate','café','vinho','cerveja artesanal','tempero','azeite','importado'],
+    faturamento: { valor: 'R$ 7,4 bilhões', detalhe: 'faturamento online de alimentos e bebidas em 2024 (ABIA / NielsenIQ)' },
+    crescimento: { valor: '+21,3%', detalhe: 'segmento de maior crescimento percentual no e-commerce brasileiro em 2024' },
+    penetracao: { valor: '8%', detalhe: 'baixíssima penetração digital — enorme espaço para pioneiros do canal' },
+    ticket: { valor: 'R$ 164', detalhe: 'ticket médio de alimentos online; assinaturas e kits têm ticket 2× superior' },
+    marketplaces: ['Mercado Livre', 'Amazon', 'iFood (marketplace de alimentos)', 'Rappi'],
+    tendencias: [
+      'Alimentação saudável, vegana e sem glúten crescem 30%+ a.a. com margens superiores e cliente fiel',
+      'Assinatura de produtos recorrentes (café, azeite, vinho) tem churn < 4% e LTV médio de 22 meses',
+      'D2C (direto ao consumidor) ganha força: produtor/artesão vende sem intermediário com margem 3× superior',
+      'Conteúdo de receita integrado à página de produto aumenta conversão em 48% no segmento',
+      'Importados e gourmet têm menor sensibilidade a preço — comprador valoriza história e origem do produto'
+    ],
+    oportunidade: 'Com apenas 8% de penetração digital, alimentos é o segmento com maior espaço para crescimento. Quem entrar agora com boa operação de frete (temperatura, embalagem) e modelo de assinatura vai capturar mercado antes dos grandes players.'
+  },
+
+  esportes: {
+    nome: 'Esportes, Fitness & Outdoor',
+    termos: ['esporte','esportes','fitness','academia','musculação','corrida','ciclismo','natação','futebol','tênis','vôlei','yoga','pilates','outdoor','camping','trilha','escalada','surf','skate','suplemento esportivo'],
+    faturamento: { valor: 'R$ 11,2 bilhões', detalhe: 'faturamento online de esportes e fitness em 2024 (SEBRAE / Euromonitor)' },
+    crescimento: { valor: '+14,6%', detalhe: 'crescimento acima da média do e-commerce geral' },
+    penetracao: { valor: '29%', detalhe: 'das vendas de esporte já ocorrem online — penetração acima da média' },
+    ticket: { valor: 'R$ 276', detalhe: 'ticket médio de artigos esportivos online; equipamentos têm ticket acima de R$600' },
+    marketplaces: ['Mercado Livre', 'Amazon', 'Netshoes', 'Centauro Online', 'Shopee'],
+    tendencias: [
+      'Corrida e ciclismo explodiram pós-pandemia e sustentam demanda por equipamentos premium',
+      'Comunidade online (grupo de treino, desafio, Strava) gera fidelização orgânica — lojistas que constroem comunidade reduzem CAC em 40%',
+      'Conteúdo técnico (comparativo de equipamentos, treino, nutrição) converte 65% mais que anúncio genérico',
+      'Outdoor e camping crescem 38% a.a. — nicho ainda pouco atendido com produtos de qualidade',
+      'Suplementação esportiva tem recompra mensal garantida — modelo de assinatura com LTV de 14 meses em média'
+    ],
+    oportunidade: 'Esporte tem o consumidor mais fiel do e-commerce — quando encontra uma loja que entende do assunto e tem estoque confiável, ele volta. Conteúdo especializado e comunidade são os maiores diferenciadores contra os grandes portais.'
+  },
+
+  autopecas: {
+    nome: 'Autopeças & Acessórios Automotivos',
+    termos: ['auto','autopeça','autopeças','peça','peças','carro','veículo','automóvel','moto','caminhão','pneu','óleo','acessório automotivo','som automotivo','filtro','pastilha','amortecedor','motor','mecânica'],
+    faturamento: { valor: 'R$ 14,3 bilhões', detalhe: 'faturamento online do segmento automotivo em 2024 (SINDIPEÇAS / Euromonitor)' },
+    crescimento: { valor: '+13,1%', detalhe: 'crescimento sustentado pela frota envelhecida e busca por preço' },
+    penetracao: { valor: '23%', detalhe: 'das vendas de autopeças já ocorrem online — consumidor pesquisa antes de comprar' },
+    ticket: { valor: 'R$ 318', detalhe: 'ticket médio de autopeças online; peças maiores têm ticket acima de R$800' },
+    marketplaces: ['Mercado Livre (dominante no segmento)', 'Amazon', 'Shopee', 'Parafuso (especialista)'],
+    tendencias: [
+      'Frota brasileira tem idade média de 10,9 anos — demanda por reposição sustentada por muitos anos',
+      'Busca por compatibilidade (modelo/ano) é o maior gargalo: loja com buscador por placa converte 3× mais',
+      'Vídeo de instalação integrado à página de produto reduz devolução por erro de aplicação em 28%',
+      'Peças para motos crescem 31% a.a. — segmento ainda pouco atendido por e-commerces especializados',
+      'Consumidor de autopeça pesquisa muito antes de comprar — SEO técnico e conteúdo especializado têm ROI superior a mídia paga'
+    ],
+    oportunidade: 'O maior diferencial em autopeças é a confiança: código correto, compatibilidade garantida, estoque real. Quem entrega isso consistentemente ganha o cliente para vida — a recompra é certa porque o carro sempre vai precisar de peça.'
+  },
+
+  saude: {
+    nome: 'Saúde, Bem-Estar & Farmácia',
+    termos: ['saúde','farmácia','medicamento','remédio','suplemento','vitamina','bem-estar','wellness','ortopedia','mobilidade','pressão','diabetes','enfermagem','hospital','equipamento médico','fisioterapia'],
+    faturamento: { valor: 'R$ 13,6 bilhões', detalhe: 'faturamento online de saúde e farmácia em 2024 (ICTQ / ABComm)' },
+    crescimento: { valor: '+17,2%', detalhe: 'um dos segmentos de maior crescimento, impulsionado pelo envelhecimento da população' },
+    penetracao: { valor: '24%', detalhe: 'das vendas de saúde já ocorrem online — regulamentação criou canal seguro e confiável' },
+    ticket: { valor: 'R$ 192', detalhe: 'ticket médio de saúde online; equipamentos e ortopedia têm ticket acima de R$500' },
+    marketplaces: ['Mercado Livre', 'Amazon', 'Ultrafarma', 'Droga Raia Online', 'Drogasil Online'],
+    tendencias: [
+      'Longevidade e saúde preventiva impulsionam demanda por suplementos, vitaminas e equipamentos de monitoramento',
+      'Automedicação responsável cresce com acesso a informação — conteúdo médico-editorial converte e fideliza',
+      'Equipamentos para home care (cadeira de rodas, cama hospitalar, oxímetro) crescem 28% a.a. com envelhecimento da população',
+      'Assinatura de medicamentos contínuos tem churn < 3% — modelo que grandes farmácias ainda não dominam no digital',
+      'Privacidade e discrição na entrega são diferenciais valorizados — embalagem neutra aumenta conversão em categorias sensíveis'
+    ],
+    oportunidade: 'Saúde tem o consumidor mais fiel e menos sensível a preço do e-commerce quando há confiança estabelecida. Quem combina conteúdo especializado com entrega rápida e discrição cria uma barreira competitiva difícil de replicar.'
+  },
+
+  infantil: {
+    nome: 'Produtos Infantis & Maternidade',
+    termos: ['infantil','bebê','brinquedo','brinquedos','maternidade','criança','crianças','escolar','didático','roupa infantil','enxoval','berço','carrinho de bebê','fralda','brinquedo educativo'],
+    faturamento: { valor: 'R$ 9,8 bilhões', detalhe: 'faturamento online de infantil e maternidade em 2024 (ABRINQ / Euromonitor)' },
+    crescimento: { valor: '+15,3%', detalhe: 'crescimento impulsionado por conveniência — mãe com bebê prefere comprar online' },
+    penetracao: { valor: '33%', detalhe: 'uma das maiores penetrações digitais do varejo — mães são heavy users de e-commerce' },
+    ticket: { valor: 'R$ 224', detalhe: 'ticket médio de infantil online; enxoval completo e carrinhos têm ticket acima de R$800' },
+    marketplaces: ['Mercado Livre', 'Shopee', 'Amazon', 'Ri Happy Online', 'Baby Mol'],
+    tendencias: [
+      'Mãe de primeira viagem pesquisa online em média 7 vezes antes de comprar produto para bebê — conteúdo especializado é decisivo',
+      'Sustentabilidade importa: produtos orgânicos, sem BPA e eco-friendly têm margem 25% superior',
+      'Enxoval completo e kits têm ticket médio 3× superior à venda unitária — curadoria e bundle vendem mais',
+      'Brinquedo educativo e STEM crescem 34% a.a. — pais investem mais em brinquedo que estimula desenvolvimento',
+      'Comunidade de mães (WhatsApp, grupos) é o canal de recomendação mais eficiente — NPS altíssimo converte em indicação'
+    ],
+    oportunidade: 'Mãe que encontra uma loja confiável de bebê dificilmente muda — a fidelização é natural porque a necessidade é contínua (0 a 12 anos de crescimento da criança). Construir confiança e CRM nesse segmento gera LTV de anos.'
+  },
+
+  joias: {
+    nome: 'Joias, Semijoias & Acessórios',
+    termos: ['joia','joias','semijoia','semijoias','bijuteria','ouro','prata','diamante','anel','colar','brinco','pulseira','relógio','acessório','luxo'],
+    faturamento: { valor: 'R$ 6,1 bilhões', detalhe: 'faturamento online de joias e semijoias em 2024 (IBGM / Euromonitor)' },
+    crescimento: { valor: '+18,4%', detalhe: 'segmento supera a média do e-commerce, impulsionado por social commerce' },
+    penetracao: { valor: '21%', detalhe: 'das vendas de joias já ocorrem online — compra de confiança ainda migra lentamente' },
+    ticket: { valor: 'R$ 387', detalhe: 'ticket médio de joias online; ouro e joias finas têm ticket acima de R$1.500' },
+    marketplaces: ['Mercado Livre', 'Amazon', 'Elo7 (artesanal)', 'Vivara Online', 'Rommanel Online'],
+    tendencias: [
+      'Instagram e TikTok são os maiores canais de descoberta — 78% das compras de semijoia começam por uma foto ou vídeo',
+      'Certificado de autenticidade e garantia são decisivos para ticket acima de R$500 — conteúdo de confiança converte',
+      'Personalização (gravar nome, data) tem margem 40% superior e reduz devolução a quase zero',
+      'Semijoia folheada com banho de qualidade cresce mais rápido que joia fina — mercado mais acessível e recorrente',
+      'Live commerce de joias tem conversão 4× superior ao anúncio estático — vendedora apresentando ao vivo tem desempenho excepcional'
+    ],
+    oportunidade: 'Joias têm o maior potencial de storytelling do e-commerce — cada peça tem uma história, um significado, uma ocasião. Quem domina conteúdo emocional + certificação + garantia vende para um cliente que não é sensível a preço.'
+  },
+
+  livros: {
+    nome: 'Livros, Papelaria & Material Escolar',
+    termos: ['livro','livros','papelaria','material escolar','caderno','caneta','mochila escolar','artesanato','arte','desenho','pintura','livraria'],
+    faturamento: { valor: 'R$ 4,2 bilhões', detalhe: 'faturamento online de livros e papelaria em 2024 (CBL / Euromonitor)' },
+    crescimento: { valor: '+9,1%', detalhe: 'crescimento estável, com pico sazonal no início do ano letivo' },
+    penetracao: { valor: '38%', detalhe: 'uma das maiores penetrações — livro foi um dos primeiros produtos a migrar para o digital' },
+    ticket: { valor: 'R$ 98', detalhe: 'ticket médio baixo unitariamente, mas kits e conjuntos elevam para R$180+' },
+    marketplaces: ['Amazon (dominante)', 'Mercado Livre', 'Saraiva Online', 'Estante Virtual'],
+    tendencias: [
+      'Livros de nicho e autoajuda têm margens superiores e menos concorrência de preço que best-sellers',
+      'Kit escolar completo reduz atritos de compra do pai — curadoria por série/ano escolar converte muito mais',
+      'Material de artesanato e papelaria criativa crescem 24% a.a. com YouTube como canal de aquisição',
+      'Agenda, planner e organizador personalizados têm margem 3× superior ao material genérico',
+      'Assinatura de livros infantis tem churn baixíssimo — pai não cancela o que a criança ama'
+    ],
+    oportunidade: 'Papelaria criativa e material especializado têm a vantagem de que o consumidor busca curadoria — ele não quer qualquer caneta, quer a caneta certa para o seu projeto. Quem especializa e orienta vende com margem superior.'
+  },
+
+  // FALLBACK para segmentos não mapeados
+  _geral: {
+    nome: 'Varejo Geral (E-commerce Brasil)',
+    faturamento: { valor: 'R$ 204,3 bilhões', detalhe: 'faturamento total do e-commerce brasileiro em 2024 (ABComm 2025)' },
+    crescimento: { valor: '+10,5%', detalhe: 'crescimento do e-commerce BR em 2024 · projeção 2025: R$ 234,9 bi (+15%)' },
+    penetracao: { valor: '55,4%', detalhe: 'das empresas brasileiras com operação online · 22,9% presentes em marketplaces (Conversion 2024)' },
+    ticket: { valor: 'R$ 492', detalhe: 'ticket médio do e-commerce brasileiro em 2024 · 72% das compras via mobile (PCMI)' },
+    marketplaces: ['Mercado Livre', 'Shopee', 'Amazon', 'Magalu', 'Americanas'],
+    tendencias: [
+      '91,3 milhões de compradores online no Brasil em 2024 — mercado cresce 7–10% em novos compradores a cada ano',
+      'Mobile já representa 72% das compras online — quem não é mobile-first perde a maioria dos acessos',
+      'Marketplaces concentram ~80% das vendas online (Ebit|Nielsen) — canal próprio é diferenciação estratégica',
+      'Checkout com Pix aumenta conversão em 18% vs boleto — método de pagamento decide a venda',
+      'Social commerce cresce 45% a.a. — Instagram, TikTok e WhatsApp viram canais de venda diretos'
+    ],
+    oportunidade: 'O e-commerce brasileiro ainda tem muito espaço: apenas 55% das empresas vendem online e a penetração do varejo digital é de ~15%. Quem entra agora com operação bem estruturada captura mercado antes de qualquer saturação.'
+  }
+};
+
+function detectarMercado(segmentoTexto) {
+  if (!segmentoTexto || segmentoTexto === 'não informado') return MERCADO._geral;
+  const s = segmentoTexto.toLowerCase();
+  for (const [key, m] of Object.entries(MERCADO)) {
+    if (key === '_geral') continue;
+    if (m.termos && m.termos.some(t => s.includes(t))) return m;
+  }
+  return MERCADO._geral;
+}
+
+// ─────────────────────────────────────────────
+// GERAÇÃO DO BRIEFING
+// ─────────────────────────────────────────────
+function gerar() {
+  if (!selectedPersona) { alert('Selecione o perfil do prospect primeiro.'); return; }
+
+  const segmento = document.getElementById('segmento').value.trim() || 'não informado';
+  const tempo = document.getElementById('tempo').value;
+  const faturamento = document.getElementById('faturamento').value;
+  const ticket = document.getElementById('ticket').value;
+  const exp_neg = document.getElementById('exp_neg').value;
+  const momento = document.getElementById('momento').value;
+  const obs = document.getElementById('obs').value.trim();
+  const canais = Array.from(chipState.canais);
+  const dores = Array.from(chipState.dores);
+
+  const P = PERSONAS[selectedPersona];
+  const M = detectarMercado(segmento);
+
+  // Header
+  document.getElementById('r-titulo').textContent = P.nome;
+  document.getElementById('r-subtitulo').textContent =
+    `${segmento} · ${labelTempo(tempo)} · ${labelFat(faturamento)}` +
+    (canais.length ? ' · ' + canais.map(labelCanal).join(', ') : '');
+
+  const badges = document.getElementById('r-badges');
+  badges.innerHTML = '';
+  addBadge(badges, P.emoji + ' ' + P.nome, '');
+  if (canais.length) addBadge(badges, 'Vende em: ' + canais.map(labelCanal).join(', '), '');
+  if (exp_neg === 'sim') addBadge(badges, '⚠️ Experiência negativa anterior', 'warn');
+
+  // Build sections
+  const container = document.getElementById('sections-container');
+  container.innerHTML = '';
+
+  // 0. Dados de mercado — estáticos (base) + IA específica (async)
+  const mktLabel = M === MERCADO._geral
+    ? 'Dados gerais do e-commerce BR · análise de nicho em andamento…'
+    : `Categoria: ${M.nome} · análise específica do nicho em andamento…`;
+
+  addSection(container, '📊', 'Dados de mercado do segmento', mktLabel, () => {
+    const b = document.createElement('div');
+
+    // ── BLOCO 1: KPIs estáticos da base ──────────────────────────────
+    const kpis = [
+      { icon: '💰', label: 'Faturamento online', valor: M.faturamento.valor, detalhe: M.faturamento.detalhe },
+      { icon: '📈', label: 'Crescimento anual',  valor: M.crescimento.valor,  detalhe: M.crescimento.detalhe },
+      { icon: '🌐', label: 'Penetração digital', valor: M.penetracao.valor,   detalhe: M.penetracao.detalhe },
+      { icon: '🛒', label: 'Ticket médio online', valor: M.ticket.valor,      detalhe: M.ticket.detalhe },
+    ];
+
+    let html = `
+      <div style="font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+        📌 Referência da categoria — ${M.nome}
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px">`;
+    kpis.forEach(k => {
+      html += `
+        <div style="border:1px solid var(--line);border-radius:10px;padding:14px 16px">
+          <div style="font-size:1.1rem;margin-bottom:4px">${k.icon}</div>
+          <div style="font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">${k.label}</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:4px">${k.valor}</div>
+          <div style="font-size:.72rem;color:var(--muted);line-height:1.4">${k.detalhe}</div>
+        </div>`;
+    });
+    html += `</div>`;
+
+    html += `<div class="block-label">Principais marketplaces da categoria</div>
+      <div class="tag-row" style="margin-bottom:18px">`;
+    M.marketplaces.forEach(mk => { html += `<span class="tag">${mk}</span>`; });
+    html += `</div>`;
+
+    html += `<div class="block-label">Tendências da categoria</div>`;
+    M.tendencias.forEach(t => {
+      html += `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px">
+        <span style="color:var(--teal);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+        <span style="font-size:.82rem;color:var(--ink2);line-height:1.55">${t}</span>
+      </div>`;
+    });
+
+    if (M.oportunidade) {
+      html += `<div class="divider"></div>
+        <div class="block-label">Oportunidade comercial da categoria</div>
+        <div class="insight-box" style="margin-bottom:0">${M.oportunidade}</div>`;
+    }
+
+    html += `<div style="margin-top:12px;font-size:.7rem;color:var(--muted)">
+      Fontes: ABComm 2024/2025 · Euromonitor · Ebit|Nielsen · SEBRAE · associações setoriais. Dados de referência.
+    </div>`;
+
+    // ── DIVISOR ───────────────────────────────────────────────────────
+    html += `<div class="divider" style="margin:24px 0 20px"></div>
+      <div style="font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">
+        🤖 Análise específica — "${segmento}"
+      </div>`;
+
+    // ── BLOCO 2: Skeleton IA (será preenchido async) ──────────────────
+    html += `<div id="ia-nicho-block">
+      <div id="ia-nicho-loading" style="display:flex;flex-direction:column;gap:10px">
+        <div class="skel" style="height:14px;width:60%;border-radius:6px"></div>
+        <div class="skel" style="height:14px;width:80%;border-radius:6px"></div>
+        <div class="skel" style="height:14px;width:70%;border-radius:6px"></div>
+        <div class="skel" style="height:14px;width:55%;border-radius:6px"></div>
+        <div class="skel" style="height:14px;width:75%;border-radius:6px"></div>
+        <div style="font-size:.75rem;color:var(--muted);margin-top:4px">Consultando dados específicos do nicho…</div>
+      </div>
+      <div id="ia-nicho-content" style="display:none"></div>
+    </div>`;
+
+    b.innerHTML = html;
+    return b;
+  }, true);
+
+  // Dispara análise IA do nicho específico em paralelo
+  analisarNichoIA(segmento, M.nome, canais, faturamento, ticket);
+
+  // 1. Perfil
+  addSection(container, '🎯', 'Perfil do prospect', P.resumo, () => {
+    const b = document.createElement('div');
+    b.innerHTML = `
+      <div class="insight-box"><strong>Gatilho emocional central:</strong> ${P.gatilho_emocional}</div>
+      <div class="warn-box"><strong>Maior medo:</strong> ${P.maior_medo}</div>
+      ${exp_neg === 'sim' ? `<div class="warn-box"><strong>Atenção:</strong> Este prospect já teve experiência negativa com e-commerce. Comece mapeando o que falhou antes de apresentar qualquer solução. Use: "Me conta como foi essa experiência — o que você esperava e o que aconteceu?"</div>` : ''}
+      ${obs ? `<div class="insight-box"><strong>Observação do vendedor:</strong> ${obs}</div>` : ''}
+      <div class="block-label" style="margin-top:16px">O que mais atrai esse perfil para a Tray</div>
+      ${P.o_que_atrai.map(a => `<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:7px"><span style="color:var(--teal);font-size:1rem;margin-top:1px">✓</span><span style="font-size:.83rem;color:var(--ink2)">${a}</span></div>`).join('')}
+    `;
+    return b;
+  }, true);
+
+  // 2. Dores
+  addSection(container, '🔥', 'Dores e onde a Tray resolve', `${P.nome} · ${labelCanais(canais)}`, () => {
+    const b = document.createElement('div');
+    let dorasHTML = '';
+
+    // Dores por canal
+    const doresCanal = [];
+    canais.forEach(c => {
+      if (DORES_CANAL[c]) doresCanal.push(...DORES_CANAL[c]);
+    });
+    if (canais.length === 0 || canais.includes('nenhum')) {
+      doresCanal.push(...DORES_CANAL.nenhum);
+    }
+
+    // Dores marcadas pelo vendedor
+    const doresVendedor = buildDoresVendedor(dores, segmento);
+
+    const todasDores = [...doresCanal, ...doresVendedor].slice(0, 5);
+
+    todasDores.forEach((d, i) => {
+      dorasHTML += `
+        <div class="pain-card">
+          <div class="pain-title">
+            <div class="pain-num">${i+1}</div>
+            <span>${d.titulo}</span>
+          </div>
+          <div class="pain-body">${d.body}</div>
+          <div class="tray-solve"><strong>Tray resolve:</strong> ${d.tray}</div>
+        </div>`;
+    });
+    b.innerHTML = dorasHTML;
+    return b;
+  });
+
+  // 3. Perguntas de sondagem
+  addSection(container, '💬', 'Perguntas de sondagem', 'Faça estas perguntas antes de apresentar qualquer solução', () => {
+    const b = document.createElement('div');
+    let html = `<div class="internal-badge">⚙ Uso interno — guia do vendedor</div>`;
+    P.questoes_sondagem.forEach((q, i) => {
+      html += `
+        <div class="question-item">
+          <div class="q-icon">Q${i+1}</div>
+          <div class="q-body">
+            <div class="q-text">"${q.q}"</div>
+            <div class="q-tip">→ ${q.tip}</div>
+          </div>
+        </div>`;
+    });
+    if (exp_neg === 'sim') {
+      html += `
+        <div class="divider"></div>
+        <div class="block-label">Perguntas adicionais — experiência negativa anterior</div>
+        <div class="question-item">
+          <div class="q-icon">+</div>
+          <div class="q-body">
+            <div class="q-text">"Me conta como foi essa sua experiência anterior — o que você esperava quando começou e o que de fato aconteceu?"</div>
+            <div class="q-tip">→ Mensura a frustração e gera argumento para o restante do atendimento.</div>
+          </div>
+        </div>
+        <div class="question-item">
+          <div class="q-icon">+</div>
+          <div class="q-body">
+            <div class="q-text">"O que você faria diferente se fosse começar do zero hoje? O que precisaria existir para você dizer 'dessa vez vai'?"</div>
+            <div class="q-tip">→ Revela o que a Tray precisa entregar para fechar.</div>
+          </div>
+        </div>
+        <div class="question-item">
+          <div class="q-icon">+</div>
+          <div class="q-body">
+            <div class="q-text">"O que precisaria acontecer nos primeiros 90 dias para você sentir que dessa vez está funcionando?"</div>
+            <div class="q-tip">→ Define os critérios de sucesso dele — use isso no fechamento.</div>
+          </div>
+        </div>`;
+    }
+    b.innerHTML = html;
+    return b;
+  });
+
+  // 4. Roteiro da reunião (interno)
+  addSection(container, '🗺️', 'Roteiro da reunião', 'Passo a passo — uso interno, não compartilhar com o lojista', () => {
+    const b = document.createElement('div');
+    let html = `<div class="internal-badge">⚙ Uso interno — não entra no material do lojista</div>`;
+    const roteiro = ROTEIROS[selectedPersona];
+    roteiro.forEach((s, i) => {
+      html += `
+        <div class="step-row">
+          <div class="step-n">${i+1}</div>
+          <div class="step-body">
+            <div class="step-title">${s.title}</div>
+            <div class="step-desc">${s.desc}</div>
+            <div class="step-tip">💡 ${s.tip}</div>
+          </div>
+        </div>`;
+    });
+    b.innerHTML = html;
+    return b;
+  });
+
+  // 5. Objeções
+  addSection(container, '🛡️', 'Objeções esperadas + respostas', 'Mais comuns para esse perfil', () => {
+    const b = document.createElement('div');
+    let html = `<div class="internal-badge">⚙ Uso interno</div>`;
+    P.objecoes.forEach(o => {
+      html += `
+        <div class="objection-item">
+          <div class="obj-q">❝ ${o.q}</div>
+          <div class="obj-a">→ ${o.a}</div>
+        </div>`;
+    });
+    b.innerHTML = html;
+    return b;
+  });
+
+  // 6. Argumentos prontos
+  addSection(container, '🎤', 'Argumentos prontos', 'Use na apresentação ou no follow-up', () => {
+    const b = document.createElement('div');
+    let html = '';
+    const args = buildArgumentos(selectedPersona, segmento, canais, faturamento);
+    args.forEach((a, i) => {
+      html += `
+        <div class="arg-block">
+          <button class="copy-btn-mini" onclick="copiarArg(this)">Copiar</button>
+          <div class="arg-label">Argumento ${i+1}</div>
+          <div class="arg-text">${a}</div>
+        </div>`;
+    });
+    b.innerHTML = html;
+    return b;
+  });
+
+  // 7. Resumo para o lojista
+  addSection(container, '📄', 'Resumo para o lojista', 'Versão limpa — pode enviar por WhatsApp ou e-mail', () => {
+    const b = document.createElement('div');
+    const R = RESUMO_CLIENTE[selectedPersona];
+    let html = `<div class="client-card">
+      <p style="font-weight:600;margin-bottom:10px">${R.titulo}</p>
+      <p style="margin-bottom:12px">${R.intro}</p>
+      ${R.pontos.map(p => `<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:7px"><span style="color:var(--teal);font-size:1rem">✓</span><span style="font-size:.83rem">${p}</span></div>`).join('')}
+      <div class="divider"></div>
+      <p style="font-size:.83rem;font-style:italic">${R.fechamento}</p>
+    </div>`;
+    b.innerHTML = html;
+    return b;
+  });
+
+  // 8. WhatsApp pós-reunião
+  addSection(container, '💬', 'Mensagem pós-reunião (WhatsApp)', 'Modelo editável', () => {
+    const b = document.createElement('div');
+    b.innerHTML = `
+      <div class="wpp-block">
+        <p id="wpp-text">${P.wpp_pos}</p>
+      </div>
+      <div class="result-actions" style="padding-top:12px">
+        <button class="btn-copy" onclick="copiarWpp()">Copiar mensagem</button>
+      </div>`;
+    return b;
+  });
+
+  // Mostrar resultado
+  document.getElementById('form-area').style.display = 'none';
+  document.getElementById('result').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─────────────────────────────────────────────
+// HELPERS — SEÇÕES
+// ─────────────────────────────────────────────
+function addSection(container, icon, label, sublabel, buildBody, openByDefault = false) {
+  const wrap = document.createElement('div');
+  wrap.className = 'section-block';
+
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  head.innerHTML = `
+    <div class="section-head-left">
+      <div class="section-icon">${icon}</div>
+      <div>
+        <div class="section-label">${label}</div>
+        <div class="section-sublabel">${sublabel}</div>
+      </div>
+    </div>
+    <svg class="chevron${openByDefault ? ' open' : ''}" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="5 8 10 13 15 8"/>
+    </svg>`;
+
+  const body = document.createElement('div');
+  body.className = 'section-body' + (openByDefault ? ' open' : '');
+
+  const content = buildBody();
+  body.appendChild(content);
+
+  head.addEventListener('click', () => {
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open');
+    head.querySelector('.chevron').classList.toggle('open', !isOpen);
+  });
+
+  wrap.appendChild(head);
+  wrap.appendChild(body);
+  container.appendChild(wrap);
+}
+
+function addBadge(container, text, type) {
+  const b = document.createElement('div');
+  b.className = 'rbadge' + (type ? ' ' + type : '');
+  b.textContent = text;
+  container.appendChild(b);
+}
+
+// ─────────────────────────────────────────────
+// HELPERS — ARGUMENTOS DINÂMICOS
+// ─────────────────────────────────────────────
+function buildArgumentos(persona, segmento, canais, faturamento) {
+  const args = {
+    marisa: [
+      `Você não precisa ser programadora nem contratar designer. A Tray tem +550 layouts prontos para ${segmento || 'qualquer segmento'} — você escolhe um, configura em minutos e já começa a receber pedidos.`,
+      `Tray Pagamentos e Tray Envios já vêm integrados. Você não precisa negociar com banco nem com transportadora — fretes até 60% mais baratos, sem burocracia.`,
+      `Começar pequeno não significa ficar pequeno. A Tray foi feita para crescer com você — quando seu negócio escalar, não vai precisar trocar de plataforma.`,
+      `Com a Sacolinha do Instagram e o WhatsApp Commerce, seus seguidores viram compradores com um clique — direto para o checkout seguro, sem precisar de link na bio.`,
+      `O suporte da Tray atende por telefone, chat e tutoriais. Você não vai estar sozinha no início — tem uma equipe inteira do seu lado.`
+    ],
+    roberto: [
+      `Você paga entre 10% e 19% de comissão em cada venda no marketplace. Com um canal próprio na Tray, esse percentual fica com você. Com o seu volume, a mensalidade da Tray se paga com poucas vendas a mais no canal próprio.`,
+      `A Tray integra nativamente com Mercado Livre, Shopee, Magalu e mais 30 marketplaces. Você não sai de lugar nenhum — adiciona um canal que é 100% seu, com sua marca e seus dados.`,
+      `Integração nativa com o Bling: importa todos os seus cadastros e anúncios automaticamente. Você não começa do zero — começa de onde já está, só com mais poder.`,
+      `Tray Envios com até 60% de desconto nas principais transportadoras, sem negociar contrato. Enquanto você paga frete cheio hoje, a Tray já tem o volume negociado por você.`,
+      `No marketplace, o cliente é deles. Na Tray, o cliente é seu — e-mail, histórico de compra, preferência de produto. Essa base vale mais do que qualquer campanha paga.`
+    ],
+    rodrigo: [
+      `Cada mês que você fica na plataforma atual tem um custo invisível: carrinho abandonado, pedidos não aprovados, lentidão em pico, retrabalho da equipe. O Checkout Transparente da Tray aprova até 43% mais pedidos — isso é faturamento que está escapando hoje.`,
+      `A Migração Assistida da Tray significa que nossa equipe assume a implantação em até 15 dias úteis. Sua loja atual continua vendendo. Você não migra sozinho — e não perde nem um dia de venda.`,
+      `A Tray tem redirecionamento automático de URLs — todo o seu ranking no Google é preservado. Migrar de plataforma não significa perder o SEO que você construiu.`,
+      `Integração oficial com +1.000 ERPs, +30 marketplaces e centenas de meios de pagamento. Você mantém tudo que já usa — a Tray entra como o centro organizador da operação.`,
+      `Você recebe um Consultor de Sucesso dedicado no pós-implantação. Não é suporte reativo — é um especialista que acompanha sua operação para garantir que o crescimento aconteça.`
+    ],
+    jose: [
+      `Você já tem o mais difícil: produto, estoque e fornecedores. A Tray cuida do resto — nossa equipe monta a loja por você em 15 a 45 dias úteis, você só aprova o visual e abre.`,
+      `Com o Tray PDV, físico e online compartilham o mesmo estoque. Vendeu uma peça na loja? O sistema atualiza online automaticamente. Sem retrabalho, sem susto de vender produto que não tem.`,
+      `Sua loja física vende para quem passa na frente. A loja online vende para qualquer pessoa no Brasil, 24 horas por dia, sem precisar de você lá. É a sua operação atual trabalhando enquanto você descansa.`,
+      `A Tray conecta sua loja a mais de 30 marketplaces — Mercado Livre, Shopee, Amazon, Magalu. Um painel único para gerenciar tudo. Sua marca em todos os lugares, gestão em um só lugar.`,
+      `Tray Pagamentos integrado desde o primeiro dia: Pix, cartão, boleto, parcelamento — sem contratar banco, sem complicação. A tarifa já está incluída na mensalidade.`
+    ]
+  };
+  return args[persona] || [];
+}
+
+function buildDoresVendedor(dores, segmento) {
+  const map = {
+    comissao: { titulo: 'Alta comissão consome a margem', body: `As comissões dos marketplaces variam entre 10% e 20% sobre o faturamento bruto. Em segmentos de margem apertada como ${segmento || 'o seu'}, isso pode comprometer a rentabilidade total do negócio.`, tray: 'Canal próprio com mensalidade fixa. A comissão que vai para o marketplace fica com o lojista.' },
+    frete: { titulo: 'Frete caro reduz conversão e margem', body: 'Frete elevado é a principal causa de abandono de carrinho no Brasil — afeta até 30% das conversões. Sem contrato com transportadora, o lojista paga tabela cheia.', tray: 'Tray Envios com até 60% de desconto nas principais transportadoras. Sem negociação, sem contrato separado.' },
+    estoque: { titulo: 'Estoque descontrolado gera ruptura e retrabalho', body: 'Vender em múltiplos canais sem integração de estoque leva a venda duplicada, ruptura e cancelamento de pedido — prejudica avaliação e reputação.', tray: 'Integração nativa com +1.000 ERPs e Tray PDV para estoque unificado em tempo real.' },
+    pagamento: { titulo: 'Problemas de pagamento = receita perdida', body: 'Taxa de aprovação baixa, checkout externo e métodos limitados aumentam o abandono. Cada pedido não aprovado é faturamento que escapa.', tray: 'Checkout Transparente com Tray Pagamentos — Pix, cartão, boleto. Aprovação de até 43% mais pedidos.' },
+    marca: { titulo: 'Sem identidade própria, sem fidelização', body: 'Vender apenas em marketplace não constrói marca. O cliente não sabe de quem comprou — sabe que comprou no ML. A próxima compra vai para o concorrente.', tray: 'Loja própria com identidade visual completa, URL própria e CRM para fidelização.' },
+    concorrencia: { titulo: 'Concorrência online crescendo, loja parada', body: `O e-commerce brasileiro cresce 10,5% ao ano (ABComm 2025). Enquanto a operação online não acontece, concorrentes de ${segmento || 'segmentos similares'} conquistam os clientes digitais primeiro.`, tray: 'Loja no ar rapidamente com ferramentas de SEO, marketplaces e social commerce para recuperar posição.' },
+    tecnologia: { titulo: 'Plataforma atual trava o crescimento', body: 'Limitações técnicas, checkout lento, falta de integração e suporte ruim travam a operação antes do negócio chegar ao seu potencial.', tray: 'Migração Assistida, Checkout Transparente e infraestrutura escalável para picos de acesso.' },
+    suporte: { titulo: 'Sem suporte, o vendedor resolve sozinho', body: 'Plataformas que não oferecem suporte humanizado deixam o lojista resolvendo problema técnico no lugar de vender. Tempo operacional que deveria ser estratégico.', tray: 'Suporte por telefone, chat e tutoriais. Onboarding estruturado e Consultor de Sucesso dedicado.' },
+    integracao: { titulo: 'Canais desconectados geram caos operacional', body: 'Vender em múltiplos canais sem integração significa atualizar estoque manualmente, processar pedidos em plataformas diferentes e perder controle do negócio.', tray: 'Painel unificado: estoque, pedidos e faturamento de todos os canais em um só lugar.' },
+    tempo: { titulo: 'Operação manual consome tempo que deveria ser estratégico', body: 'Processos manuais — atualização de estoque, emissão de nota, resposta de pedido — escalam mal e criam gargalo conforme o negócio cresce.', tray: 'Automação de pedidos, emissão fiscal integrada e gestão centralizada para liberar tempo operacional.' },
+    dados: { titulo: 'Sem dados do cliente, não há recorrência', body: 'Quem não conhece seu cliente não consegue reativar, recomendar ou fidelizar. A compra é transacional — não constrói relacionamento nem LTV.', tray: 'CRM integrado, histórico de pedidos, segmentação de clientes e integração com ferramentas de e-mail marketing.' },
+    digital: { titulo: 'Resistência ao digital é custo de oportunidade', body: 'Cada mês sem presença online é participação de mercado entregue para quem já está lá. O e-commerce brasileiro tem 91 milhões de compradores — e cresce todo ano.', tray: 'Onboarding estruturado, Loja Pronta e suporte humanizado para reduzir a curva de aprendizado.' }
+  };
+  return dores.filter(d => map[d]).map(d => map[d]);
+}
+
+// ─────────────────────────────────────────────
+// HELPERS — LABELS
+// ─────────────────────────────────────────────
+function labelTempo(v) {
+  const m = { iniciando:'Iniciando agora', 'menos1':'< 1 ano', '1a3':'1–3 anos', '3a7':'3–7 anos', 'mais7':'+7 anos' };
+  return m[v] || 'Tempo não informado';
+}
+function labelFat(v) {
+  const m = { 'ate5k':'Até R$5k/mês', '5a20k':'R$5–20k/mês', '20a80k':'R$20–80k/mês', '80a300k':'R$80–300k/mês', 'mais300k':'+R$300k/mês' };
+  return m[v] || 'Faturamento não informado';
+}
+function labelCanal(v) {
+  const m = { nenhum:'Não vende ainda', fisico:'Loja física', instagram:'Instagram/WhatsApp', mercadolivre:'Mercado Livre', shopee:'Shopee', magalu:'Magalu', amazon:'Amazon', outros_mkt:'Outros marketplaces', loja_propria:'Loja própria' };
+  return m[v] || v;
+}
+function labelCanais(canais) {
+  if (!canais.length) return 'Sem canal definido';
+  return canais.map(labelCanal).join(', ');
+}
+
+// ─────────────────────────────────────────────
+// AÇÕES
+// ─────────────────────────────────────────────
+function copiarArg(btn) {
+  const text = btn.parentElement.querySelector('.arg-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copiado!';
+    setTimeout(() => btn.textContent = 'Copiar', 1500);
+  });
+}
+
+function copiarWpp() {
+  const text = document.getElementById('wpp-text').textContent;
+  navigator.clipboard.writeText(text).then(() => alert('Mensagem copiada!'));
+}
+
+function copiarResumo() {
+  const P = PERSONAS[selectedPersona];
+  const R = RESUMO_CLIENTE[selectedPersona];
+  let txt = `${R.titulo}\n\n${R.intro}\n\n`;
+  R.pontos.forEach(p => txt += `✓ ${p}\n`);
+  txt += `\n${R.fechamento}`;
+  navigator.clipboard.writeText(txt).then(() => alert('Resumo copiado!'));
+}
+
+function resetar() {
+  selectedPersona = null;
+  chipState.canais.clear();
+  chipState.dores.clear();
+  document.querySelectorAll('.persona-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  document.getElementById('segmento').value = '';
+  document.getElementById('tempo').value = '';
+  document.getElementById('faturamento').value = '';
+  document.getElementById('ticket').value = '';
+  document.getElementById('exp_neg').value = 'nao';
+  document.getElementById('obs').value = '';
+  document.getElementById('form-area').style.display = 'block';
+  document.getElementById('result').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
