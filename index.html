@@ -528,17 +528,10 @@ body {
       </div>
       <div class="field" style="margin-bottom:0">
         <label>Domínio da loja <span>(ex: minhaloja.com.br — sem https://)</span></label>
-        <div style="display:flex;gap:10px;align-items:center">
-          <input type="text" id="dominio_rodrigo" placeholder="minhaloja.com.br" style="flex:1"
-            oninput="atualizarLinkAnalise()">
-          <a id="link-analise" href="#" target="_blank" rel="noopener"
-            style="display:none;padding:10px 16px;background:var(--teal);color:var(--white);border-radius:8px;font-size:.8rem;font-weight:700;text-decoration:none;white-space:nowrap;font-family:'Space Grotesk',sans-serif;transition:background .15s"
-            onmouseover="this.style.background='var(--teal-d)'" onmouseout="this.style.background='var(--teal)'">
-            🔍 Analisar loja →
-          </a>
-        </div>
-        <div style="font-size:.73rem;color:var(--muted);margin-top:6px" id="link-analise-hint" style="display:none">
-          O link abrirá a análise completa da loja no Store Analysis.
+        <input type="text" id="dominio_rodrigo" placeholder="minhaloja.com.br"
+          style="width:100%" oninput="atualizarLinkAnalise()">
+        <div style="font-size:.73rem;color:var(--muted);margin-top:6px">
+          O link para análise completa será gerado no resultado após gerar o briefing.
         </div>
       </div>
     </div>
@@ -674,7 +667,7 @@ body {
 <footer style="background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:14px 0;margin-top:0">
   <div style="max-width:860px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between">
     <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:.04em">Tray Commerce · Time de Vendas</span>
-    <span style="font-size:.7rem;color:rgba(255,255,255,.25);font-family:'Inter',sans-serif">v1.4.0</span>
+    <span style="font-size:.7rem;color:rgba(255,255,255,.25);font-family:'Inter',sans-serif">v1.5.0</span>
   </div>
 </footer>
 
@@ -734,20 +727,8 @@ function atualizarVisibilidade() {
 function atualizarVisibilidadeDores() { atualizarVisibilidade(); }
 
 function atualizarLinkAnalise() {
-  const input = document.getElementById('dominio_rodrigo');
-  const link  = document.getElementById('link-analise');
-  const hint  = document.getElementById('link-analise-hint');
-  if (!input || !link) return;
-  const dominio = input.value.trim().replace(/^https?:\/\//i,'').replace(/\/+$/,'');
-  if (dominio.length > 3) {
-    const url = `https://i-wgb.github.io/-Storeanalysis/?url=${encodeURIComponent('https://'+dominio)}`;
-    link.href = url;
-    link.style.display = 'inline-flex';
-    if (hint) hint.style.display = 'block';
-  } else {
-    link.style.display = 'none';
-    if (hint) hint.style.display = 'none';
-  }
+  // Função mantida para compatibilidade — botão removido do form.
+  // A URL com autorun é montada no momento de gerar o resultado.
 }
 
 function toggleChip(el, group) {
@@ -1655,7 +1636,7 @@ function gerar() {
 
   // 0b. Link de análise da loja — só para Rodrigo
   if (selectedPersona === 'rodrigo' && dominio) {
-    const urlAnalise = `https://i-wgb.github.io/-Storeanalysis/?url=${encodeURIComponent('https://'+dominio)}`;
+    const urlAnalise = `https://i-wgb.github.io/-Storeanalysis/?url=${encodeURIComponent('https://'+dominio)}&autorun=1`;
     addSection(container, '🔍', 'Análise da loja atual', dominio, () => {
       const b = document.createElement('div');
       b.innerHTML = `
@@ -1670,7 +1651,7 @@ function gerar() {
           <span style="font-size:.8rem;opacity:.8">→ Store Analysis</span>
         </a>
         <div style="font-size:.75rem;color:var(--muted);line-height:1.5">
-          O link abre a consulta já com o domínio preenchido. Revise os resultados antes da reunião para identificar a plataforma atual, dores técnicas e argumentos específicos de migração.
+          O link abre a consulta já com o domínio preenchido e a análise iniciando automaticamente. Revise os resultados antes da reunião para identificar a plataforma atual, dores técnicas e argumentos específicos de migração.
         </div>`;
       return b;
     }, true);
