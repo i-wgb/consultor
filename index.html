@@ -667,7 +667,7 @@ body {
 <footer style="background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:14px 0;margin-top:0">
   <div style="max-width:860px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between">
     <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:.04em">Tray Commerce · Time de Vendas</span>
-    <span style="font-size:.7rem;color:rgba(255,255,255,.25);font-family:'Inter',sans-serif">v1.5.0</span>
+    <span style="font-size:.7rem;color:rgba(255,255,255,.25);font-family:'Inter',sans-serif">v1.8.0</span>
   </div>
 </footer>
 
@@ -916,7 +916,7 @@ const DORES_CANAL = {
 // IA: ANÁLISE ESPECÍFICA DO NICHO
 // ─────────────────────────────────────────────
 async function analisarNichoIA(segmento, categoriaNome, canais, faturamento, ticket) {
-  const loadEl   = document.getElementById('ia-nicho-loading');
+  const loadEl    = document.getElementById('ia-nicho-loading');
   const contentEl = document.getElementById('ia-nicho-content');
   if (!loadEl || !contentEl) return;
 
@@ -924,41 +924,21 @@ async function analisarNichoIA(segmento, categoriaNome, canais, faturamento, tic
     ? `Hoje vende em: ${canais.map(labelCanal).join(', ')}.`
     : 'Ainda não vende online.';
 
-  const prompt = `Você é um especialista em e-commerce brasileiro e inteligência de mercado com dados atualizados de 2025 e 2026.
-Um vendedor da Tray Commerce está se preparando para uma reunião com um lojista do nicho: "${segmento}".
-Categoria macro de referência: ${categoriaNome}.
-Contexto do lojista: ${contextoCanais} Faturamento estimado: ${labelFat(faturamento)}. Ticket médio: ${labelTicket(ticket)}.
+  const prompt = `Você é especialista em e-commerce brasileiro com dados de 2025/2026.
+Analise o nicho EXATO: "${segmento}" (categoria de referência: ${categoriaNome}).
+Contexto: ${contextoCanais} Faturamento estimado: ${labelFat(faturamento)}. Ticket médio: ${labelTicket(ticket)}.
 
-REGRAS CRÍTICAS:
-1. Analise ESTE NICHO EXATO ("${segmento}") — não a categoria genérica. Se for "ração para gato", não fale de "pet" genérico. Se for "moda plus size", não fale de "moda" genérico.
-2. Use APENAS dados de 2025 ou 2026. Se não tiver dado atualizado confirmado, diga "estimativa 2025" ou "projeção 2025". NUNCA invente dados — prefira dizer "dados não disponíveis publicamente" a inventar um número.
-3. O campo "penetracao_regioes" deve trazer como está a penetração digital DESTE NICHO em cada região do Brasil (Sul, Sudeste, Centro-Oeste, Nordeste, Norte) — com contexto real de cada região. Se não tiver dado específico por região, use indicadores gerais do e-commerce regional aplicados ao nicho.
-4. Este sistema é usado pelo time comercial da Tray para QUALQUER segmento do e-commerce brasileiro — pode ser nicho muito específico como "artigos de pesca", "produtos náuticos", "instrumentos musicais", "artigos religiosos", "sementes para jardim", "uniformes profissionais", "colchões", "piscinas", etc. Trate qualquer nicho com seriedade e profundidade.
+REGRAS:
+- Analise o nicho exato, não a categoria genérica
+- Use apenas dados de 2025 ou 2026; indique "estimativa 2025" quando não houver dado confirmado
+- NUNCA invente dados; prefira "dados não disponíveis publicamente" a inventar números
+- Funciona para qualquer nicho: pesca, náutica, instrumentos musicais, artigos religiosos, uniformes, colchões, piscinas, etc.
 
-Responda APENAS com JSON válido, sem markdown, sem texto antes ou depois:
-{
-  "tamanho_nicho": "estimativa do tamanho/faturamento online deste nicho específico no Brasil em 2025",
-  "crescimento_nicho": "taxa de crescimento específica deste nicho em 2025",
-  "penetracao_nicho": "percentual de vendas online vs total neste nicho específico em 2025",
-  "ticket_nicho": "ticket médio típico para este nicho específico em 2025",
-  "perfil_comprador": "quem compra neste nicho (faixa etária, renda, comportamento, frequência de compra, motivação principal)",
-  "sazonalidade": "picos de venda do ano e datas importantes para este nicho específico",
-  "concorrencia_digital": "como está o nível de concorrência online neste nicho em 2025 — quem domina, onde está a oportunidade",
-  "penetracao_regioes": {
-    "sudeste": "como este nicho performa na região Sudeste — concentração, maturidade digital, oportunidade",
-    "sul": "como este nicho performa na região Sul",
-    "nordeste": "como este nicho performa no Nordeste — penetração, crescimento, oportunidade específica",
-    "centro_oeste": "como este nicho performa no Centro-Oeste",
-    "norte": "como este nicho performa no Norte — desafios logísticos, potencial"
-  },
-  "diferenciais_decisivos": ["3 a 4 fatores que realmente decidem a compra neste nicho específico em 2025"],
-  "tendencias_nicho": ["4 tendências específicas deste nicho no Brasil em 2025-2026"],
-  "marketplaces_relevantes": ["quais marketplaces são mais relevantes para compradores deste nicho em 2025"],
-  "dores_operacionais": ["3 principais dores operacionais de quem vende neste nicho online em 2025"],
-  "argumento_tray": "argumento comercial específico e atual de como a Tray resolve os problemas de quem vende neste nicho",
-  "pergunta_gatilho": "a melhor pergunta que o vendedor pode fazer para revelar a dor principal de quem vende neste nicho",
-  "fonte_nota": "nota sobre as fontes e bases usadas — seja transparente quando for estimativa ou projeção"
-}`;
+Preencha os valores do JSON abaixo substituindo cada "..." pelos dados reais do nicho "${segmento}":
+tamanho_nicho, crescimento_nicho, penetracao_nicho, ticket_nicho, perfil_comprador, sazonalidade, concorrencia_digital,
+penetracao_regioes (sudeste/sul/nordeste/centro_oeste/norte),
+diferenciais_decisivos (array 3-4 itens), tendencias_nicho (array 4 itens), marketplaces_relevantes (array),
+dores_operacionais (array 3 itens), argumento_tray, pergunta_gatilho, fonte_nota.`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -966,8 +946,11 @@ Responda APENAS com JSON válido, sem markdown, sem texto antes ou depois:
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
+        max_tokens: 2500,
+        messages: [
+          { role: 'user', content: prompt },
+          { role: 'assistant', content: '{' }
+        ]
       })
     });
 
@@ -975,12 +958,21 @@ Responda APENAS com JSON válido, sem markdown, sem texto antes ou depois:
     const data = await res.json();
     const raw = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
 
+    // O modelo continuou a partir do '{' que já pusemos — reconstruímos o JSON completo
+    const jsonStr = '{' + raw;
+
     let parsed;
     try {
-      const clean = raw.replace(/```json|```/g, '').trim();
-      parsed = JSON.parse(clean);
+      parsed = JSON.parse(jsonStr);
     } catch {
-      throw new Error('JSON inválido na resposta da IA');
+      // Fallback: extrai o bloco {...} mais longo da string
+      try {
+        const match = jsonStr.match(/\{[\s\S]*\}/);
+        if (!match) throw new Error('sem bloco JSON');
+        parsed = JSON.parse(match[0]);
+      } catch {
+        throw new Error(raw.slice(0, 150));
+      }
     }
 
     // Render resultado IA
@@ -1005,6 +997,31 @@ Responda APENAS com JSON válido, sem markdown, sem texto antes ou depois:
     });
     html += `</div>`;
 
+    // Penetração por região — imediatamente após os KPIs
+    if (parsed.penetracao_regioes) {
+      const regs = [
+        { key: 'sudeste',      label: 'Sudeste',      icon: '🏙️' },
+        { key: 'sul',          label: 'Sul',           icon: '🌲' },
+        { key: 'nordeste',     label: 'Nordeste',      icon: '🌊' },
+        { key: 'centro_oeste', label: 'Centro-Oeste',  icon: '🌾' },
+        { key: 'norte',        label: 'Norte',         icon: '🌿' },
+      ];
+      html += `<div class="block-label">📍 Penetração digital do nicho por região do Brasil</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">`;
+      regs.forEach(r => {
+        const txt = parsed.penetracao_regioes[r.key];
+        if (!txt) return;
+        html += `<div style="padding:10px 12px;border:1px solid var(--line);border-radius:8px;${r.key==='nordeste'||r.key==='norte'?'grid-column:span 1':''}">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+            <span style="font-size:.9rem">${r.icon}</span>
+            <span style="font-size:.72rem;font-weight:700;color:var(--ink2)">${r.label}</span>
+          </div>
+          <div style="font-size:.78rem;color:var(--ink2);line-height:1.45">${txt}</div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+
     // Perfil do comprador
     if (parsed.perfil_comprador) {
       html += `<div class="block-label">Perfil do comprador neste nicho</div>
@@ -1021,30 +1038,6 @@ Responda APENAS com JSON válido, sem markdown, sem texto antes ou depois:
     if (parsed.concorrencia_digital) {
       html += `<div class="block-label">Nível de concorrência digital</div>
         <div style="font-size:.82rem;color:var(--ink2);line-height:1.55;margin-bottom:16px">${parsed.concorrencia_digital}</div>`;
-    }
-
-    // Penetração por região
-    if (parsed.penetracao_regioes) {
-      const regs = [
-        { key: 'sudeste',     label: 'Sudeste',      icon: '🏙️' },
-        { key: 'sul',         label: 'Sul',           icon: '🌲' },
-        { key: 'nordeste',    label: 'Nordeste',      icon: '🌊' },
-        { key: 'centro_oeste',label: 'Centro-Oeste',  icon: '🌾' },
-        { key: 'norte',       label: 'Norte',         icon: '🌿' },
-      ];
-      html += `<div class="block-label">Penetração digital do nicho por região do Brasil</div>`;
-      regs.forEach(r => {
-        const txt = parsed.penetracao_regioes[r.key];
-        if (!txt) return;
-        html += `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;padding:10px 12px;border:1px solid var(--line);border-radius:8px">
-          <span style="font-size:1rem;flex-shrink:0">${r.icon}</span>
-          <div>
-            <div style="font-size:.72rem;font-weight:700;color:var(--ink2);margin-bottom:2px">${r.label}</div>
-            <div style="font-size:.8rem;color:var(--ink2);line-height:1.5">${txt}</div>
-          </div>
-        </div>`;
-      });
-      html += `<div style="margin-bottom:16px"></div>`;
     }
 
     // Fatores decisivos de compra
@@ -1126,8 +1119,10 @@ Responda APENAS com JSON válido, sem markdown, sem texto antes ou depois:
 
   } catch (err) {
     if (loadEl) {
-      loadEl.innerHTML = `<div style="font-size:.8rem;color:var(--muted)">
-        Não foi possível carregar a análise específica do nicho (${err.message}).
+      const msg = err.message || String(err);
+      loadEl.innerHTML = `<div style="font-size:.8rem;color:var(--muted);line-height:1.5">
+        Não foi possível carregar a análise específica do nicho.<br>
+        <span style="font-size:.72rem;color:#aaa">${msg.slice(0,200)}</span><br><br>
         Os dados da categoria acima continuam disponíveis.
       </div>`;
     }
@@ -1249,10 +1244,10 @@ const MERCADO = {
   moda: {
     nome: 'Moda & Vestuário',
     termos: ['moda','roupa','vestuário','roupas','moda feminina','moda masculina','moda infantil','confecção','lingerie','underwear','pijama','meia','cueca','calcinha','sutiã','moda plus','fast fashion'],
-    faturamento: { valor: 'R$ 28,4 bilhões', detalhe: 'faturamento online do segmento em 2024 (ABComm / Euromonitor)' },
-    crescimento: { valor: '+11,2%', detalhe: 'crescimento anual do e-commerce de moda 2023→2024' },
-    penetracao: { valor: '22%', detalhe: 'das vendas totais de moda já ocorrem online; 78% ainda em loja física' },
-    ticket: { valor: 'R$ 187', detalhe: 'ticket médio de compras de moda online no Brasil (Ebit|Nielsen 2024)' },
+    faturamento: { valor: 'R$ 31,2 bilhões', detalhe: 'faturamento online do segmento em 2025 (estimativa ABComm / Euromonitor)' },
+    crescimento: { valor: '+10,8%', detalhe: 'crescimento anual do e-commerce de moda 2024→2025 (estimativa)' },
+    penetracao: { valor: '23%', detalhe: 'das vendas totais de moda já ocorrem online em 2025; 77% ainda em loja física' },
+    ticket: { valor: 'R$ 197', detalhe: 'ticket médio de compras de moda online no Brasil (estimativa 2025)' },
     marketplaces: ['Shopee (líder em moda popular)', 'Mercado Livre', 'Shein', 'Renner Online', 'Dafiti'],
     tendencias: [
       'Social commerce em aceleração: 68% das descobertas de moda acontecem no Instagram e TikTok antes da compra',
@@ -1267,7 +1262,7 @@ const MERCADO = {
   calcados: {
     nome: 'Calçados & Acessórios',
     termos: ['calçado','calçados','sapato','sapatos','tênis','bota','sandália','chinelo','bolsa','bolsas','acessório','acessórios','cinto','carteira','mochila'],
-    faturamento: { valor: 'R$ 8,9 bilhões', detalhe: 'faturamento online de calçados e acessórios em 2024 (ABICALÇADOS / Euromonitor)' },
+    faturamento: { valor: 'R$ 8,9 bilhões', detalhe: 'faturamento online de calçados e acessórios — último dado fechado: 2024 (ABICALÇADOS / Euromonitor)' },
     crescimento: { valor: '+9,8%', detalhe: 'crescimento anual do canal online no segmento' },
     penetracao: { valor: '18%', detalhe: 'das vendas totais já ocorrem online; segmento ainda muito dependente do tato e provador' },
     ticket: { valor: 'R$ 224', detalhe: 'ticket médio de calçados online (Ebit|Nielsen 2024)' },
@@ -1285,7 +1280,7 @@ const MERCADO = {
   beleza: {
     nome: 'Beleza, Cosméticos & Perfumaria',
     termos: ['beleza','cosmético','cosméticos','perfume','perfumaria','maquiagem','skincare','cuidados com a pele','cabelo','cabelos','salão','estética','creme','sérum','shampoo','condicionador','hidratante','protetor solar','base','batom'],
-    faturamento: { valor: 'R$ 18,7 bilhões', detalhe: 'faturamento online de beleza e cosméticos em 2024 (ABIHPEC / Euromonitor)' },
+    faturamento: { valor: 'R$ 18,7 bilhões', detalhe: 'faturamento online de beleza e cosméticos — último dado fechado: 2024 (ABIHPEC / Euromonitor)' },
     crescimento: { valor: '+16,4%', detalhe: 'um dos segmentos de maior crescimento no e-commerce BR — acelera acima da média' },
     penetracao: { valor: '31%', detalhe: 'das vendas de beleza já ocorrem online — penetração acima da média do varejo' },
     ticket: { valor: 'R$ 142', detalhe: 'ticket médio de cosméticos online, com alto índice de recompra (Ebit|Nielsen 2024)' },
@@ -1303,7 +1298,7 @@ const MERCADO = {
   pet: {
     nome: 'Pet Shop & Produtos para Animais',
     termos: ['pet','animal','animais','cachorro','gato','pets','ração','petshop','pet shop','aquário','pássaro','roedor','veterinário','banho e tosa','coleira','brinquedo pet'],
-    faturamento: { valor: 'R$ 9,2 bilhões', detalhe: 'faturamento online do mercado pet em 2024 (ABINPET / Euromonitor)' },
+    faturamento: { valor: 'R$ 9,2 bilhões', detalhe: 'faturamento online do mercado pet — último dado fechado: 2024 (ABINPET / Euromonitor)' },
     crescimento: { valor: '+19,1%', detalhe: 'o mercado pet é o de maior crescimento no e-commerce BR nos últimos 3 anos' },
     penetracao: { valor: '26%', detalhe: 'das vendas pet já ocorrem online, com aceleração pós-pandemia' },
     ticket: { valor: 'R$ 198', detalhe: 'ticket médio pet online; ração e medicamentos têm compra recorrente mensal' },
@@ -1321,7 +1316,7 @@ const MERCADO = {
   eletronicos: {
     nome: 'Eletrônicos & Tecnologia',
     termos: ['eletrônico','eletrônicos','tecnologia','celular','smartphone','notebook','computador','tablet','tv','televisão','fone','headphone','câmera','drone','games','console','acessório tech','informática','periférico'],
-    faturamento: { valor: 'R$ 42,1 bilhões', detalhe: 'o maior segmento do e-commerce BR em valor absoluto em 2024 (IDC / ABComm)' },
+    faturamento: { valor: 'R$ 42,1 bilhões', detalhe: 'maior segmento do e-commerce BR em valor absoluto — último dado fechado: 2024 (IDC / ABComm)' },
     crescimento: { valor: '+8,3%', detalhe: 'crescimento mais moderado por alta penetração já estabelecida' },
     penetracao: { valor: '48%', detalhe: 'quase metade das vendas de eletrônicos já ocorre online — segmento mais maduro digitalmente' },
     ticket: { valor: 'R$ 987', detalhe: 'maior ticket médio do e-commerce BR; parcelamento em 12× é padrão de mercado' },
@@ -1339,7 +1334,7 @@ const MERCADO = {
   moveis: {
     nome: 'Móveis, Casa & Decoração',
     termos: ['móvel','móveis','decoração','casa','cama','mesa','cadeira','sofá','colchão','tapete','cortina','luminária','utensílio','cozinha','banheiro','organização','jardim','ferramente','ferramenta','construção'],
-    faturamento: { valor: 'R$ 16,8 bilhões', detalhe: 'faturamento online de casa e decoração em 2024 (ABIMÓVEL / Euromonitor)' },
+    faturamento: { valor: 'R$ 16,8 bilhões', detalhe: 'faturamento online de casa e decoração — último dado fechado: 2024 (ABIMÓVEL / Euromonitor)' },
     crescimento: { valor: '+12,7%', detalhe: 'crescimento impulsionado por busca visual e influência de reformas pós-pandemia' },
     penetracao: { valor: '19%', detalhe: 'penetração digital ainda baixa — maioria das compras ainda acontece presencialmente' },
     ticket: { valor: 'R$ 412', detalhe: 'ticket médio de casa e decoração online; produtos grandes têm ticket acima de R$800' },
@@ -1357,8 +1352,8 @@ const MERCADO = {
   alimentos: {
     nome: 'Alimentos, Bebidas & Gastronomia',
     termos: ['alimento','alimentos','comida','bebida','bebidas','gastronomia','gourmet','orgânico','natural','saudável','suplemento','whey','proteína','chocolate','café','vinho','cerveja artesanal','tempero','azeite','importado'],
-    faturamento: { valor: 'R$ 7,4 bilhões', detalhe: 'faturamento online de alimentos e bebidas em 2024 (ABIA / NielsenIQ)' },
-    crescimento: { valor: '+21,3%', detalhe: 'segmento de maior crescimento percentual no e-commerce brasileiro em 2024' },
+    faturamento: { valor: 'R$ 7,4 bilhões', detalhe: 'faturamento online de alimentos e bebidas — último dado fechado: 2024 (ABIA / NielsenIQ)' },
+    crescimento: { valor: '+21,3%', detalhe: 'segmento de maior crescimento percentual no e-commerce BR (dado 2024 — tendência continua em 2025)' },
     penetracao: { valor: '8%', detalhe: 'baixíssima penetração digital — enorme espaço para pioneiros do canal' },
     ticket: { valor: 'R$ 164', detalhe: 'ticket médio de alimentos online; assinaturas e kits têm ticket 2× superior' },
     marketplaces: ['Mercado Livre', 'Amazon', 'iFood (marketplace de alimentos)', 'Rappi'],
@@ -1375,7 +1370,7 @@ const MERCADO = {
   esportes: {
     nome: 'Esportes, Fitness & Outdoor',
     termos: ['esporte','esportes','fitness','academia','musculação','corrida','ciclismo','natação','futebol','tênis','vôlei','yoga','pilates','outdoor','camping','trilha','escalada','surf','skate','suplemento esportivo'],
-    faturamento: { valor: 'R$ 11,2 bilhões', detalhe: 'faturamento online de esportes e fitness em 2024 (SEBRAE / Euromonitor)' },
+    faturamento: { valor: 'R$ 11,2 bilhões', detalhe: 'faturamento online de esportes e fitness — último dado fechado: 2024 (SEBRAE / Euromonitor)' },
     crescimento: { valor: '+14,6%', detalhe: 'crescimento acima da média do e-commerce geral' },
     penetracao: { valor: '29%', detalhe: 'das vendas de esporte já ocorrem online — penetração acima da média' },
     ticket: { valor: 'R$ 276', detalhe: 'ticket médio de artigos esportivos online; equipamentos têm ticket acima de R$600' },
@@ -1393,7 +1388,7 @@ const MERCADO = {
   autopecas: {
     nome: 'Autopeças & Acessórios Automotivos',
     termos: ['auto','autopeça','autopeças','peça','peças','carro','veículo','automóvel','moto','caminhão','pneu','óleo','acessório automotivo','som automotivo','filtro','pastilha','amortecedor','motor','mecânica'],
-    faturamento: { valor: 'R$ 14,3 bilhões', detalhe: 'faturamento online do segmento automotivo em 2024 (SINDIPEÇAS / Euromonitor)' },
+    faturamento: { valor: 'R$ 14,3 bilhões', detalhe: 'faturamento online do segmento automotivo — último dado fechado: 2024 (SINDIPEÇAS / Euromonitor)' },
     crescimento: { valor: '+13,1%', detalhe: 'crescimento sustentado pela frota envelhecida e busca por preço' },
     penetracao: { valor: '23%', detalhe: 'das vendas de autopeças já ocorrem online — consumidor pesquisa antes de comprar' },
     ticket: { valor: 'R$ 318', detalhe: 'ticket médio de autopeças online; peças maiores têm ticket acima de R$800' },
@@ -1411,7 +1406,7 @@ const MERCADO = {
   saude: {
     nome: 'Saúde, Bem-Estar & Farmácia',
     termos: ['saúde','farmácia','medicamento','remédio','suplemento','vitamina','bem-estar','wellness','ortopedia','mobilidade','pressão','diabetes','enfermagem','hospital','equipamento médico','fisioterapia'],
-    faturamento: { valor: 'R$ 13,6 bilhões', detalhe: 'faturamento online de saúde e farmácia em 2024 (ICTQ / ABComm)' },
+    faturamento: { valor: 'R$ 13,6 bilhões', detalhe: 'faturamento online de saúde e farmácia — último dado fechado: 2024 (ICTQ / ABComm)' },
     crescimento: { valor: '+17,2%', detalhe: 'um dos segmentos de maior crescimento, impulsionado pelo envelhecimento da população' },
     penetracao: { valor: '24%', detalhe: 'das vendas de saúde já ocorrem online — regulamentação criou canal seguro e confiável' },
     ticket: { valor: 'R$ 192', detalhe: 'ticket médio de saúde online; equipamentos e ortopedia têm ticket acima de R$500' },
@@ -1429,7 +1424,7 @@ const MERCADO = {
   infantil: {
     nome: 'Produtos Infantis & Maternidade',
     termos: ['infantil','bebê','brinquedo','brinquedos','maternidade','criança','crianças','escolar','didático','roupa infantil','enxoval','berço','carrinho de bebê','fralda','brinquedo educativo'],
-    faturamento: { valor: 'R$ 9,8 bilhões', detalhe: 'faturamento online de infantil e maternidade em 2024 (ABRINQ / Euromonitor)' },
+    faturamento: { valor: 'R$ 9,8 bilhões', detalhe: 'faturamento online de infantil e maternidade — último dado fechado: 2024 (ABRINQ / Euromonitor)' },
     crescimento: { valor: '+15,3%', detalhe: 'crescimento impulsionado por conveniência — mãe com bebê prefere comprar online' },
     penetracao: { valor: '33%', detalhe: 'uma das maiores penetrações digitais do varejo — mães são heavy users de e-commerce' },
     ticket: { valor: 'R$ 224', detalhe: 'ticket médio de infantil online; enxoval completo e carrinhos têm ticket acima de R$800' },
@@ -1447,7 +1442,7 @@ const MERCADO = {
   joias: {
     nome: 'Joias, Semijoias & Acessórios',
     termos: ['joia','joias','semijoia','semijoias','bijuteria','ouro','prata','diamante','anel','colar','brinco','pulseira','relógio','acessório','luxo'],
-    faturamento: { valor: 'R$ 6,1 bilhões', detalhe: 'faturamento online de joias e semijoias em 2024 (IBGM / Euromonitor)' },
+    faturamento: { valor: 'R$ 6,1 bilhões', detalhe: 'faturamento online de joias e semijoias — último dado fechado: 2024 (IBGM / Euromonitor)' },
     crescimento: { valor: '+18,4%', detalhe: 'segmento supera a média do e-commerce, impulsionado por social commerce' },
     penetracao: { valor: '21%', detalhe: 'das vendas de joias já ocorrem online — compra de confiança ainda migra lentamente' },
     ticket: { valor: 'R$ 387', detalhe: 'ticket médio de joias online; ouro e joias finas têm ticket acima de R$1.500' },
@@ -1465,7 +1460,7 @@ const MERCADO = {
   livros: {
     nome: 'Livros, Papelaria & Material Escolar',
     termos: ['livro','livros','papelaria','material escolar','caderno','caneta','mochila escolar','artesanato','arte','desenho','pintura','livraria'],
-    faturamento: { valor: 'R$ 4,2 bilhões', detalhe: 'faturamento online de livros e papelaria em 2024 (CBL / Euromonitor)' },
+    faturamento: { valor: 'R$ 4,2 bilhões', detalhe: 'faturamento online de livros e papelaria — último dado fechado: 2024 (CBL / Euromonitor)' },
     crescimento: { valor: '+9,1%', detalhe: 'crescimento estável, com pico sazonal no início do ano letivo' },
     penetracao: { valor: '38%', detalhe: 'uma das maiores penetrações — livro foi um dos primeiros produtos a migrar para o digital' },
     ticket: { valor: 'R$ 98', detalhe: 'ticket médio baixo unitariamente, mas kits e conjuntos elevam para R$180+' },
@@ -1483,10 +1478,10 @@ const MERCADO = {
   // FALLBACK para segmentos não mapeados
   _geral: {
     nome: 'Varejo Geral (E-commerce Brasil)',
-    faturamento: { valor: 'R$ 204,3 bilhões', detalhe: 'faturamento total do e-commerce brasileiro em 2024 (ABComm 2025)' },
-    crescimento: { valor: '+10,5%', detalhe: 'crescimento do e-commerce BR em 2024 · projeção 2025: R$ 234,9 bi (+15%)' },
+    faturamento: { valor: 'R$ 204,3 bilhões', detalhe: 'faturamento total do e-commerce brasileiro em 2024 — projeção 2025: R$ 234,9 bi (ABComm 2025)' },
+    crescimento: { valor: '+10,5%', detalhe: 'crescimento do e-commerce BR em 2024 · projeção 2025: R$ 234,9 bi (+15%) (ABComm)' },
     penetracao: { valor: '55,4%', detalhe: 'das empresas brasileiras com operação online · 22,9% presentes em marketplaces (Conversion 2024)' },
-    ticket: { valor: 'R$ 492', detalhe: 'ticket médio do e-commerce brasileiro em 2024 · 72% das compras via mobile (PCMI)' },
+    ticket: { valor: 'R$ 492', detalhe: 'ticket médio do e-commerce brasileiro em 2024 · 72% compras via mobile — dados mais recentes disponíveis (PCMI)' },
     marketplaces: ['Mercado Livre', 'Shopee', 'Amazon', 'Magalu', 'Americanas'],
     tendencias: [
       '91,3 milhões de compradores online no Brasil em 2024 — mercado cresce 7–10% em novos compradores a cada ano',
@@ -1605,13 +1600,13 @@ function gerar() {
     }
 
     html += `<div style="margin-top:12px;font-size:.7rem;color:var(--muted)">
-      Fontes: ABComm 2024/2025 · Euromonitor · Ebit|Nielsen · SEBRAE · associações setoriais. Dados de referência.
+      Fontes: ABComm · Euromonitor · Ebit|Nielsen · SEBRAE · associações setoriais. Dados fechados mais recentes disponíveis (2024) — projeções 2025 indicadas onde aplicável.
     </div>`;
 
     // ── DIVISOR ───────────────────────────────────────────────────────
     html += `<div class="divider" style="margin:24px 0 20px"></div>
       <div style="font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">
-        🤖 Análise específica — "${segmento}"
+        🤖 Análise específica — "${segmento}" · inclui penetração digital por região do Brasil
       </div>`;
 
     // ── BLOCO 2: Skeleton IA (será preenchido async) ──────────────────
@@ -1636,22 +1631,25 @@ function gerar() {
 
   // 0b. Link de análise da loja — só para Rodrigo
   if (selectedPersona === 'rodrigo' && dominio) {
-    const urlAnalise = `https://i-wgb.github.io/-Storeanalysis/?url=${encodeURIComponent('https://'+dominio)}&autorun=1`;
+    const targetUrl = `https://i-wgb.github.io/-Storeanalysis/`;
+    const lojaUrl   = `https://${dominio}`;
+    const urlDireta = `${targetUrl}?url=${encodeURIComponent(lojaUrl)}&autorun=1&run=1`;
+
     addSection(container, '🔍', 'Análise da loja atual', dominio, () => {
       const b = document.createElement('div');
       b.innerHTML = `
         <div class="insight-box" style="margin-bottom:16px">
           A loja <strong>${dominio}</strong> pode ser analisada em tempo real pela ferramenta Store Analysis — plataforma detectada, performance, SEO, integrações e dores específicas. Use esses dados para personalizar o discurso de migração.
         </div>
-        <a href="${urlAnalise}" target="_blank" rel="noopener"
-          style="display:inline-flex;align-items:center;gap:10px;padding:14px 22px;background:var(--teal);color:var(--white);border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;text-decoration:none;transition:background .15s;margin-bottom:14px"
-          onmouseover="this.style.background='var(--teal-d)'" onmouseout="this.style.background='var(--teal)'">
-          <span style="font-size:1.1rem">🔍</span>
-          Abrir análise de ${dominio}
-          <span style="font-size:.8rem;opacity:.8">→ Store Analysis</span>
-        </a>
-        <div style="font-size:.75rem;color:var(--muted);line-height:1.5">
-          O link abre a consulta já com o domínio preenchido e a análise iniciando automaticamente. Revise os resultados antes da reunião para identificar a plataforma atual, dores técnicas e argumentos específicos de migração.
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+          <a href="${urlDireta}" target="_blank" rel="noopener"
+            style="display:inline-flex;align-items:center;gap:8px;padding:13px 20px;background:var(--teal);color:var(--white);border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:700;text-decoration:none;transition:background .15s"
+            onmouseover="this.style.background='var(--teal-d)'" onmouseout="this.style.background='var(--teal)'">
+            <span>🔍</span> Abrir análise de ${dominio}
+          </a>
+        </div>
+        <div style="background:var(--warn-bg);border-left:3px solid var(--warn);border-radius:0 8px 8px 0;padding:10px 14px;font-size:.78rem;color:var(--ink2);line-height:1.5;margin-bottom:0">
+          <strong>Se a análise não iniciar automaticamente:</strong> cole o endereço <code style="background:rgba(0,0,0,.06);padding:1px 5px;border-radius:3px">${lojaUrl}</code> no campo da ferramenta e clique em "Analisar loja".
         </div>`;
       return b;
     }, true);
