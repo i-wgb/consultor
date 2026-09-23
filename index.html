@@ -520,7 +520,30 @@ body {
       </div>
     </div>
 
-    <!-- CARD 3: Situação atual — oculto para Maraísa -->
+    <!-- CARD RODRIGO: domínio da loja — só para Rodrigo -->
+    <div class="card" id="card-rodrigo" style="display:none">
+      <div class="card-title">
+        <div class="step-num">3</div>
+        Loja atual do prospect
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>Domínio da loja <span>(ex: minhaloja.com.br — sem https://)</span></label>
+        <div style="display:flex;gap:10px;align-items:center">
+          <input type="text" id="dominio_rodrigo" placeholder="minhaloja.com.br" style="flex:1"
+            oninput="atualizarLinkAnalise()">
+          <a id="link-analise" href="#" target="_blank" rel="noopener"
+            style="display:none;padding:10px 16px;background:var(--teal);color:var(--white);border-radius:8px;font-size:.8rem;font-weight:700;text-decoration:none;white-space:nowrap;font-family:'Space Grotesk',sans-serif;transition:background .15s"
+            onmouseover="this.style.background='var(--teal-d)'" onmouseout="this.style.background='var(--teal)'">
+            🔍 Analisar loja →
+          </a>
+        </div>
+        <div style="font-size:.73rem;color:var(--muted);margin-top:6px" id="link-analise-hint" style="display:none">
+          O link abrirá a análise completa da loja no Store Analysis.
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3: Situação atual — oculto para Maraísa e Rodrigo -->
     <div class="card" id="card-canais" style="display:none">
       <div class="card-title">
         <div class="step-num" id="step-num-canais">3</div>
@@ -648,6 +671,13 @@ body {
 
 </main>
 
+<footer style="background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:14px 0;margin-top:0">
+  <div style="max-width:860px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between">
+    <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:.04em">Tray Commerce · Time de Vendas</span>
+    <span style="font-size:.7rem;color:rgba(255,255,255,.25);font-family:'Inter',sans-serif">v1.4.0</span>
+  </div>
+</footer>
+
 <script>
 // ─────────────────────────────────────────────
 // STATE
@@ -666,16 +696,28 @@ function selectPersona(val, el) {
 function atualizarVisibilidade() {
   if (!selectedPersona) return;
 
-  const isMarisa  = selectedPersona === 'marisa';
-  const momento   = document.getElementById('momento')?.value || 'primeiro';
-  const mostrarDores = !isMarisa && (momento === 'durante' || momento === 'pos');
+  const isMarisa   = selectedPersona === 'marisa';
+  const isRodrigo  = selectedPersona === 'rodrigo';
+  const momento    = document.getElementById('momento')?.value || 'primeiro';
+  const mostrarDores = !isMarisa && !isRodrigo && (momento === 'durante' || momento === 'pos');
 
-  // Mostra/oculta cards
-  document.getElementById('card-canais').style.display   = isMarisa ? 'none' : 'block';
-  document.getElementById('card-contexto').style.display = isMarisa ? 'none' : 'block';
-  document.getElementById('card-dores').style.display    = mostrarDores ? 'block' : 'none';
+  // Card exclusivo do Rodrigo (domínio)
+  document.getElementById('card-rodrigo').style.display  = isRodrigo ? 'block' : 'none';
 
-  // Renumera: percorre apenas cards visíveis e atribui 3, 4, 5...
+  // Cards padrão — ocultos para Maraísa e Rodrigo
+  const ocultarPadrao = isMarisa || isRodrigo;
+  document.getElementById('card-canais').style.display   = ocultarPadrao ? 'none' : 'block';
+  document.getElementById('card-contexto').style.display = ocultarPadrao ? 'none' : 'block';
+  document.getElementById('card-dores').style.display    = mostrarDores  ? 'block' : 'none';
+
+  // Renumera: para Rodrigo só tem o card-rodrigo como step 3
+  if (isRodrigo) {
+    const sr = document.querySelector('#card-rodrigo .step-num');
+    if (sr) sr.textContent = '3';
+    return;
+  }
+
+  // Para os demais, renumera os cards visíveis a partir de 3
   const ordemIds = ['card-canais', 'card-contexto', 'card-dores'];
   const stepIds  = ['step-num-canais', 'step-num-contexto', 'step-num-dores'];
   let num = 3;
@@ -690,6 +732,23 @@ function atualizarVisibilidade() {
 
 // Alias para o onchange do select de momento
 function atualizarVisibilidadeDores() { atualizarVisibilidade(); }
+
+function atualizarLinkAnalise() {
+  const input = document.getElementById('dominio_rodrigo');
+  const link  = document.getElementById('link-analise');
+  const hint  = document.getElementById('link-analise-hint');
+  if (!input || !link) return;
+  const dominio = input.value.trim().replace(/^https?:\/\//i,'').replace(/\/+$/,'');
+  if (dominio.length > 3) {
+    const url = `https://i-wgb.github.io/-Storeanalysis/?url=${encodeURIComponent('https://'+dominio)}`;
+    link.href = url;
+    link.style.display = 'inline-flex';
+    if (hint) hint.style.display = 'block';
+  } else {
+    link.style.display = 'none';
+    if (hint) hint.style.display = 'none';
+  }
+}
 
 function toggleChip(el, group) {
   const val = el.dataset.val;
@@ -1484,9 +1543,11 @@ function gerar() {
   const obs = document.getElementById('obs')?.value.trim() || '';
   const fat_fisico = document.getElementById('fat_fisico')?.value || '';
   const fat_online = document.getElementById('fat_online')?.value || '';
-  // Maraísa não tem canais/dores preenchidos — usa defaults
-  const canais = selectedPersona === 'marisa' ? [] : Array.from(chipState.canais);
-  const dores  = selectedPersona === 'marisa' ? [] : Array.from(chipState.dores);
+  const dominio_raw = (document.getElementById('dominio_rodrigo')?.value || '').trim().replace(/^https?:\/\//i,'').replace(/\/+$/,'');
+  const dominio = dominio_raw || '';
+  // Maraísa e Rodrigo não têm canais/dores no formulário
+  const canais = (selectedPersona === 'marisa' || selectedPersona === 'rodrigo') ? [] : Array.from(chipState.canais);
+  const dores  = (selectedPersona === 'marisa' || selectedPersona === 'rodrigo') ? [] : Array.from(chipState.dores);
 
   const P = PERSONAS[selectedPersona];
   const M = detectarMercado(segmento);
@@ -1505,6 +1566,7 @@ function gerar() {
   addBadge(badges, P.emoji + ' ' + P.nome, '');
   if (canais.length) addBadge(badges, 'Vende em: ' + canais.map(labelCanal).join(', '), '');
   if (exp_neg === 'sim') addBadge(badges, '⚠️ Experiência negativa anterior', 'warn');
+  if (dominio) addBadge(badges, '🌐 ' + dominio, '');
 
   // Build sections
   const container = document.getElementById('sections-container');
@@ -1590,6 +1652,29 @@ function gerar() {
 
   // Dispara análise IA do nicho específico em paralelo
   analisarNichoIA(segmento, M.nome, canais, faturamento, ticket);
+
+  // 0b. Link de análise da loja — só para Rodrigo
+  if (selectedPersona === 'rodrigo' && dominio) {
+    const urlAnalise = `https://i-wgb.github.io/-Storeanalysis/?url=${encodeURIComponent('https://'+dominio)}`;
+    addSection(container, '🔍', 'Análise da loja atual', dominio, () => {
+      const b = document.createElement('div');
+      b.innerHTML = `
+        <div class="insight-box" style="margin-bottom:16px">
+          A loja <strong>${dominio}</strong> pode ser analisada em tempo real pela ferramenta Store Analysis — plataforma detectada, performance, SEO, integrações e dores específicas. Use esses dados para personalizar o discurso de migração.
+        </div>
+        <a href="${urlAnalise}" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:10px;padding:14px 22px;background:var(--teal);color:var(--white);border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;text-decoration:none;transition:background .15s;margin-bottom:14px"
+          onmouseover="this.style.background='var(--teal-d)'" onmouseout="this.style.background='var(--teal)'">
+          <span style="font-size:1.1rem">🔍</span>
+          Abrir análise de ${dominio}
+          <span style="font-size:.8rem;opacity:.8">→ Store Analysis</span>
+        </a>
+        <div style="font-size:.75rem;color:var(--muted);line-height:1.5">
+          O link abre a consulta já com o domínio preenchido. Revise os resultados antes da reunião para identificar a plataforma atual, dores técnicas e argumentos específicos de migração.
+        </div>`;
+      return b;
+    }, true);
+  }
 
   // 1. Perfil
   addSection(container, '🎯', 'Perfil do prospect', P.resumo, () => {
@@ -1969,10 +2054,14 @@ function resetar() {
   const fatOnl = document.getElementById('fat_online');
   if (fatOnl) fatOnl.value = '';
   // Oculta cards condicionais
-  ['card-canais','card-dores','card-contexto'].forEach(id => {
+  ['card-canais','card-dores','card-contexto','card-rodrigo'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
+  const domEl = document.getElementById('dominio_rodrigo');
+  if (domEl) domEl.value = '';
+  const linkEl = document.getElementById('link-analise');
+  if (linkEl) linkEl.style.display = 'none';
   document.getElementById('form-area').style.display = 'block';
   document.getElementById('result').style.display = 'none';
   window.scrollTo({ top: 0, behavior: 'smooth' });
