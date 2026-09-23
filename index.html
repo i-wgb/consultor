@@ -667,7 +667,7 @@ body {
 <footer style="background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:14px 0;margin-top:0">
   <div style="max-width:860px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between">
     <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:.04em">Tray Commerce · Time de Vendas</span>
-    <span style="font-size:.7rem;color:rgba(255,255,255,.25);font-family:'Inter',sans-serif">v1.8.0</span>
+    <span style="font-size:.7rem;color:rgba(255,255,255,.25);font-family:'Inter',sans-serif">v2.3.0</span>
   </div>
 </footer>
 
@@ -913,220 +913,424 @@ const DORES_CANAL = {
 };
 
 // ─────────────────────────────────────────────
-// IA: ANÁLISE ESPECÍFICA DO NICHO
+// ENGINE LOCAL: ANÁLISE ESPECÍFICA DO NICHO
+// Zero dependência externa — JavaScript puro
+// ─────────────────────────────────────────────
+
+const NICHO_DB = {
+  // ── MODA ──────────────────────────────────────────────────────────
+  'moda feminina':       { tam:'R$ 18–22 bi (estimativa 2025)', cresc:'+11%', pen:'24%', ticket:'R$ 180–220', perfil:'Mulheres 25–45 anos, classes B/C, compra média 4–6x/ano, influenciada por redes sociais e influenciadoras', saz:'Dia das Mães, Natal, Dia dos Namorados, Verão (Out–Nov) e Inverno (Mai–Jun)', concorr:'Alta — Shein domina volume, mas há espaço para nicho e identidade de marca própria', regioes:{se:'Maior mercado, São Paulo lidera. Alta maturidade digital, consumidora exigente',su:'RS e PR com forte cultura de moda regional. Penetração online crescendo',ne:'Mercado em aceleração — Fortaleza e Recife com crescimento acima da média nacional',co:'Brasília concentra público com alto ticket. Interior ainda sub-atendido online',no:'Penetração baixa mas crescente. Frete é barreira — logística é diferencial'}, difs:['Identidade visual e storytelling da marca','Fotos e vídeos de qualidade com modelo real','Política de troca clara e frete de devolução','Tamanhos inclusivos e grade completa'], trends:['Social commerce: 70% das descobertas de moda ocorrem no Instagram/TikTok antes da compra','Moda sustentável e slow fashion crescem 30%+ a.a. com margem superior','Live commerce de moda com conversão 4× superior ao anúncio estático','Drops de coleção limitada criam urgência e reduzem guerra de preço'], mkts:['Shopee (volume popular)','Mercado Livre','Shein (concorrente)','Dafiti','Renner Online'], dores:['Gestão de grade (tamanho/cor) sem sistema integrado gera rupturas e trocas','Custo de devolução corrói margem — política mal estruturada vira prejuízo','Dependência de tráfego pago sem construção de base própria de clientes'], arg:'A Tray tem gestão de grades nativa (cor × tamanho), sacolinha do Instagram integrada e checkout que aprova até 43% mais pedidos — essencial para moda onde abandono de carrinho é alto', gtlh:'Quanto da sua receita vem de clientes que compraram mais de uma vez? Você tem esse dado?' },
+
+  'moda masculina':      { tam:'R$ 8–10 bi (estimativa 2025)', cresc:'+9%', pen:'19%', ticket:'R$ 190–250', perfil:'Homens 28–45 anos, classes B/C, compra menos frequente mas ticket maior, decisão racional — pesquisa antes', saz:'Dia dos Pais, Natal, Black Friday, retorno às aulas', concorr:'Menos competitivo que feminino — oportunidade real para marcas especializadas', regioes:{se:'SP e RJ lideram. Público corporativo com demanda por roupa social online',su:'Forte cultura de marca regional. Consumidor fiel quando encontra qualidade',ne:'Crescimento acelerado. Público mais jovem comprando moda masculina online',co:'Brasília com demanda por moda social/executiva. Interior ainda presencial',no:'Mercado pequeno mas em crescimento. Poucos players especializados'}, difs:['Descrição técnica (composição, caimento, tabela de medidas)','Fotos com múltiplos ângulos e variações de cor','Frete competitivo — homem abandona carrinho por frete caro','Curadoria e combinações prontas reduzem fricção'], trends:['Moda casual premium cresce com home office híbrido','Streetwear e athleisure dominam faixa 18–35 anos','Assinatura de roupa masculina cresce 25% a.a.','Influenciadores masculinos de estilo de vida convertem melhor que celebridades'], mkts:['Mercado Livre','Dafiti','Renner Online','Shopee'], dores:['Tabela de medidas imprecisa gera troca excessiva','Sem curadoria, cliente não sabe combinar e não volta','Frete caro é principal causa de abandono no segmento masculino'], arg:'A Tray permite montar lookbooks e combinações dentro da loja, integra com Instagram e WhatsApp Commerce — onde o homem cada vez mais compra sem sair do app', gtlh:'Seus clientes voltam para comprar novamente ou é sempre cliente novo?' },
+
+  'moda plus size':      { tam:'R$ 5–7 bi (estimativa 2025)', cresc:'+22%', pen:'28%', ticket:'R$ 160–200', perfil:'Mulheres 25–50 anos, todas as classes, altíssima fidelização quando encontra marca que entende o corpo', saz:'Verão (maior demanda), festas de fim de ano, Dia das Mães', concorr:'Média — nicho ainda sub-atendido pelos grandes, grande oportunidade para especializados', regioes:{se:'Maior mercado absoluto. São Paulo com comunidades online ativas de moda plus',su:'Penetração crescendo. RS e SC com público que valoriza qualidade e fit',ne:'Potencial enorme — região com maior percentual de público plus e menos opções online',co:'Mercado em crescimento. Brasília com público que compra online com frequência',no:'Pouca oferta especializada — quem entra tem baixa concorrência'}, difs:['Grade ampla (44 ao 56+) com foto em modelo plus de cada tamanho','Descrição de caimento honesta (não só numeração)','Comunidade e pertencimento — cliente quer marca que a representa','Política de troca sem burocracia'], trends:['Representatividade vira diferencial competitivo real — marcas que mostram corpos reais vendem mais','Collab com influenciadoras plus size tem ROI superior a mídia paga','Moda festa plus size é o sub-nicho de maior crescimento dentro do segmento','Lingerie e moda íntima plus crescem 35% a.a.'], mkts:['Shopee','Mercado Livre','Dafiti (crescendo no segmento)'], dores:['Grade cortada (só até 48) perde metade do público potencial','Foto com modelo padrão causa devolução por expectativa errada de caimento','Sem comunidade, cliente compra uma vez e não volta'], arg:'A Tray permite catálogo ilimitado com variações por tamanho, integração com redes sociais onde esse público é muito ativo, e checkout transparente que aumenta aprovação', gtlh:'Você usa fotos com modelos que representam o corpo do seu cliente?' },
+
+  'moda infantil':       { tam:'R$ 6–8 bi (estimativa 2025)', cresc:'+15%', pen:'30%', ticket:'R$ 150–200', perfil:'Mães 25–40 anos, classes B/C, compra frequente (criança cresce rápido), pesquisa muito antes de comprar', saz:'Volta às aulas (Jan/Jul), Dia das Crianças, Natal, festas juninas', concorr:'Moderada — dominada por grandes varejistas, mas nicho temático/personalizado tem espaço', regioes:{se:'SP concentra maior volume. Mães compradoras online muito ativas em grupos',su:'Forte cultura de roupa infantil de qualidade. RS e PR com público fiel',ne:'Crescimento acima da média. Muito influenciado por grupos de mães no WhatsApp',co:'Brasília e Goiânia com demanda crescente. Interior comprando mais online',no:'Penetração baixa mas oportunidade real — poucos players especializados'}, difs:['Tabela de medidas por idade e altura (não só número)','Material e composição clara — mãe é exigente com tecido','Curadoria por faixa etária e estação','Kits e conjuntos prontos vendem mais que peças avulsas'], trends:['Moda infantil sustentável e orgânica cresce 30%+ a.a.','Personagens e licenciados têm demanda constante','Conjuntos família (mãe+filho) viram tendência nas redes','Revenda e brechó infantil online cresce com consciência de consumo'], mkts:['Shopee','Mercado Livre','Ri Happy (vestuário)','Amazon'], dores:['Gestão de grade por idade/tamanho sem sistema é caótica','Sazonalidade intensa exige planejamento de estoque antecipado','Mãe compra em vários lugares — fidelização exige programa de relacionamento'], arg:'Tray tem gestão de grades, integração com WhatsApp onde mães se organizam em grupos de compra, e sacolinha do Instagram — canal onde moda infantil explode em engajamento', gtlh:'Você tem algum programa de fidelidade ou recompra automatizada para as mães?' },
+
+  // ── BELEZA ────────────────────────────────────────────────────────
+  'cosméticos':          { tam:'R$ 20–24 bi (estimativa 2025)', cresc:'+16%', pen:'31%', ticket:'R$ 130–160', perfil:'Mulheres 20–45 anos, todas as classes, compra recorrente mensal, fortemente influenciada por conteúdo no TikTok/Reels', saz:'Dia das Mães, Natal, Dia dos Namorados — mas compra é essencialmente recorrente', concorr:'Alta — grandes marcas e marketplaces disputam, mas especializado por tipo de pele/rotina tem diferencial', regioes:{se:'Maior mercado. São Paulo concentra tendências e lançamentos',su:'PR e RS com consumidora exigente e fiel a marcas de qualidade',ne:'Crescimento acelerado. Nordeste tem clima quente que gera demanda específica (protetor, hidratante)',co:'Brasília com público AB comprando cosméticos premium. Interior crescendo',no:'Penetração baixa mas com demanda por produtos específicos para clima úmido/quente'}, difs:['Educação sobre ativos e ingredientes (INCI) — consumidora pesquisa antes de comprar','Fotos realistas de textura e resultado na pele','Amostras grátis ou kit teste aumentam conversão','Resenha e avaliação com foto real são decisivas'], trends:['Skincare é o sub-mercado de maior crescimento — rotina de cuidados com a pele virou cultura','Clean beauty e vegano têm margem 25% superior e cliente menos sensível a preço','Tutorial integrado à página de produto aumenta conversão em 55%','Assinatura de box de cosméticos tem LTV médio de 18 meses'], mkts:['Beleza na Web','Época Cosméticos','Mercado Livre','Shopee','Amazon'], dores:['Sem conteúdo educativo, cliente não entende o produto e não compra','Recompra desorganizada — cliente compra na promoção mas não volta de forma recorrente','Gestão de prazo de validade e lote exige controle rigoroso'], arg:'Tray tem integração com Instagram e TikTok para social commerce, CRM para recompra automatizada e checkout transparente — essencial para cosméticos onde a segunda compra vale mais que a primeira', gtlh:'Qual o percentual de clientes que compram de você mais de uma vez por ano?' },
+
+  'perfumaria':          { tam:'R$ 6–8 bi (estimativa 2025)', cresc:'+14%', pen:'22%', ticket:'R$ 200–350', perfil:'Homens e mulheres 25–50, classes A/B, compra por ocasião (presente, reposição), ticket alto por unidade', saz:'Natal (pico máximo), Dia das Mães, Dia dos Namorados, Dia dos Pais', concorr:'Moderada — grandes marcas dominam mas nicho de importado/árabe/nicho tem espaço crescente', regioes:{se:'SP e RJ concentram público AB. Maior mercado de perfumaria premium do Brasil',su:'PR e RS com forte cultura de presentear com perfume. Demanda por importados',ne:'Crescimento no segmento árabe e contratipo. Fortaleza e Recife como hubs',co:'Brasília com público corporativo comprando perfume como presente recorrente',no:'Mercado menor mas demanda por contratipo e importado cresce'}, difs:['Descrição olfativa precisa (notas de topo, coração e fundo)','Comparativo com outras fragrâncias conhecidas para referência','Foto de alta qualidade do frasco — perfume é objeto de desejo','Garantia de autenticidade é decisiva para importado'], trends:['Perfume árabe e oud cresce 40%+ a.a. — nicho ainda sub-atendido no e-commerce','Contratipo e inspirados têm demanda crescente pela relação custo-benefício','Personalização (frascos gravados, embalagem presente) aumenta ticket e LTV','Assinatura de decants para experimentação antes de comprar o frasco inteiro'], mkts:['Mercado Livre','Shopee','Amazon','Época Cosméticos'], dores:['Autenticidade é barreira — consumidor tem medo de fake no online','Sem descrição olfativa adequada, cliente não consegue imaginar o cheiro e não compra','Embalagem inadequada gera quebra no transporte e reclamação'], arg:'Tray permite conteúdo rico na página do produto, integração com WhatsApp para atendimento consultivo e checkout com alta aprovação — essencial quando ticket é alto e venda é emocional', gtlh:'Como você transmite a experiência do cheiro para o cliente que não pode sentir antes de comprar?' },
+
+  // ── PET ──────────────────────────────────────────────────────────
+  'pet shop':            { tam:'R$ 10–12 bi (estimativa 2025)', cresc:'+19%', pen:'27%', ticket:'R$ 180–220', perfil:'Tutores 25–45 anos, classes B/C, compra mensal recorrente (ração), altíssima fidelidade quando encontra loja de confiança', saz:'Dia dos Pets (Ago), Natal (presentes para pets), verão (produtos de higiene)', concorr:'Moderada — PetLove e Cobasi dominam volume, mas loja especializada por raça/porte tem diferencial real', regioes:{se:'SP e RJ concentram maior volume e penetração. Público muito ativo em grupos de pets',su:'RS e SC com forte cultura de cuidado com animais. Alto ticket médio',ne:'Crescimento acelerado — humanização dos pets chegou ao Nordeste com força',co:'Brasília com alto poder aquisitivo para gastos com pets. Mercado crescendo',no:'Penetração menor mas crescente. Poucos players especializados online'}, difs:['Ração: preço competitivo + frete rápido + assinatura','Especialização por espécie/raça cria autoridade e fidelização','Conteúdo de saúde e bem-estar animal gera engajamento e confiança','Atendimento consultivo diferencia de marketplace'], trends:['Humanização dos pets: alimento natural, orgânico e vegano crescem 35%+ a.a.','Assinatura de ração tem churn < 5%/mês — modelo ideal para pet shop','Produtos para gatos superam cachorros em crescimento de busca — nicho sub-atendido','Planos de saúde pet crescem e criam demanda por medicamentos e suplementos'], mkts:['PetLove','Cobasi Online','Mercado Livre','Shopee','Amazon'], dores:['Ração é commodity — concorrer só no preço corrói margem','Sem assinatura, tutor recompra no concorrente que oferecer promoção','Gestão de produtos perecíveis (alimento natural) exige logística específica'], arg:'Tray tem módulo de assinatura recorrente nativo — ideal para ração — e integração com WhatsApp para atendimento veterinário consultivo que fideliza o tutor além do produto', gtlh:'Você já calculou quanto um cliente de ração gasta com você ao longo de um ano de fidelidade?' },
+
+  // ── ALIMENTOS ────────────────────────────────────────────────────
+  'alimentos saudáveis': { tam:'R$ 4–6 bi (estimativa 2025)', cresc:'+24%', pen:'10%', ticket:'R$ 150–200', perfil:'Adultos 28–45 anos, classes A/B, estilo de vida saudável, pesquisa muito, lê rótulo, paga mais por qualidade', saz:'Janeiro (detox pós-festas), antes do verão (Set–Out), pré-maratonas e competições', concorr:'Baixa a moderada — mercado em formação, poucas lojas especializadas bem estruturadas online', regioes:{se:'SP concentra consumidores de alimentação saudável. SP capital com demanda premium',su:'RS e SC com forte cultura fitness e alimentação natural',ne:'Crescimento acelerado em Fortaleza e Recife com público jovem fitness',co:'Brasília com público altamente consciente sobre alimentação saudável',no:'Mercado pequeno mas crescendo — poucos players, oportunidade de pioneirismo'}, difs:['Certificações (orgânico, vegano, sem glúten) são decisivas — exibir com destaque','Rastreabilidade e origem dos ingredientes aumentam confiança','Assinatura mensal tem LTV altíssimo nesse público','Conteúdo de receita integrado ao produto converte 48% mais'], trends:['Whey e suplementos naturais crescem 30%+ a.a. entre mulheres — nicho antes masculino','D2C (direto ao produtor) ganha força — margem 3× superior sem intermediário','Alimentação funcional (cogumelos, adaptógenos, colágeno) em crescimento explosivo','Kits personalizados por objetivo (emagrecimento, ganho muscular, longevidade)'], mkts:['Mercado Livre','Amazon','iHerb (importado)','Rappi (entrega rápida)'], dores:['Prazo de validade curto exige gestão rigorosa de estoque e giro','Frete refrigerado ou especial para produtos naturais é caro e limita alcance','Certificações custam caro — sem elas, consumidor exigente não compra'], arg:'Tray permite criar kits e combos facilmente, tem módulo de assinatura para recompra mensal e CRM para nutrir relacionamento com conteúdo — modelo ideal para esse público que consome antes de comprar', gtlh:'Você já tem alguma estratégia de recompra para esse cliente que compra mensalmente?' },
+
+  'café':                { tam:'R$ 1,5–2 bi (estimativa 2025)', cresc:'+28%', pen:'15%', ticket:'R$ 80–150', perfil:'Adultos 28–50 anos, classes A/B, consumidor apaixonado, pesquisa origens e métodos, compra recorrente', saz:'Inverno (pico de consumo), Dia dos Pais, Natal, Dia dos Namorados', concorr:'Baixa a moderada — mercado de café especial em formação, grande espaço para especializados', regioes:{se:'SP concentra maior mercado de café especial. Comunidade de baristas e entusiastas ativa',su:'PR e RS com forte cultura de café diferenciado. Gaúchos são grandes consumidores',ne:'Mercado em formação — Fortaleza com crescimento de cafeterias e cultura de café especial',co:'Brasília com público AB interessado em café premium e métodos alternativos',no:'Mercado menor. Regiões produtoras (PA) têm interesse em café local'}, difs:['Origem e processo de torra com história do produtor','Assinatura mensal de grãos frescos — modelo que fideliza','Guia de preparo por método (espresso, filtrado, prensa) aumenta satisfação','Moagem na hora como diferencial de frescor'], trends:['Café especial cresce 35%+ a.a. — consumidor migrando de commodity para experiência','Assinatura de café tem churn < 4%/mês e LTV médio de 22 meses','Cold brew e café com leite vegetal crescem entre jovens adultos','Café como presente premium cresce — kits de degustação têm alto ticket'], mkts:['Mercado Livre','Amazon','própria loja D2C (modelo ideal)'], dores:['Frescor do grão é tudo — logística lenta mata o produto','Sem conteúdo educativo, cliente não entende a diferença e compra pelo preço','Assinatura manual é difícil de gerenciar em escala'], arg:'Tray tem módulo de assinatura recorrente nativo, integração com WhatsApp para envio de guias de preparo e CRM para recorrência — modelo D2C de café é o que mais cresce no segmento', gtlh:'Você já tem clientes que pedem café todo mês? Eles compram de forma organizada ou você fica lembrando um por um?' },
+
+  // ── ELETRÔNICOS ──────────────────────────────────────────────────
+  'eletrônicos':         { tam:'R$ 45–50 bi (estimativa 2025)', cresc:'+9%', pen:'49%', ticket:'R$ 900–1100', perfil:'Homens e mulheres 22–45 anos, todas as classes, pesquisa intensamente antes de comprar, compara preço em múltiplos canais', saz:'Black Friday (maior pico do varejo), Natal, volta às aulas, Dia das Mães', concorr:'Muito alta — ML, Amazon, Magalu e Americanas dominam. Diferencial é especialização e pós-venda', regioes:{se:'SP e RJ com maior volume e penetração. Maior base de consumidores digitais',su:'RS, SC e PR com consumidor exigente e alta penetração digital',ne:'Crescimento acelerado — celular e notebook são prioridades de compra online',co:'Brasília com alto poder aquisitivo. Interior comprando mais online',no:'Penetração crescendo — celular é o principal produto e acesso à internet'}, difs:['Garantia estendida e suporte técnico pós-venda são decisivos','Review técnico detalhado (benchmark, comparativo) converte 60% mais','Parcelamento em 12× sem juros é padrão de mercado','Estoque real e prazo de entrega confiável — consumidor pesquisa e desiste por prazo longo'], trends:['Seminovos e recondicionados crescem 42%+ a.a. — câmbio alto impulsiona custo-benefício','Acessórios têm margem 4× superior ao produto principal — estratégia de upsell essencial','IoT e casa inteligente crescem 28%+ a.a. com demanda por ecossistema','Smartphone ainda lidera mas wearables crescem forte entre jovens'], mkts:['Mercado Livre (dominante)','Amazon','Kabum','Americanas','Magalu'], dores:['Concorrer com ML e Amazon só em preço é insustentável — margem zero','Garantia e pós-venda são o diferencial que marketplace não oferece bem','Nota fiscal e conformidade fiscal em eletrônicos exige sistema integrado'], arg:'Tray tem checkout com alta aprovação de parcelamento, integração com Bling para NF-e automática e marketplace para ampliar alcance — essencial quando margem é apertada e volume é tudo', gtlh:'Você já calculou quanto perde em vendas por não ter estoque do produto que o cliente quer na hora certa?' },
+
+  // ── AUTOPEÇAS ────────────────────────────────────────────────────
+  'autopeças':           { tam:'R$ 15–17 bi (estimativa 2025)', cresc:'+13%', pen:'24%', ticket:'R$ 280–350', perfil:'Homens 30–55 anos, todas as classes, compra por necessidade, pesquisa compatibilidade antes, valoriza confiança e prazo', saz:'Inverno (baterias, pneus), revisão anual, grandes feriados (carro precisa estar ok)', concorr:'Moderada — ML domina mas loja especializada com buscador por placa/modelo tem vantagem competitiva real', regioes:{se:'SP concentra maior frota e mercado. Mecânicos e revendas compram em atacado online',su:'RS e PR com forte cultura automotiva — pick-ups e veículos pesados têm demanda específica',ne:'Crescimento acelerado com aumento da frota nas capitais. Fortaleza e Recife como hubs',co:'Brasília e GO com frota grande e demanda por peças de veículos populares e pick-ups',no:'Mercado menor mas com demanda por peças de motos — principal veículo da região'}, difs:['Buscador por placa, marca, modelo e ano é o maior diferencial competitivo','Foto da peça real (não ilustração) reduz devolução por erro','Vídeo de instalação integrado à página reduz devolução em 28%','Garantia de compatibilidade com troca gratuita se errar'], trends:['Frota brasileira tem idade média 10,9 anos — demanda por reposição sustentada por anos','Peças para motos crescem 31%+ a.a. — segmento sub-atendido online','Consumidor de autopeça pesquisa muito — SEO técnico tem ROI superior a mídia paga','Peças para veículos elétricos começam a aparecer como nicho emergente'], mkts:['Mercado Livre (dominante)','Amazon','Shopee','Parafuso.com'], dores:['Erro de compatibilidade gera devolução cara e cliente insatisfeito — buscador resolve','Sem foto real, cliente não confia que é a peça certa','Gestão de estoque de milhares de SKUs sem sistema é inviável'], arg:'Tray suporta catálogos de milhares de SKUs, integração com Bling para gestão e marketplace para ampliar alcance — essencial em autopeças onde variedade e disponibilidade são tudo', gtlh:'Qual o seu índice de devolução por peça incompatível? Já calculou o custo disso por mês?' },
+
+  // ── SAÚDE ────────────────────────────────────────────────────────
+  'suplementos':         { tam:'R$ 5–7 bi (estimativa 2025)', cresc:'+22%', pen:'35%', ticket:'R$ 150–250', perfil:'Adultos 20–40 anos, classes B/C, maioria homens (70%), compra recorrente mensal, pesquisa composição e dosagem', saz:'Janeiro (metas de ano novo), pré-verão (Set–Nov), Black Friday', concorr:'Alta — Growth, Integralmedica e marketplaces dominam volume, mas nicho (vegan, natural, feminino) tem espaço', regioes:{se:'SP com maior mercado — academia culture forte. Consumidor sofisticado',su:'RS e PR com cultura fitness muito forte. Alto ticket e recorrência',ne:'Crescimento acelerado — mercado de suplemento chegou às capitais do NE com força',co:'Brasília com público muito ativo e disposto a pagar por qualidade',no:'Penetração menor mas crescendo — Belém e Manaus como centros'}, difs:['Composição detalhada e comparativo com concorrentes','Assinatura mensal é modelo ideal — cliente não pode ficar sem o produto','Conteúdo técnico (dosagem, stack, combinações) converte e fideliza','Atendimento consultivo por nutricionista ou personal aumenta confiança'], trends:['Suplementos para mulheres crescem 40%+ a.a. — nicho antes ignorado pelas marcas','Colágeno, creatina e ômega-3 explodiram fora do público fitness tradicional','Suplementos naturais e veganos crescem 35% com margem superior','Protocolo de longevidade (NMN, resveratrol) é o segmento emergente de maior crescimento'], mkts:['Mercado Livre','Amazon','Shopee','própria loja D2C'], dores:['Sem assinatura, cliente recompra onde tiver promoção — perda de recorrência previsível','Conteúdo técnico inadequado gera dúvida sobre dosagem e reduz conversão','Gestão de lote e validade é crítica — produto vencido é risco sanitário e jurídico'], arg:'Tray tem módulo de assinatura recorrente, CRM para nutrição de relacionamento e integração com WhatsApp para atendimento consultivo — combinação ideal para suplemento onde recompra é tudo', gtlh:'Qual o ciclo de recompra do seu cliente? Você o contata quando o produto está prestes a acabar?' },
+
+  // ── CASA E DECORAÇÃO ─────────────────────────────────────────────
+  'decoração':           { tam:'R$ 18–21 bi (estimativa 2025)', cresc:'+13%', pen:'20%', ticket:'R$ 380–450', perfil:'Mulheres 30–50 anos, classes A/B, compra por projeto (reforma/mudança) ou presentear, pesquisa muito e decide devagar', saz:'Janeiro (reformas pós-Natal), pré-feriados (Natal/Páscoa), Black Friday para itens maiores', concorr:'Moderada — Tok&Stok e Leroy Merlin online, mas nicho artesanal/regional/sustentável tem espaço grande', regioes:{se:'SP lidera com cultura de decoração e design. Alta renda e disposição para pagar por qualidade',su:'RS com forte tradição artesanal. Compradores valorizam produção local e regional',ne:'Crescimento acelerado — Fortaleza com mercado imobiliário aquecido gerando demanda',co:'Brasília com apartamentos grandes e público de alta renda com interesse em decoração',no:'Mercado menor — Belém e Manaus com demanda por decoração temática regional'}, difs:['Foto em ambiente real (não fundo branco) é essencial — cliente precisa imaginar na casa','Dimensões detalhadas com comparativo de escala reduzem devoluções','Combinações e ambientes completos aumentam ticket médio em 2,8×','Prazo de entrega confiável para item frágil/grande é diferencial decisivo'], trends:['Pinterest e Instagram como motor de descoberta — 74% pesquisam visual antes de comprar','Home office permanente sustenta demanda por cadeiras ergonômicas e mesas','Decoração sustentável e upcycled cresce com consumidor consciente','Impressão 3D e customização de peças únicas cresce como diferencial'], mkts:['Mercado Livre','Magalu','Americanas','Tok&Stok Online'], dores:['Frete de itens grandes e frágeis é caro e complexo — sem parceria logística, margem some','Foto inadequada gera expectativa errada e devolução cara','Sem ambiente completo para inspiração, cliente não sabe como usar o produto'], arg:'Tray tem integração com transportadoras especializadas em grande volume, galeria de fotos múltiplas por produto e possibilidade de criar ambientes de inspiração — essencial para quem vende experiência visual', gtlh:'Qual o seu índice de devolução? E quanto do frete de devolução você absorve?' },
+
+  'móveis':              { tam:'R$ 12–15 bi (estimativa 2025)', cresc:'+11%', pen:'17%', ticket:'R$ 500–800', perfil:'Casais 30–45 anos comprando para novo lar, classe B/C, decisão demorada e consultiva, compara muito antes de fechar', saz:'Janeiro (mudanças), começo de ano letivo, Black Friday para planejados', concorr:'Moderada — MadeiraMadeira e grandes redes, mas regional e sob medida têm espaço', regioes:{se:'SP e RJ como maior mercado. Apartamentos menores criam demanda por sob medida e compactos',su:'RS com forte indústria moveleira — polo de Bento Gonçalves com vantagem logística',ne:'Crescimento com mercado imobiliário. Fortaleza e Recife com demanda crescente',co:'Brasília com apartamentos grandes e público de renda alta buscando móveis de qualidade',no:'Mercado menor — frete pesado é barreira. Mercado local tem vantagem logística'}, difs:['Dimensões precisas com foto de escala e medida em ambiente real','Prazo de entrega e montagem incluídos são diferenciais decisivos','Garantia e assistência técnica reduzem risco percebido','Personalização de cor e acabamento — cliente paga mais por isso'], trends:['Móveis compactos e multifuncionais explodem em apartamentos menores','Madeira de reflorestamento e materiais sustentáveis crescem com consumidor consciente','Realidade aumentada para ver móvel na casa — quem oferece reduz devolução','Kits para montagem própria (flat pack) com tutorial em vídeo ganham espaço'], mkts:['MadeiraMadeira','Mercado Livre','Magalu','Americanas'], dores:['Frete de itens pesados corrói toda a margem — parceria logística é obrigatória','Sem foto em ambiente real, cliente não consegue imaginar o móvel no espaço','Prazo de entrega longo (30–60 dias para sob medida) exige comunicação clara'], arg:'Tray integra com transportadoras especializadas em móveis, permite foto 360° e múltiplas imagens por produto, e tem checkout robusto para tickets altos com parcelamento — essencial quando venda demora e exige confiança', gtlh:'Como você lida com o cliente que visita o site, não compra e some? Você tem alguma estratégia de recuperação?' },
+
+  // ── ESPORTES ─────────────────────────────────────────────────────
+  'artigos esportivos':  { tam:'R$ 12–14 bi (estimativa 2025)', cresc:'+15%', pen:'30%', ticket:'R$ 250–300', perfil:'Adultos 22–45 anos, classes B/C, apaixonados pelo esporte, pesquisa muito, valoriza opinião de atletas e comunidade', saz:'Janeiro (metas de ano novo), pré-verão (esportes ao ar livre), Black Friday', concorr:'Moderada — Netshoes e Centauro online, mas especializado por modalidade tem vantagem', regioes:{se:'SP com maior mercado. Corrida de rua e ciclismo muito ativos',su:'RS e SC com forte cultura esportiva — ciclismo, corrida e natação com bases grandes',ne:'Crescimento acelerado — corrida de rua chegou ao NE com força',co:'Brasília com população muito ativa. Futebol society e beach tennis em alta',no:'Mercado menor mas futebol e artes marciais têm demanda constante'}, difs:['Especificação técnica por nível (iniciante/intermediário/avançado)','Opinião de atletas reais da modalidade — não celebridade','Frete rápido — atleta que precisa do equipamento tem urgência','Política de troca sem burocracia para equipamento que não serve'], trends:['Corrida e ciclismo explodiram pós-pandemia — demanda sustentada','Beach tennis é o esporte de maior crescimento no Brasil — equipamento em alta','Comunidade online (grupos, desafios, Strava) fideliza mais que desconto','Suplementação esportiva integrada ao catálogo aumenta ticket médio'], mkts:['Netshoes','Centauro Online','Mercado Livre','Amazon'], dores:['Especificação errada (produto para nível errado) gera devolução','Sem comunidade, cliente compra uma vez e vai para onde tem a comunidade','Estoque de equipamento sazonal (ski, surf) é difícil de gerenciar'], arg:'Tray permite catálogo com especificação técnica detalhada, integração com WhatsApp para atendimento consultivo de atleta para atleta e marketplace para ampliar reach', gtlh:'Você participa ou patrocina eventos e comunidades do esporte que vende? Qual o retorno disso?' },
+
+  // ── INFANTIL ─────────────────────────────────────────────────────
+  'brinquedos':          { tam:'R$ 6–8 bi (estimativa 2025)', cresc:'+14%', pen:'34%', ticket:'R$ 180–250', perfil:'Pais 28–45 anos comprando para filhos, avós presenteando, compra por faixa etária e desenvolvimento, pesquisa segurança', saz:'Natal (pico máximo), Dia das Crianças (Outubro), aniversários, Páscoa', concorr:'Moderada — Ri Happy e Americanas dominam, mas nicho educativo/Montessori tem espaço', regioes:{se:'SP com maior mercado. Pais do SE valorizam brinquedo educativo e de qualidade',su:'RS e SC com alto poder aquisitivo para brinquedo premium',ne:'Mercado crescendo — brinquedo popular e licenciado tem grande demanda',co:'Brasília com pais altamente escolarizados comprando brinquedo educativo',no:'Mercado menor mas licenciados e populares têm boa demanda'}, difs:['Faixa etária clara e desenvolvimento estimulado são decisivos para pais','Certificação INMETRO em destaque — segurança é inegociável','Kit completo por tema ou personagem aumenta ticket em 3×','Avaliação de pais reais é mais convincente que descrição técnica'], trends:['Brinquedo STEM e Montessori crescem 34%+ a.a. — pais investem em desenvolvimento','Brinquedo sustentável e de madeira cresce com consciência ambiental','Licenciados (Marvel, Disney, Lego) têm demanda constante mas margem menor','Locação de brinquedo cresce como alternativa à compra — modelo emergente'], mkts:['Ri Happy Online','Mercado Livre','Shopee','Amazon'], dores:['Sazonalidade brutal (60% das vendas no Natal) exige planejamento de estoque','Certificação INMETRO obrigatória — sem ela, produto não pode ser vendido legalmente','Sem curadoria por faixa etária, pai se perde e não compra'], arg:'Tray permite catálogo com filtro por faixa etária, integração com WhatsApp para orientação de presente e marketplace para ampliar durante picos sazonais', gtlh:'Como você se prepara para o pico do Natal? Seu estoque sustenta o dobro da demanda normal?' },
+
+  // ── JOIAS ─────────────────────────────────────────────────────────
+  'semijoias':           { tam:'R$ 4–5 bi (estimativa 2025)', cresc:'+19%', pen:'22%', ticket:'R$ 150–250', perfil:'Mulheres 22–45 anos, classes B/C, compra por impulso visual (Instagram/TikTok), recorrente — troca acessórios com frequência', saz:'Natal, Dia das Mães, Dia dos Namorados, Dia Internacional da Mulher (Mar)', concorr:'Moderada — mercado fragmentado, grande oportunidade para marca com identidade forte', regioes:{se:'SP com maior mercado — Limeira como polo produtor. Consumidora exigente e fiel a marcas',su:'RS e SC com consumidora que valoriza qualidade e garantia do banho',ne:'Crescimento acelerado — semijoia popular e acessível tem grande demanda',co:'Brasília com público que compra semijoia premium e folheado de qualidade',no:'Mercado crescendo — semijoia acessível tem boa penetração'}, difs:['Garantia do banho (tempo e condições) é decisiva para semijoia','Foto em modelo com diferentes tipos de pele mostra o produto real','Personalização (gravar nome/data) aumenta margem em 40% e reduz devolução','Live commerce tem conversão 4× superior ao anúncio estático em joias'], trends:['Instagram e TikTok são os maiores canais de descoberta — 78% começam por foto/vídeo','Semijoia folheada de alta qualidade cresce mais rápido que joia fina — mercado mais acessível','Live commerce de semijoias com vendedora mostrando ao vivo é o formato que mais converte','Personalização e datas comemorativas criam urgência e ticket superior'], mkts:['Mercado Livre','Shopee','Elo7 (artesanal)','Amazon'], dores:['Garantia do banho mal comunicada gera reclamação de produto "manchado"','Sem live commerce, perde o formato que mais converte no segmento','Foto sem modelo ou com qualidade baixa não transmite o brilho da peça'], arg:'Tray tem integração com Instagram para live commerce e social selling, checkout transparente para impulso de compra e CRM para reativação em datas comemorativas', gtlh:'Você já fez live de vendas? Qual foi a diferença de conversão comparado ao feed normal?' },
+
+  // ── NICHOS ESPECÍFICOS ────────────────────────────────────────────
+  'artigos de pesca':    { tam:'R$ 1,5–2,5 bi (estimativa 2025)', cresc:'+18%', pen:'20%', ticket:'R$ 200–350', perfil:'Homens 35–60 anos, classes B/C, apaixonados pela pesca, pesquisa muito, valoriza opinião de pescador experiente', saz:'Véspera de temporadas (Mai/Jun e Nov/Dez), feriados prolongados, férias de verão', concorr:'Baixa — poucos players especializados online, grande oportunidade', regioes:{se:'SP e RJ com mercado represa e mar. Consumidor sofisticado com alto ticket',su:'RS com pesca de água fria e PR/SC com pesca de mar — nichos distintos',ne:'Pesca artesanal e esportiva crescendo. Nordeste com litoral extenso = potencial enorme',co:'MT e MS como maiores mercados de pesca esportiva do Brasil (Pantanal)',no:'Maior potencial — Amazônia com pesca esportiva única no mundo. Turistas pescadores'}, difs:['Produto por espécie-alvo (tucunaré, dourado, robalo) cria autoridade e confiança','Vídeo de pesca real usando o produto converte muito mais que foto isolada','Conhecimento técnico do atendimento é diferencial decisivo','Kit completo por modalidade aumenta ticket e satisfação'], trends:['Pesca esportiva no Pantanal e Amazônia atrai turismo estrangeiro','Pesca de mar cresce com acesso a embarcações','Mulheres pescadoras crescem como público — nicho ainda pouco endereçado','Tecnologia: sonares, GPS e câmeras subaquáticas crescem como categoria'], mkts:['Mercado Livre','Amazon','lojas especializadas regionais'], dores:['Sem conhecimento técnico, atendimento perde credibilidade com pescador experiente','Sazonalidade exige planejamento de estoque','Frete para regiões de pesca (interior, Norte) é caro e demorado'], arg:'Tray permite catálogo rico com fotos e vídeos, atendimento via WhatsApp com especialista e integração com marketplaces — essencial em nicho onde confiança é tudo', gtlh:'Você participa de comunidades e grupos de pescadores? Como eles descobrem sua loja?' },
+
+  'instrumentos musicais': { tam:'R$ 1,2–1,8 bi (estimativa 2025)', cresc:'+16%', pen:'25%', ticket:'R$ 350–600', perfil:'Músicos amadores e profissionais 18–45 anos, todas as classes, pesquisa muito, valoriza opinião técnica', saz:'Natal (presente), Dia das Crianças, início de aulas de música (Fev/Mar e Jul)', concorr:'Baixa a moderada — poucos players especializados online com bom atendimento técnico', regioes:{se:'SP com maior mercado — muitas escolas de música e bandas. Consumidor técnico',su:'RS e SC com forte tradição musical — gaitas, violões e acordeons têm demanda específica',ne:'Crescimento com forró e música regional — percussão e instrumentos regionais em alta',co:'Brasília com mercado de música erudita e popular. Escolas de música ativas',no:'Mercado menor mas com demanda por instrumentos de percussão e música regional'}, difs:['Demo em vídeo do som do instrumento é essencial','Atendimento técnico de músico para músico é insubstituível','Garantia e assistência técnica reduzem risco de compra online','Kit iniciante completo tem ticket maior e satisfação melhor'], trends:['Aulas de música online explodiram — mais alunos = mais demanda','Ukulele e guitarra são os mais comprados — curva de aprendizado menor','Pedais e equipamentos de home studio crescem','Instrumentos brasileiros têm demanda internacional'], mkts:['Mercado Livre','Amazon','Guitar Center Online (EUA para importados)'], dores:['Sem demo de som, cliente tem medo de comprar online','Manutenção e afinação exigem conhecimento técnico','Frete de instrumento frágil exige embalagem especial'], arg:'Tray permite vídeos embed na página do produto, WhatsApp para atendimento técnico e marketplace para ampliar reach', gtlh:'Como você demonstra o som do instrumento para o cliente que não pode tocar antes de comprar?' },
+
+  // ── AGRO & CAMPO ─────────────────────────────────────────────────
+  'agronegócio':         { tam:'R$ 2–4 bi (estimativa 2025, insumos e equipamentos online)', cresc:'+25%', pen:'12%', ticket:'R$ 400–800', perfil:'Produtores rurais 35–60 anos, classes B/C, compra por necessidade e safra, pesquisa preço e prazo, decisão técnica', saz:'Pré-plantio (Set–Nov para soja/milho; Mar–Mai para inverno), pós-colheita para equipamentos', concorr:'Baixa — e-commerce agrícola ainda incipiente, grande oportunidade para quem estruturar bem', regioes:{se:'SP com agro diversificado (cana, laranja, café). Produtor médio com acesso digital crescente',su:'RS, SC e PR como maiores mercados — soja, milho, trigo, suinocultura, avicultura',ne:'Sertão e agreste com pecuária, fruticultura irrigada (Vale do São Francisco)',co:'MT, MS e GO como coração do agro brasileiro — soja e pecuária. Alto poder de compra',no:'PA e AM com pecuária, dendê e açaí. Logística é desafio central'}, difs:['Prazo de entrega alinhado com calendário agrícola é crítico','Crédito rural e parcelamento facilitado — produtor trabalha com capital de giro','Especificação técnica precisa (dosagem, compatibilidade de equipamento)','Atendimento por agrônomo ou técnico gera credibilidade'], trends:['Agro 4.0: sensores, drones e telemetria crescem como categoria de compra online','Insumos biológicos crescem 40%+ a.a. com pressão por sustentabilidade','Pecuária de precisão abre mercado para equipamentos de monitoramento','Marketplace B2B agrícola emerge como modelo — produtor compra de distribuidor online'], mkts:['Mercado Livre (crescendo no agro)','AgroGalaxy Online','Canal do Campo','distribuidores regionais'], dores:['Logística para zona rural é cara e demorada — entrega na fazenda é diferencial','Sem crédito/parcelamento, produtor não compra — capital de giro é restrito na entressafra','Sem especificação técnica adequada, cliente tem medo de erro na aplicação'], arg:'Tray permite catálogo técnico detalhado, parcelamento robusto e integração com transportadoras para entrega em endereços rurais — essencial para atender o produtor onde ele está', gtlh:'Como você lida com o prazo de entrega para fazendas em regiões remotas? Isso já te fez perder venda?' },
+
+  'sementes e mudas':    { tam:'R$ 800 mi–1,2 bi (estimativa 2025)', cresc:'+30%', pen:'18%', ticket:'R$ 80–180', perfil:'Agricultores pequenos e médios, jardineiros urbanos e rurais, horticultores 30–60 anos, compra sazonal por ciclo de cultivo', saz:'Primavera (Set–Nov) e Verão (Jan–Mar) para maioria; inverno para espécies de clima frio', concorr:'Baixa — mercado fragmentado, poucos players online bem estruturados', regioes:{se:'SP com hortas urbanas em crescimento. Interior com agricultura familiar',su:'RS e SC com forte tradição de horta e jardim. Flores e sementes de clima frio',ne:'Sertão com espécies adaptadas. Nordeste úmido com fruticultura diversa',co:'Cerrado com espécies nativas em alta. Goiás com horticultura comercial',no:'Espécies amazônicas como diferencial. Extrativismo sustentável em crescimento'}, difs:['Informação técnica completa (clima, solo, espaçamento, ciclo) é decisiva','Garantia de germinação — consumidor tem medo de comprar semente que não brota','Variedades raras e regionais têm demanda crescente e baixa concorrência','Kit horta completo (sementes + substrato + vaso) aumenta ticket 3×'], trends:['Horta em apartamento explodiu — jardinagem urbana cresce 35%+ a.a.','Sementes orgânicas e heirloom (herança) crescem com consumidor consciente','YouTube como canal de aquisição — produtor de conteúdo de horta converte muito','Paisagismo sustentável com espécies nativas do Cerrado e Mata Atlântica em alta'], mkts:['Mercado Livre','Amazon','Shopee'], dores:['Logística de produto vivo (perecível, temperatura) é complexa e cara','Sazonalidade exige planejamento de estoque antecipado por ciclo de cultivo','Sem orientação técnica, cliente compra errado e não volta'], arg:'Tray permite catálogo com informação técnica completa, kits e combos facilmente configuráveis e integração com WhatsApp para orientação de plantio — essencial para converter o jardineiro iniciante', gtlh:'Você oferece orientação de como plantar além do produto? Isso faz diferença na conversão?' },
+
+  // ── TÊXTIL & UNIFORMES ───────────────────────────────────────────
+  'uniformes':           { tam:'R$ 3–5 bi (estimativa 2025)', cresc:'+12%', pen:'22%', ticket:'R$ 200–500 (pedido mínimo)', perfil:'RH e compradores corporativos 30–50 anos, PMEs e grandes empresas, compra B2B com CNPJ, ciclo anual', saz:'Janeiro/Fevereiro (início de ano, novos uniformes), Julho (revisão semestral), pré-eventos corporativos', concorr:'Moderada — mercado fragmentado, poucos players com e-commerce B2B bem estruturado', regioes:{se:'SP como maior mercado — polo industrial e corporativo. Grande volume de pedidos B2B',su:'RS e PR com forte indústria e comércio — demanda por uniforme técnico e corporativo',ne:'Crescimento com expansão de redes e franquias. Fortaleza e Recife com polo têxtil',co:'Brasília com demanda corporativa grande — governo, serviços e comércio',no:'Mercado menor — demanda por uniforme de serviços e saúde crescendo'}, difs:['Pedido mínimo flexível — pequenas empresas não conseguem comprar em grandes quantidades','Personalização com bordado/silk screen integrado é diferencial decisivo','Prazo de entrega confiável — empresa não pode ficar sem uniforme','Catálogo por segmento (saúde, construção, corporativo, food service) facilita busca'], trends:['ESG pressiona empresas a documentar fornecedores — ter CNPJ e NF é obrigatório','Uniforme sustentável (tecido reciclado, orgânico) cresce com demanda corporativa ESG','Personalização por departamento/cargo vira padrão em médias e grandes empresas','Atendimento B2B com orçamento online self-service gera mais leads'], mkts:['Mercado Livre (B2C)','compra direta (B2B — modelo ideal)','atacado.com'], dores:['Gestão de pedido com múltiplas variações (tamanho, cor, departamento) sem sistema é caótica','Prazo de produção + entrega longo sem comunicação clara gera insatisfação','Nota fiscal e documentação B2B são obrigatórias — sem isso perde grandes clientes'], arg:'Tray tem recursos B2B nativos — tabela de preço por cliente, pedido mínimo configurável e integração com ERP para NF-e automática — essencial para quem vende para CNPJ', gtlh:'Você consegue fazer orçamento online para o cliente ou ainda é tudo por WhatsApp e e-mail?' },
+
+  'artesanato':          { tam:'R$ 1,5–2,5 bi (estimativa 2025)', cresc:'+20%', pen:'28%', ticket:'R$ 80–200', perfil:'Mulheres 25–55 anos criativas, classes B/C, compra materiais para fazer em casa, comunidade ativa online', saz:'Pré-Natal (Out–Nov para enfeites), Carnaval (Jan–Fev para fantasias), começo de cursos (Mar)', concorr:'Baixa a moderada — Elo7 domina artesanato pronto, mas materiais têm menos concorrência', regioes:{se:'SP com maior mercado — escolas de artesanato, ateliês e comunidades ativas',su:'RS e SC com forte tradição artesanal europeia — trico, crochê, bordado em alta',ne:'Artesanato regional (renda, cerâmica, palha) com potencial de mercado nacional',co:'Brasília e GO com público criativo crescendo. Artesanato como renda extra',no:'Artesanato indígena e regional com potencial de mercado premium e exportação'}, difs:['Tutorial em vídeo integrado ao produto aumenta conversão e satisfação','Kit completo por projeto (tudo que precisa para fazer aquele produto)','Comunidade ativa — artesã que encontra sua tribo volta sempre','Frete acessível para materiais leves é decisivo para recompra'], trends:['DIY (faça você mesmo) explodiu com crises — artesanato como renda extra cresce 35%+','Crochê e tricô em alta com movimento slow fashion — materiais premium em demanda','Resina e confecção de bijuterias crescem como negócio online entre mulheres','Personalização de presentes (casamento, chá de bebê) movimenta nicho de artesanato festivo'], mkts:['Elo7 (artesanato pronto)','Mercado Livre (materiais)','Shopee (materiais)','Amazon'], dores:['Gestão de muitos SKUs de materiais (cores, espessuras, quantidades) sem sistema é inviável','Frete para kit de materiais pesado corrói margem','Sem tutorial, cliente não sabe o que fazer com o material e não compra'], arg:'Tray suporta catálogo extenso de variações, kits personalizáveis e integração com YouTube para tutoriais que convertem — modelo ideal para quem vende materiais + conhecimento', gtlh:'Você ensina seus clientes a usar o que vende? Tutorial gratuito no YouTube já virou canal de vendas?' },
+
+  // ── RELÓGIOS & ACESSÓRIOS ────────────────────────────────────────
+  'relógios':            { tam:'R$ 2–3 bi (estimativa 2025)', cresc:'+14%', pen:'26%', ticket:'R$ 300–800', perfil:'Homens e mulheres 25–50 anos, classes A/B, compra como presente ou coleção, valoriza marca e garantia', saz:'Natal, Dia dos Pais, Dia dos Namorados, formatura', concorr:'Moderada — grandes redes e marketplaces dominam, mas nicho (smartwatch, relógio de bolso, vintage) tem espaço', regioes:{se:'SP e RJ com maior mercado de relógio premium. Consumidor exigente e informado',su:'RS e SC com público que valoriza relógio suíço e de qualidade',ne:'Mercado crescendo — presente de alto valor tem demanda crescente nas capitais',co:'Brasília com público corporativo que usa relógio como símbolo de status',no:'Mercado menor mas smartwatch tem penetração crescente'}, difs:['Garantia e assistência técnica autorizada são inegociáveis — produto de alto valor','Foto de alta qualidade em múltiplos ângulos mostrando detalhes do mecanismo','Certificado de autenticidade — mercado de fake é real e assusta o comprador','Review técnico (precisão, resistência, materiais) converte público informado'], trends:['Smartwatch Apple e Samsung crescem — acessórios e pulseiras de reposição são sub-nicho rentável','Relógio mecânico artesanal ressurge como objeto de desejo entre jovens executivos','Relógio vintage e de coleção tem mercado crescente com tickets altíssimos','Customização de pulseira cria recorrência — cliente compra várias para o mesmo relógio'], mkts:['Mercado Livre','Amazon','Shoptime','Magazine Luiza'], dores:['Autenticidade é barreira principal — cliente tem medo de falso no online','Seguro e embalagem especial para produto de alto valor encarecem a operação','Assistência técnica pós-venda é custo alto mas inegociável para fidelização'], arg:'Tray tem checkout com alta aprovação de parcelamento (essencial para ticket alto), certificado de segurança SSL visível e integração com WhatsApp para venda consultiva — essencial em produto onde confiança é tudo', gtlh:'Como você passa segurança de autenticidade para o cliente que não pode ver o produto antes de comprar?' },
+
+  // ── CONSTRUÇÃO & REFORMA ─────────────────────────────────────────
+  'materiais de construção': { tam:'R$ 8–12 bi (estimativa 2025, canal online)', cresc:'+18%', pen:'14%', ticket:'R$ 450–900', perfil:'Donos de obra e reforma 30–55 anos, engenheiros e arquitetos, classes B/C, compra por projeto, ciclo longo de decisão', saz:'Janeiro a Abril (início de obras), Setembro a Novembro (reforma pré-fim de ano)', concorr:'Moderada — grandes redes (Leroy Merlin, Telhanorte) têm presença online mas atendimento técnico é fraco', regioes:{se:'SP com maior mercado — maior PIB da construção civil. SP capital com retrofit e reforma',su:'RS com reconstrução pós-enchentes gerando demanda excepcional em 2025','ne':'Nordeste com construção popular e programa Casa Verde e Amarela ainda em curso',co:'Brasília com construção corporativa e reforma de apartamentos de alto padrão',no:'Mercado menor mas crescendo com expansão urbana das capitais'}, difs:['Calculadora de quantidade (quantos m² de piso cobre uma caixa?) reduz devolução','Atendimento técnico por engenheiro ou mestre de obras cria autoridade','Entrega agendada em horário específico — obra não pode parar','Pacote completo por cômodo (banheiro, cozinha) com tudo que precisa'], trends:['Retrofit e reforma crescem mais que construção nova — mercado mais acessível','Materiais sustentáveis (telha solar, vidro inteligente, tinta ecológica) crescem com ESG','Marketplace B2B de construção emerge para construtoras comprarem online','YouTube de reforma DIY gera demanda — cliente viu o tutorial e quer comprar o material'], mkts:['Mercado Livre','Shoptime','Leroy Merlin Online','Americanas'], dores:['Frete de material pesado (cimento, porcelanato) corrói margem — logística é o gargalo','Gestão de estoque de milhares de SKUs sem sistema gera erro de pedido','Prazo de entrega imprevisível paralisa obra — cliente não perdoa atraso'], arg:'Tray integra com transportadoras especializadas em carga pesada, suporta catálogo com calculadora de quantidade e tem checkout B2B para construtoras — diferencial real contra o atacadão local', gtlh:'Já perdeu cliente porque não conseguiu entregar no prazo que a obra precisava?' },
+
+  'tintas e revestimentos': { tam:'R$ 3–5 bi (estimativa 2025)', cresc:'+15%', pen:'16%', ticket:'R$ 300–600', perfil:'Pintores profissionais e donos de imóvel reformando, 30–55 anos, classes B/C, compra por projeto', saz:'Janeiro a Abril e Agosto a Novembro — períodos de seca para pintura externa', concorr:'Moderada — grandes marcas (Suvinil, Coral) vendem online mas serviço é fraco para PJ', regioes:{se:'SP concentra maior mercado de reforma e pintura. Pintores PJ compram em volume',su:'RS em reconstrução pós-enchentes — demanda excepcional em 2025',ne:'Clima quente exige tintas específicas — oportunidade para especializado',co:'Brasília com construção corporativa e residencial de alto padrão',no:'Mercado menor mas em crescimento com expansão das capitais'}, difs:['Calculadora de cobertura (quantos litros para X m²) é recurso decisivo','Paleta de cores com visualização realista reduz devoluções','Entrega rápida em 24h — pintor não pode esperar 7 dias','Desconto por volume para pintor profissional fideliza o PJ'], trends:['Tinta com tecnologia (antimofo, térmica, anti-pichação) cresce com segmentos específicos','Acabamentos especiais (textura, efeito concreto) crescem em decoração','Pintores PJ compram online cada vez mais — B2B tem menos atrito que ir ao depósito','Tinta ecológica (baixo VOC, base água) cresce com ESG e saúde indoor'], mkts:['Mercado Livre','Shoptime','Leroy Merlin Online'], dores:['Cor na tela é diferente do real — devolução por cor errada é comum','Sem desconto PJ, pintor compra no depósito local com crédito','Frete de lata pesada (18L) corrói margem'], arg:'Tray permite cadastro de cliente PJ com tabela de preço diferenciada, calculadora de cobertura embutida na descrição e integração com transportadora para frete de cargas líquidas', gtlh:'Você atende pintores profissionais com preço e condição diferenciada? Ou vende para todos igual?' },
+
+  // ── ATACADO & B2B ────────────────────────────────────────────────
+  'atacado':             { tam:'R$ 15–25 bi (estimativa 2025, atacado online B2B)', cresc:'+22%', pen:'18%', ticket:'R$ 800–3.000 (pedido mínimo)', perfil:'Lojistas, revendedores e MEIs 25–55 anos, compra com CNPJ, ciclo mensal, valoriza prazo e variedade', saz:'Janeiro (reposição pós-festas), Junho/Julho (inverno), Outubro/Novembro (pré-Natal)', concorr:'Baixa a moderada — marketplace de atacado B2B ainda em formação, grande oportunidade', regioes:{se:'SP com Brás e Bom Retiro como polos — lojistas de todo Brasil compram nessas regiões',su:'PR com forte polo de confecção em Cianorte e Maringá. RS com calçado em Novo Hamburgo',ne:'Comprador de fora que antes vinha pessoalmente — migração para online acelerada',co:'Brasília e Goiânia comprando de SP e do Sul online — logística é o desafio',no:'Maior oportunidade — antes dependiam de compra presencial em SP. Online resolve'}, difs:['Pedido mínimo claro e opções de fracionamento para lojista pequeno','Prazo de pagamento (boleto 28/35/42 dias) é critério decisivo de escolha','Catálogo organizado por grade (tamanho/cor) com estoque em tempo real','Representante comercial acessível via WhatsApp — relação de confiança é tudo'], trends:['Marketplace de atacado B2B cresce — Faire, Aniqua e similares brasileiros emergem','Lojista do interior compra cada vez mais online — não precisa mais ir a SP','Dropshipping B2B cresce — atacadista envia direto para o cliente do lojista','Atacado de nicho (cosméticos, pet, bebê) mais rentável que atacado generalista'], mkts:['Shopee Atacado','Atacado das Marcas','compra direta B2B (modelo ideal)','Mercado Livre (atacado)'], dores:['Gestão de pedido mínimo e grade complexa sem sistema ERP é inviável','Crédito e prazo de pagamento — sem isso, lojista pequeno não compra','Frete de carga fechada para diferentes regiões é complexo e caro'], arg:'Tray tem recursos B2B nativos — cadastro de PJ, tabela de preço por cliente, pedido mínimo, parcelamento B2B e integração com ERP para NF-e — o único e-commerce que atende atacadista sem customização cara', gtlh:'Seus clientes reclamam de algo na hora de comprar? O que mais trava o pedido?' },
+
+  // ── SAÚDE ESPECÍFICOS ────────────────────────────────────────────
+  'ortopedia':           { tam:'R$ 2–3 bi (estimativa 2025)', cresc:'+20%', pen:'22%', ticket:'R$ 350–700', perfil:'Pacientes e cuidadores 35–65 anos, classes B/C, compra por indicação médica, procura garantia e entrega rápida', saz:'Inverno (fraturas por queda), pós-cirurgia (qualquer época), Janeiro (metas de saúde)', concorr:'Baixa a moderada — poucos players online especializados com bom atendimento', regioes:{se:'SP com maior mercado — hospitais e clínicas geram demanda constante',su:'RS e SC com população envelhecida — demanda por órteses e próteses crescente',ne:'Crescimento com aumento de acesso à saúde. Mercado sub-atendido online',co:'Brasília com planos de saúde robustos — consumidor compra produtos de qualidade',no:'Mercado menor mas crescendo com envelhecimento populacional'}, difs:['Laudos e indicação médica como argumento — produto prescrito tem conversão alta','Entrega rápida — paciente em recuperação não pode esperar','Tamanho correto é crítico — orientação de medidas reduz devoluções','Reembolso de plano de saúde: orientar sobre como funciona aumenta conversão'], trends:['Envelhecimento da população brasileira sustenta crescimento por décadas','Produtos para home care (cama, cadeira de rodas, muleta) crescem com alta hospitalar cada vez mais rápida','Fisioterapia domiciliar cresce e cria demanda por equipamentos de reabilitação','Wearables de saúde (monitor de pressão, glicosímetro) crescem como categoria'], mkts:['Mercado Livre','Amazon','Shoptime'], dores:['Sem orientação técnica, cliente compra produto errado (tamanho, indicação) e devolve','Reembolso de plano de saúde é confuso — cliente desiste antes de tentar','Logística de produto volumoso (cadeira de rodas, andador) é cara'], arg:'Tray permite descrição técnica detalhada com guia de tamanhos, WhatsApp para atendimento consultivo e checkout com parcelamento — essencial quando produto é prescrito e urgente', gtlh:'Você orienta seus clientes sobre como solicitar reembolso no plano de saúde? Isso aumenta a conversão?' },
+
+  'ótica':               { tam:'R$ 3–5 bi (estimativa 2025)', cresc:'+18%', pen:'20%', ticket:'R$ 250–600', perfil:'Adultos 20–60 anos, todas as classes, compra óculos de grau e solar, influenciada por moda e necessidade', saz:'Verão (óculos solar — Set–Fev), volta às aulas (Jan/Jul para óculos de grau de crianças)', concorr:'Moderada — Óticas Carol e redes dominam, mas óculos solar de moda e armação sem grau têm espaço', regioes:{se:'SP com maior mercado — moda de óculos muito influenciada por SP',su:'RS e SC com consumidor que valoriza marca e qualidade',ne:'Crescimento com popularização de óculos de sol como acessório de moda',co:'Brasília com público AB comprando óculos premium',no:'Mercado menor mas crescendo com acesso a crédito'}, difs:['Provador virtual de óculos reduz medo de comprar sem experimentar','Garantia de adaptação (trocar grau se a receita mudar) reduz risco percebido','Óculos solar como acessório de moda — coleções sazonais geram recorrência','Preço muito abaixo da ótica física — principal argumento de conversão'], trends:['Óculos azul light (para tela) explodiu com home office e geração digital','Lente de contato por assinatura cresce como modelo de recompra','Óculos de sol como acessório de moda cresce entre jovens nas redes','Óculos de grau online já é realidade — telemedicina viabiliza receita digital'], mkts:['Mercado Livre','Shopee','Amazon','Óticas Carol Online'], dores:['Medo de comprar grau errado é a maior barreira — sem prova física, cliente hesita','Adaptação de lente multifocal online é risco — cliente pode não se adaptar','Logística de produto frágil exige embalagem rígida especial'], arg:'Tray permite galeria de fotos em 360°, integração com WhatsApp para envio de receita e checkout com parcelamento — essencial para reduzir a barreira de compra de óculos de grau online', gtlh:'Como você lida com o medo do cliente de comprar óculos de grau sem experimentar?' },
+
+  // ── EDUCAÇÃO & PAPELARIA ─────────────────────────────────────────
+  'papelaria criativa':  { tam:'R$ 1,5–2,5 bi (estimativa 2025)', cresc:'+22%', pen:'32%', ticket:'R$ 80–160', perfil:'Mulheres 18–40 anos, estudantes e profissionais criativos, classes B/C, influenciadas por YouTube e Pinterest', saz:'Volta às aulas (Jan/Jul), começo de semestre, pré-Natal (presente)', concorr:'Baixa a moderada — papelaria criativa especializada tem muito espaço online', regioes:{se:'SP com maior comunidade de papelaria criativa — feiras, grupos e influenciadoras ativas',su:'RS e SC com forte cultura de organização e bullet journal',ne:'Crescimento com popularização do planejamento pessoal entre jovens',co:'Brasília com público estudantil e profissional muito ativo',no:'Mercado menor mas crescendo com acesso a conteúdo online'}, difs:['Fotos de uso real (estojo organizado, planner preenchido) inspiram e convertem','Kit temático (escola, trabalho, viagem) aumenta ticket médio','Conteúdo de organização e produtividade cria comunidade fiel','Lançamento de coleções sazonais gera urgência de compra'], trends:['Bullet journal e planejadores personalizados crescem como comunidade','Caneta e marcador de qualidade (Staedtler, Sakura, Copic) têm demanda crescente','Papelaria sustentável (reciclada, plástico zero) cresce com consumidor jovem consciente','Colecionismo de papelaria (washi tape, selos, stickers) como hobby com alto LTV'], mkts:['Shopee (volume)','Mercado Livre','Amazon','Elo7 (personalizado)'], dores:['Gestão de muitos SKUs de variações (cores, espessuras, coleções) sem sistema é difícil','Frete de produto pequeno mas variado — caixa com muitos itens diferentes','Sem comunidade, cliente compra uma vez e some'], arg:'Tray suporta catálogo com múltiplas variações, kits configuráveis e integração com Instagram — onde a papelaria criativa gera muito engajamento e social commerce', gtlh:'Você tem uma comunidade de clientes que compartilha o que faz com seus produtos? Isso já vira venda orgânica?' },
+
+  'cursos online':       { tam:'R$ 8–12 bi (estimativa 2025)', cresc:'+25%', pen:'45%', ticket:'R$ 200–800', perfil:'Adultos 22–45 anos, todas as classes, compra por transformação de vida ou carreira, pesquisa muito antes, influenciado por prova social', saz:'Janeiro (metas de ano novo), pré-ENEM (Ago–Out), final de ano (promoções Black Friday)', concorr:'Alta — Hotmart, Kiwify e Eduzz dominam, mas nicho especializado tem diferencial', regioes:{se:'SP concentra maior mercado e produtores de conteúdo. Consumidor de curso mais sofisticado',su:'RS e SC com público muito aberto a cursos online e capacitação',ne:'Crescimento acelerado — cursos de capacitação profissional têm demanda enorme',co:'Brasília com público de servidor público ávido por capacitação',no:'Grande demanda por cursos — acesso a educação de qualidade ainda limitado presencialmente'}, difs:['Prova social forte (depoimentos reais, resultados concretos) é o maior conversor','Aula gratuita como isca — quem experimenta tem taxa de conversão muito mais alta','Garantia de satisfação (7–14 dias) reduz risco percebido drasticamente','Comunidade pós-compra fideliza e gera indicação orgânica'], trends:['Microcredenciais e cursos curtos (4–8h) crescem mais que cursos longos','IA aplicada ao trabalho é o tema de maior demanda em 2025','Mentoria em grupo como produto híbrido (curso + comunidade) tem ticket superior','Curso de habilidades manuais (culinária, marcenaria, costura) explode com DIY'], mkts:['Hotmart','Kiwify','Eduzz','própria plataforma (melhor margem)'], dores:['Pirataria é endêmica — curso bom é copiado rápido, precisa de atualização constante','CAC alto — cliente de curso exige muito conteúdo gratuito antes de comprar','Suporte pós-venda pesado — aluno tem muita dúvida e espera resposta rápida'], arg:'Tray permite vender curso digital com acesso automatizado pós-compra, checkout de alta conversão e integração com plataformas de membros — sem depender de marketplace que fica com 10–20% da receita', gtlh:'Qual o seu custo de aquisição de cliente hoje? Você sabe quanto gasta para vender cada curso?' },
+
+  // ── CASA ESPECÍFICOS ─────────────────────────────────────────────
+  'cama mesa e banho':   { tam:'R$ 6–9 bi (estimativa 2025)', cresc:'+14%', pen:'21%', ticket:'R$ 250–500', perfil:'Mulheres 28–55 anos, classes B/C, compra para presentear ou renovar a casa, altamente influenciada por visual', saz:'Natal (maior presente do segmento), casamentos (enxoval), Black Friday, Dia das Mães', concorr:'Moderada — Camicado e grandes redes têm presença online, mas nicho premium e personalizado tem espaço', regioes:{se:'SP com maior mercado — consumidora exigente com alto ticket',su:'RS e SC com forte cultura de enxoval completo e qualidade têxtil',ne:'Crescimento com casamentos e presentação. Clima quente exige produtos específicos',co:'Brasília com público AB buscando qualidade e design',no:'Mercado menor mas crescendo — enxoval de casamento tem demanda constante'}, difs:['Foto em ambiente real (cama arrumada, mesa posta) inspira e converte mais','Combo enxoval completo tem ticket 3× superior à venda avulsa','Gramatura e composição do tecido — consumidora exigente pesquisa antes','Personalização (bordado, monograma) transforma produto em presente memorável'], trends:['Enxoval sustentável (algodão orgânico, bambu, linho) cresce com consumidor consciente','Cama modular e personalizável ganha espaço em apartamentos menores','Home staging (decorar para vender imóvel) cria demanda por cama mesa banho premium','Toalha e roupa de cama de hotel (linha profissional) tem demanda crescente no varejo'], mkts:['Mercado Livre','Americanas','Magazine Luiza','Camicado Online'], dores:['Foto inadequada não transmite textura e qualidade do tecido — maior causa de devolução','Sem kit completo, cliente compra peças avulsas de lugares diferentes e não volta','Logística de produto volumoso (jogo de cama com edredom) é cara'], arg:'Tray permite criar kits e combos com preço especial, galeria de fotos de alta qualidade e integração com Instagram — onde cama mesa banho gera altíssimo engajamento visual', gtlh:'Você vende mais peças avulsas ou kits completos? Já calculou a diferença de ticket?' },
+
+  'utilidades domésticas': { tam:'R$ 5–8 bi (estimativa 2025)', cresc:'+12%', pen:'25%', ticket:'R$ 120–280', perfil:'Mulheres 28–50 anos, classes B/C, compra por funcionalidade e preço, influenciada por social media e avaliações', saz:'Casamentos (enxoval), Natal, Black Friday, mudança de casa', concorr:'Alta — grandes redes e marketplaces dominam, diferencial está em nichos (organização, culinária gourmet)', regioes:{se:'SP com maior mercado. Consumidora de SP valoriza organização e produto que funciona',su:'RS e SC com consumidora exigente que pesquisa antes e valoriza marca',ne:'Mercado crescendo — produto funcional com bom preço tem alta demanda',co:'Brasília com público de alta renda comprando utilidades premium',no:'Mercado menor mas crescendo com acesso a e-commerce'}, difs:['Demonstração de uso em vídeo converte muito mais que foto isolada','Bundle por finalidade (kit churrasco, kit cozinha gourmet) aumenta ticket','Avaliações com foto de produto em uso são decisivas','Durabilidade e garantia — consumidor aprendeu a perguntar'], trends:['Organização de casa como tendência (KonMari, minimalismo) cria demanda por organizadores','Airfryer e produtos de cozinha saudável explodiram — acessórios são sub-nicho rentável','Produto sustentável (bambu, aço inox, silicone) substitui plástico em crescimento','Cozinha gourmet em casa cresceu — utensílios profissionais têm demanda no varejo'], mkts:['Mercado Livre','Amazon','Shopee','Americanas'], dores:['Concorrer em preço com ML e Shopee é insustentável — diferencial é curadoria e conteúdo','Devolução por produto que "não era o que parecia" é alta — foto e vídeo resolvem','Gestão de muitos SKUs de utilidades diferentes sem sistema é caótica'], arg:'Tray permite criar coleções temáticas, vídeo embed na página do produto e social commerce — diferencial real contra quem vende produto sem contexto', gtlh:'Você mostra o produto sendo usado ou só a foto? Já testou a diferença na conversão?' },
+
+  // ── VEÍCULOS & NÁUTICA ───────────────────────────────────────────
+  'náutica':             { tam:'R$ 800 mi–1,5 bi (estimativa 2025)', cresc:'+20%', pen:'18%', ticket:'R$ 400–1.500', perfil:'Homens 35–60 anos, classes A/B, proprietários de embarcação, compra por manutenção e upgrade, pesquisa técnica', saz:'Pré-verão (Set–Nov), feriados de verão, regatas e eventos náuticos', concorr:'Baixa — poucos players online especializados, grande oportunidade', regioes:{se:'SP com Guarujá, Ubatuba e Ilhabela como centros. Santos com porto e marinas',su:'SC com Balneário Camboriú e Florianópolis — maior mercado de náutica do Sul',ne:'Litoral extenso com marina crescendo. Fortaleza e Salvador com mercado de lazer náutico',co:'Pantanal e grandes lagos artificiais (Furnas, Sobradinho) com pesca e lazer náutico',no:'Amazônia com barcos como transporte essencial — mercado utilitário diferente do lazer'}, difs:['Especificação técnica (compatibilidade com modelo de barco) é crítica','Atendimento de náutico para náutico — vendedor precisa conhecer o produto','Frete para marina ou embarcadouro exige logística especial','Garantia e assistência técnica autorizada — produto de alto valor'], trends:['Jetski e lancha de entrada crescem com acesso a crédito','Eletrônica náutica (GPS, sonar, AIS) tem crescimento acelerado','Barco elétrico cresce como tendência sustentável em lagos e rios','Mergulho e snorkel crescem com turismo costeiro — equipamentos em alta'], mkts:['Mercado Livre','Amazon','lojas especializadas regionais'], dores:['Sem especificação técnica de compatibilidade, compra errada é cara','Frete de item grande e pesado (hélice, motor) é complexo','Sazonalidade exige planejamento de estoque para o pico de verão'], arg:'Tray suporta catálogo técnico com compatibilidade por modelo de embarcação, integração com WhatsApp para venda consultiva e marketplace para ampliar reach em nicho de ticket alto', gtlh:'Você tem ficha técnica completa de cada produto com lista de embarcações compatíveis? Isso reduz muito a devolução.' },
+
+  'motociclismo':        { tam:'R$ 3–5 bi (estimativa 2025)', cresc:'+17%', pen:'22%', ticket:'R$ 200–500', perfil:'Homens 25–50 anos, todas as classes, motociclistas recreativos e utilitários, comunidade muito ativa online', saz:'Pré-verão (Set–Nov), férias de verão, feriados para viagens de moto', concorr:'Moderada — ML domina, mas loja especializada por tipo de moto tem diferencial', regioes:{se:'SP com maior frota de motos do Brasil. Motociclismo esportivo e urbano',su:'RS com forte cultura de motoclube e viagem de moto. PR e SC com rallys e eventos',ne:'Maior frota relativa de motos do Brasil — moto como transporte essencial',co:'GO com frota crescente e cultura de motoclube. Brasília com motociclistas de fim de semana',no:'Moto como transporte principal. Peças de manutenção têm demanda constante'}, difs:['Compatibilidade por modelo de moto — cliente precisa saber se serve na sua','Comunidade de motociclistas — quem faz parte vende mais','Capacete e EPI: produto com certificação INMETRO obrigatória — destacar isso','Review de produto por motociclista real converte muito mais'], trends:['Moto elétrica cresce — peças e acessórios são nicho emergente','Equipamento de proteção (roupa, bota, luva) cresce com conscientização','Big trail e adventure crescem como categoria — mercado premium em expansão','Rallys e encontros de motos como canal de vendas físico ainda relevante'], mkts:['Mercado Livre','Amazon','Shopee'], dores:['Compatibilidade errada é a maior causa de devolução — buscador por modelo resolve','Capacete falsificado é risco jurídico — certificação INMETRO é obrigatória','Comunidade não perdoa erro — uma reclamação em grupo pode destruir a reputação'], arg:'Tray permite buscador de compatibilidade por modelo de moto, catálogo técnico e integração com grupos do WhatsApp onde a comunidade de motociclistas é muito ativa', gtlh:'Você participa de grupos de motociclistas? Como eles descobrem e indicam sua loja?' },
+
+  // ── GAMES & TECNOLOGIA ───────────────────────────────────────────
+  'games':               { tam:'R$ 8–12 bi (estimativa 2025)', cresc:'+14%', pen:'52%', ticket:'R$ 200–600', perfil:'Jovens 15–35 anos, classes B/C, altamente informados, pesquisa muito, influenciado por streamers e reviews', saz:'Natal, Black Friday, lançamentos de consoles e jogos (ao longo do ano)', concorr:'Alta — Steam (digital), ML e Kabum dominam, mas nicho (retrô, acessórios, colecionáveis) tem espaço', regioes:{se:'SP com maior mercado gamer. São Paulo tem a maior comunidade gamer do Brasil',su:'RS e SC com público gamer bem informado e com poder de compra',ne:'Crescimento acelerado com popularização de celular e internet — mobile gaming explode',co:'Brasília com público jovem e renda disponível para games',no:'Mobile gaming domina — console tem penetração menor'}, difs:['Review e unboxing de influencer gamer converte muito mais que anúncio','Estoque em tempo real — gamer não espera produto em falta','Colecionáveis e edições especiais têm ticket alto e fã fidelíssimo','Pre-order e lançamentos criam urgência e antecipação de caixa'], trends:['Mobile gaming supera console em receita — acessórios de celular para gaming em alta','Retrogaming cresce como nicho de colecionadores — SNES, Game Boy, Atari','eSports profissionaliza — cadeira gamer, headset, teclado mecânico crescem','Realidade virtual cresce lentamente mas Meta Quest viabilizou o mercado'], mkts:['Mercado Livre (dominante)','Kabum','Amazon','Shopee'], dores:['Concorrer com Steam em jogos digitais é impossível — foco em físico e acessórios','Estoque de console é dependente de importação — câmbio e disponibilidade impactam','Garantia e suporte técnico para produto importado são gargalos'], arg:'Tray suporta catálogo com pré-venda (pre-order), integração com marketplace e social commerce — essencial em nicho onde a decisão de compra acontece no YouTube e Discord antes da loja', gtlh:'Você tem estratégia de pre-order para lançamentos? Isso antecipa caixa e valida demanda.' },
+
+  // ── ALIMENTAÇÃO ESPECÍFICA ────────────────────────────────────────
+  'vinho':               { tam:'R$ 3–5 bi (estimativa 2025)', cresc:'+20%', pen:'22%', ticket:'R$ 150–400', perfil:'Adultos 30–55 anos, classes A/B, consumidor apaixonado, pesquisa terroir e safra, presenteia com frequência', saz:'Natal (maior pico), Dia dos Namorados, Dia dos Pais, inverno (maior consumo)', concorr:'Moderada — Vivino e grandes importadores online, mas adega especializada tem diferencial', regioes:{se:'SP com maior mercado de vinho do Brasil. Consumidor sofisticado e disposto a pagar por qualidade',su:'RS com produção própria (Serra Gaúcha) — consumidor regional valoriza vinho nacional premium',ne:'Crescimento com popularização de vinho em climas quentes. Fortaleza e Recife com mercado AB',co:'Brasília com público A comprando vinho premium. Alta renda e cultura de presentear',no:'Mercado menor mas nicho premium existe nas capitais'}, difs:['Curadoria por harmonização (vinho para churrasco, para frutos do mar) converte','Clube de assinatura de vinhos tem LTV altíssimo — cliente não cancela o que ama','História do produtor e da região faz parte da experiência de compra','Temperatura de transporte — cliente premium exige que chegue em perfeitas condições'], trends:['Vinho natural e biodinâmico cresce 40%+ com consumidor consciente','Vinho brasileiro premium em ascensão — Serra Gaúcha e Vale do São Francisco','Clube de assinatura é o modelo de maior crescimento no segmento','Espumante nacional cresceu muito — menos sazonal que o vinho tranquilo'], mkts:['Mercado Livre','Amazon','Vivino (descoberta)','clubes próprios'], dores:['Transporte de vinho frágil + temperatura exige embalagem e logística especial cara','Regulação de venda online de bebida alcoólica varia por estado','Sem curadoria, cliente tem dificuldade de escolher — abandona antes de comprar'], arg:'Tray tem módulo de assinatura recorrente nativo — ideal para clube de vinhos — e permite conteúdo rico de curadoria e harmonização que educa o cliente antes da compra', gtlh:'Você tem um clube de assinatura ou programa de recompra para seus melhores clientes?' },
+
+  'chocolates e doces':  { tam:'R$ 2–4 bi (estimativa 2025)', cresc:'+18%', pen:'20%', ticket:'R$ 80–200', perfil:'Mulheres 25–50 anos, todas as classes, compra para presentear e para consumo próprio, altamente sazonal', saz:'Páscoa (maior pico do ano), Natal, Dia dos Namorados, Dia das Mães', concorr:'Baixa a moderada — artesanal e premium têm muito espaço frente às grandes marcas', regioes:{se:'SP com maior mercado — público AB com apetite por chocolate premium e artesanal',su:'RS e SC com forte tradição de chocolate fino (Gramado como referência nacional)',ne:'Crescimento com popularização de presentes gourmet. Fortaleza e Recife com mercado crescente',co:'Brasília com público AB comprando chocolate artesanal premium',no:'Mercado menor mas chocolate como presente tem demanda constante'}, difs:['Embalagem presente impecável — consumidor paga mais pelo visual','Personalização (foto, mensagem, nome) transforma em presente memorável','Entrega programada para data comemorativa é diferencial decisivo','Chocolate belga, suíço ou artesanal têm margem muito superior ao industrializado'], trends:['Chocolate vegano e sem lactose cresce 35%+ a.a. com intolerâncias alimentares','Caixa de experiência (degustação de origens) cresce como presente premium','Assinatura mensal de chocolates artesanais tem LTV alto e churn baixo','Páscoa artesanal dispara — ovo de Páscoa artesanal vale 5× o industrializado'], mkts:['Mercado Livre','Shopee','iFood (entrega rápida)','Rappi'], dores:['Logística com temperatura controlada é cara e complexa no verão','Embalagem inadequada gera produto amassado/derretido e reclamação','Sazonalidade brutal (90% das vendas em 4 datas) exige planejamento de estoque'], arg:'Tray tem módulo de assinatura para clube de chocolates, checkout com entrega agendada para datas comemorativas e integração com WhatsApp para pedidos personalizados', gtlh:'Você já perdeu venda na Páscoa por falta de estoque? Como planeja a produção para os picos?' },
+
+  // ── MODA ESPECÍFICA ──────────────────────────────────────────────
+  'moda praia':          { tam:'R$ 2–4 bi (estimativa 2025)', cresc:'+16%', pen:'28%', ticket:'R$ 120–250', perfil:'Mulheres e homens 18–45 anos, todas as classes, compra anual por temporada, altamente influenciada por Instagram', saz:'Pré-verão (Set–Nov) como maior pico, verão (Jan–Mar) ainda forte, Carnaval (Jan/Fev)', concorr:'Moderada — marcas cariocas e paulistas dominam, mas nichos regionais e sustentáveis têm espaço', regioes:{se:'SP e RJ com maior mercado — Rio lidera em tendências de moda praia',su:'SC com Balneário Camboriú e Florianópolis com demanda premium em moda praia',ne:'Nordeste com maior sazão prolongada — Fortaleza e Recife com mercado ativo 8 meses',co:'Mercado menor mas piscinas e clubes criam demanda por moda praia',no:'Calor o ano todo = demanda constante — moda praia não tem baixa temporada'}, difs:['Foto em modelo diversa (corpo real) aumenta conversão e reduz devoluções','Tamanhos inclusivos — demanda 2× maior que oferta no segmento','Sustentabilidade (lycra reciclada, tingimento natural) cresce como diferencial','Lookbook por destino (Cancún, Fernando de Noronha, Arraial) inspira e converte'], trends:['Moda praia sustentável cresce 30%+ — consumidora jovem exige compromisso ambiental','Peça versátil (biquíni que vira top) cresce com consumidora minimalista','Proteção solar integrada ao tecido é diferencial crescente','Live commerce de moda praia com influencer tem conversão altíssima no verão'], mkts:['Shopee','Mercado Livre','Instagram Shopping','Dafiti'], dores:['Sazonalidade intensa — estoque que não vendeu no verão vira prejuízo','Foto sem modelo de qualidade não vende moda praia — produto precisa de inspiração','Tamanhos inconsistentes entre marcas geram devoluções por medida errada'], arg:'Tray tem sacolinha do Instagram nativa, integração com TikTok Shop e checkout transparente — essencial em nicho onde a descoberta e a compra acontecem 100% no social', gtlh:'Qual o percentual das suas vendas vem do Instagram? Você já calcula isso?' },
+
+  'lingerie':            { tam:'R$ 4–6 bi (estimativa 2025)', cresc:'+14%', pen:'24%', ticket:'R$ 120–220', perfil:'Mulheres 22–45 anos, todas as classes, compra frequente (produto de giro rápido), cada vez mais influenciada por TikTok', saz:'Dia dos Namorados (maior pico), Dia das Mulheres (Mar), Natal (presentear), Carnaval', concorr:'Moderada — Hope, Lupo e Duloren têm presença digital, mas nicho (plus, sustentável, artesanal) tem espaço', regioes:{se:'SP com maior mercado — consumidora bem informada e com alto ticket',su:'RS e SC com consumidora fiel a marcas de qualidade',ne:'Crescimento acelerado — lingerie como produto de autoestima tem demanda crescente em todas as regiões',co:'Brasília com público AB comprando lingerie premium e conjuntos completos',no:'Mercado crescendo — lingerie popular com boa relação custo-benefício tem demanda'}, difs:['Grade completa (do P ao GG+) — mulher não tolera não encontrar o tamanho','Foto com modelo de corpo diverso — consumidora quer ver como fica em corpos reais','Embalagem discreta (sem logo externo) é muito valorizada','Kit conjunto (sutiã + calcinha + camisola) aumenta ticket em 2×'], trends:['Lingerie como moda (para mostrar, não esconder) cresce com body e cropped','Conforto domina: sutiã sem bojo e calcinha sem costura explodiram','Lingerie sustentável (algodão orgânico, renda artesanal) tem margem superior','Personalização para noiva e chá de revelação cresce como nicho de alto ticket'], mkts:['Shopee','Mercado Livre','Dafiti'], dores:['Tamanho errado é a maior causa de devolução — guia de medidas detalhado resolve','Foto sem modelo ou com modelo padrão não representa a consumidora real','Embalagem inadequada chega amassada e arruína a experiência de presente'], arg:'Tray tem gestão de grades (tamanho/cor), integração com Instagram e WhatsApp Commerce e checkout transparente — essencial em produto onde a compra é recorrente e a experiência de recebimento importa', gtlh:'Você tem grade completa de tamanhos? Já perdeu venda porque não tinha o tamanho da cliente?' },
+
+  // ── SERVIÇOS & DIGITAL ───────────────────────────────────────────
+  'software e saas':     { tam:'R$ 5–8 bi (estimativa 2025)', cresc:'+28%', pen:'65%', ticket:'R$ 100–500/mês', perfil:'Empresários e profissionais 28–50 anos, todas as classes, compra por resultado, pesquisa muito, prova gratuita antes', saz:'Janeiro (planejamento anual), começo de trimestre, Black Friday (planos anuais com desconto)', concorr:'Alta — mercado com muitos players, diferencial é especialização por segmento', regioes:{se:'SP com maior mercado B2B — maior concentração de empresas do Brasil',su:'RS com forte polo de tecnologia (Vale do Silício Gaúcho). PR e SC crescendo',ne:'Crescimento com digitalização das PMEs — Fortaleza com polo tech crescente',co:'Brasília com grande base de servidores públicos e empresas de serviços',no:'Menor mas crescendo — PMEs buscando digitalização básica'}, difs:['Trial gratuito de 7–14 dias é praticamente obrigatório no SaaS','Onboarding guiado — cliente que ativa e usa na primeira semana não cancela','Prova social por segmento (depoimento de empresa do mesmo setor)','Suporte responsivo nos primeiros 30 dias decide se fica ou cancela'], trends:['IA integrada ao software virou requisito — produto sem IA perde espaço','Integração nativa com WhatsApp Business cresce como feature decisiva','Plano anual com desconto converte melhor que mensal — LTV muito superior','Vertical SaaS (para um único segmento) cresce mais que horizontal'], mkts:['AppSumo (lifetime deals)','Product Hunt','próprio site (modelo ideal)'], dores:['Churn no primeiro mês — cliente que não usa sai cedo','Suporte caro — escalar atendimento sem aumentar custo proporcionalmente','Diferenciação em mercado saturado — cliente não consegue ver diferença entre produtos similares'], arg:'Tray permite venda de licença de software com recorrência nativa, checkout de alta conversão e integração com ferramentas de onboarding — sem depender de marketplace que cobra comissão sobre receita recorrente', gtlh:'Qual a sua taxa de churn no primeiro mês? O que acontece com o cliente que cancela cedo?' },
+};
+
+// ─────────────────────────────────────────────
+// DETECTA NICHO NA BASE LOCAL
+// ─────────────────────────────────────────────
+function detectarNichoLocal(segmento) {
+  if (!segmento || segmento === 'não informado') return null;
+  const s = segmento.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+
+  // Mapa de aliases para chaves da base
+  const ALIASES = {
+    // Moda
+    'moda feminina':['moda fem','roupas femininas','vestuario feminino','loja de roupa fem','moda mulher','roupa de mulher','confeccao feminina'],
+    'moda masculina':['roupas masculinas','vestuario masculino','moda homem','roupa de homem','confeccao masculina'],
+    'moda plus size':['plus size','gg','moda gg','roupa plus','tamanho grande','moda gordinha'],
+    'moda infantil':['roupa infantil','roupinha','roupa crianca','moda bebe','moda kids','kids','enxoval bebe'],
+    'moda praia':['roupa de praia','biquini','maio','sunga','canga','praia','beachwear'],
+    'lingerie':['lingerie','calcinha','sutia','camisola','pijama feminino','moda intima','roupa intima'],
+    // Beleza
+    'cosméticos':['cosmetico','maquiagem','skincare','make','beleza','cuidado com a pele','creme','serum','base','batom','blush'],
+    'perfumaria':['perfume','fragrancia','colonia','eau de parfum','deo colonia'],
+    // Pet
+    'pet shop':['pet','racao','animal','cachorro','gato','caes','aves','aquario','veterinario','banho e tosa','coleira'],
+    // Alimentos
+    'alimentos saudáveis':['alimento saudavel','alimentacao saudavel','comida saudavel','organico','natural','sem gluten','vegano alimentar','dieta','fit','wholefoods'],
+    'café':['cafe','coffee','cafeteria','graos','espresso','capuccino','coador'],
+    'vinho':['vinho','wine','espumante','prosecco','champagne','adega','enoteca'],
+    'chocolates e doces':['chocolate','doce','confeitaria','bombom','trufas','brigadeiro','bala','caramelo','pascoa','ovo de pascoa'],
+    // Eletrônicos
+    'eletrônicos':['eletronico','celular','smartphone','notebook','computador','tablet','tv','monitor','fone','headphone','informatica','periferico','teclado','mouse'],
+    'games':['game','jogo','console','playstation','xbox','nintendo','gamer','gaming','pc gamer','streamer'],
+    // Veículos
+    'autopeças':['autopeca','peca automotiva','peca de carro','peca moto','pneu','filtro','amortecedor','pastilha','escapamento'],
+    'motociclismo':['moto','motocicleta','capacete','motociclista','motoclube','trail','scooter'],
+    'náutica':['nautica','barco','lancha','jetski','vela','mergulho','snorkel','pesca maritima','marinha'],
+    // Casa
+    'decoração':['decoracao','objeto decorativo','quadro','tapete','luminaria','velas','porta-retrato','espelho'],
+    'móveis':['movel','sofa','cama','armario','estante','rack','escrivaninha','colchao','berco'],
+    'cama mesa e banho':['cama mesa banho','enxoval','toalha','lencol','edredom','colcha','jogo de cama','jogo americano'],
+    'utilidades domésticas':['utilidade domestica','panela','frigideira','organizador','pote','cesta','cozinha','utensilios'],
+    // Construção
+    'materiais de construção':['material de construcao','construcao','reforma','ceramica','porcelanato','piso','revestimento','cimento','argamassa'],
+    'tintas e revestimentos':['tinta','tinta de parede','pintura','verniz','stain','revestimento','textura'],
+    // Suplementos & saúde
+    'suplementos':['suplemento','whey','creatina','proteina','vitamina','aminoacido','pre treino','bcaa','colageno','omega'],
+    'ortopedia':['ortopedia','ortese','protese','cadeira de rodas','andador','muleta','tipoia','colar cervical','joelheira'],
+    'ótica':['otica','oculos','lente de contato','lente oftalmologica','armacao','solar'],
+    // Esportes
+    'artigos esportivos':['esporte','academia','fitness','corrida','ciclismo','natacao','futebol','beach tennis','surf','skate','volei','basquete','tenis'],
+    // Casa & lazer
+    'brinquedos':['brinquedo','boneca','carrinho','educativo','montessori','lego','quebra cabeca','jogo de tabuleiro'],
+    // Joias
+    'semijoias':['semijoia','bijuteria','folheado','prata','anel','brinco','colar','pulseira','relogio feminino'],
+    'relógios':['relogio','smartwatch','cronografo','relogio masculino','relogio suico'],
+    // Nicho
+    'artigos de pesca':['pesca','vara de pesca','anzol','carretilha','isca','equipamento de pesca','molinete'],
+    'instrumentos musicais':['instrumento musical','violao','guitarra','teclado','piano','bateria','saxofone','flauta','percussao','ukulele','cavaquinho'],
+    // Agro
+    'agronegócio':['agro','agronegocio','insumo agricola','defensivo','fertilizante','maquinario agricola','trator','produtor rural'],
+    'sementes e mudas':['semente','muda','planta','horta','jardinagem','substrato','vaso','jardim','agronomia','flor'],
+    // Têxtil & B2B
+    'uniformes':['uniforme','fardamento','roupa corporativa','roupa de trabalho','epi','avental','jaleco'],
+    'artesanato':['artesanato','material de artesanato','croche','trico','bordado','fio','la','tecido','feltro','eva'],
+    'atacado':['atacado','distribuicao','atacadista','revenda','loja de revenda','b2b','carga fechada'],
+    // Papelaria & digital
+    'papelaria criativa':['papelaria','caderno','caneta','planner','agenda','bullet journal','washi tape','sticker','carimbos'],
+    'cursos online':['curso online','infoproduto','ead','treinamento online','mentoria','masterclass','workshop online'],
+    'software e saas':['software','saas','aplicativo','sistema','plataforma','assinatura digital','licenca'],
+    // Alimentação
+    'pet shop':['racao','petisco','brinquedo pet','casinha de cachorro'],
+  };
+
+  // Match direto na base
+  for (const key of Object.keys(NICHO_DB)) {
+    const kNorm = key.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    if (s.includes(kNorm) || kNorm.includes(s)) return { key, data: NICHO_DB[key] };
+  }
+
+  // Match por aliases
+  for (const [key, aliases] of Object.entries(ALIASES)) {
+    const kNorm = key.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const found = aliases.some(a => s.includes(a.normalize('NFD').replace(/[\u0300-\u036f]/g,'')));
+    if (found && NICHO_DB[key]) return { key, data: NICHO_DB[key] };
+  }
+
+  return null;
+}
+
+// ─────────────────────────────────────────────
+// RENDERIZA ANÁLISE DE NICHO (LOCAL, SEM API)
 // ─────────────────────────────────────────────
 async function analisarNichoIA(segmento, categoriaNome, canais, faturamento, ticket) {
   const loadEl    = document.getElementById('ia-nicho-loading');
   const contentEl = document.getElementById('ia-nicho-content');
   if (!loadEl || !contentEl) return;
 
-  const contextoCanais = canais.length
-    ? `Hoje vende em: ${canais.map(labelCanal).join(', ')}.`
-    : 'Ainda não vende online.';
+  // Pequeno delay para mostrar o skeleton
+  await new Promise(r => setTimeout(r, 400));
 
-  const prompt = `Você é especialista em e-commerce brasileiro com dados de 2025/2026.
-Analise o nicho EXATO: "${segmento}" (categoria de referência: ${categoriaNome}).
-Contexto: ${contextoCanais} Faturamento estimado: ${labelFat(faturamento)}. Ticket médio: ${labelTicket(ticket)}.
+  const resultado = detectarNichoLocal(segmento);
 
-REGRAS:
-- Analise o nicho exato, não a categoria genérica
-- Use apenas dados de 2025 ou 2026; indique "estimativa 2025" quando não houver dado confirmado
-- NUNCA invente dados; prefira "dados não disponíveis publicamente" a inventar números
-- Funciona para qualquer nicho: pesca, náutica, instrumentos musicais, artigos religiosos, uniformes, colchões, piscinas, etc.
+  if (resultado) {
+    // ── ENCONTRADO NA BASE LOCAL ────────────────────────────────────
+    renderNicho(segmento, categoriaNome, resultado.data, loadEl, contentEl);
+  } else {
+    // ── FALLBACK: BUSCA WEB VIA API ─────────────────────────────────
+    loadEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:10px">
+      <div class="skel" style="height:14px;width:60%;border-radius:6px"></div>
+      <div class="skel" style="height:14px;width:80%;border-radius:6px"></div>
+      <div class="skel" style="height:14px;width:70%;border-radius:6px"></div>
+      <div style="font-size:.75rem;color:var(--muted);margin-top:4px">
+        🔍 Nicho não encontrado na base — buscando dados na web…
+      </div>
+    </div>`;
 
-Preencha os valores do JSON abaixo substituindo cada "..." pelos dados reais do nicho "${segmento}":
-tamanho_nicho, crescimento_nicho, penetracao_nicho, ticket_nicho, perfil_comprador, sazonalidade, concorrencia_digital,
-penetracao_regioes (sudeste/sul/nordeste/centro_oeste/norte),
-diferenciais_decisivos (array 3-4 itens), tendencias_nicho (array 4 itens), marketplaces_relevantes (array),
-dores_operacionais (array 3 itens), argumento_tray, pergunta_gatilho, fonte_nota.`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 2500,
-        messages: [
-          { role: 'user', content: prompt },
-          { role: 'assistant', content: '{' }
-        ]
-      })
-    });
-
-    if (!res.ok) throw new Error(`API ${res.status}`);
-    const data = await res.json();
-    const raw = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
-
-    // O modelo continuou a partir do '{' que já pusemos — reconstruímos o JSON completo
-    const jsonStr = '{' + raw;
-
-    let parsed;
     try {
-      parsed = JSON.parse(jsonStr);
-    } catch {
-      // Fallback: extrai o bloco {...} mais longo da string
+      const prompt = `Você é especialista em e-commerce brasileiro. Analise o nicho "${segmento}" no Brasil em 2025.
+Use a ferramenta de busca web para encontrar dados reais e atualizados sobre este nicho.
+Busque: tamanho do mercado, crescimento, penetração digital, ticket médio, tendências 2025.
+Retorne APENAS JSON válido sem markdown:
+{"tam":"tamanho estimado","cresc":"crescimento %","pen":"penetração digital %","ticket":"ticket médio","perfil":"perfil do comprador","saz":"sazonalidade","concorr":"concorrência","regioes":{"se":"","su":"","ne":"","co":"","no":""},"difs":["diferencial 1","diferencial 2","diferencial 3"],"trends":["tendência 1","tendência 2","tendência 3","tendência 4"],"mkts":["marketplace 1","marketplace 2"],"dores":["dor 1","dor 2","dor 3"],"arg":"argumento Tray","gtlh":"pergunta gatilho","fonte":"fonte dos dados"}`;
+
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 2000,
+          system: 'Responda APENAS com JSON válido. Sem texto antes, sem texto depois, sem markdown.',
+          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+
+      if (!res.ok) throw new Error(`API ${res.status}`);
+      const data = await res.json();
+
+      // Extrai o texto final após tool use
+      const textBlocks = (data.content || []).filter(b => b.type === 'text');
+      const raw = textBlocks.map(b => b.text).join('');
+
+      let d;
       try {
-        const match = jsonStr.match(/\{[\s\S]*\}/);
-        if (!match) throw new Error('sem bloco JSON');
-        parsed = JSON.parse(match[0]);
+        const clean = raw.replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/\s*```$/,'').trim();
+        d = JSON.parse(clean);
       } catch {
-        throw new Error(raw.slice(0, 150));
+        const match = raw.match(/\{[\s\S]*\}/);
+        if (!match) throw new Error('sem JSON');
+        d = JSON.parse(match[0]);
       }
-    }
 
-    // Render resultado IA
-    let html = '';
+      // Normaliza campos (a busca web retorna estrutura compacta)
+      const nichoWeb = {
+        tam: d.tam || '—', cresc: d.cresc || '—', pen: d.pen || '—', ticket: d.ticket || '—',
+        perfil: d.perfil || '—', saz: d.saz || '—', concorr: d.concorr || '—',
+        regioes: d.regioes || {}, difs: d.difs || [], trends: d.trends || [],
+        mkts: d.mkts || [], dores: d.dores || [],
+        arg: d.arg || '', gtlh: d.gtlh || ''
+      };
+      if (d.fonte) nichoWeb._fonte = d.fonte;
 
-    // KPIs específicos do nicho
-    const kpisIA = [
-      { icon: '💰', label: 'Tamanho do nicho',   valor: parsed.tamanho_nicho },
-      { icon: '📈', label: 'Crescimento',         valor: parsed.crescimento_nicho },
-      { icon: '🌐', label: 'Penetração digital',  valor: parsed.penetracao_nicho },
-      { icon: '🛒', label: 'Ticket médio do nicho', valor: parsed.ticket_nicho },
-    ];
+      renderNicho(segmento, categoriaNome, nichoWeb, loadEl, contentEl, true);
 
-    html += `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px">`;
-    kpisIA.forEach(k => {
-      html += `
-        <div style="border:1.5px solid var(--teal);border-radius:10px;padding:14px 16px;background:var(--teal-bg)">
-          <div style="font-size:1.1rem;margin-bottom:4px">${k.icon}</div>
-          <div style="font-size:.7rem;font-weight:600;color:var(--teal-d);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">${k.label}</div>
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:var(--ink);line-height:1.3">${k.valor || '—'}</div>
-        </div>`;
-    });
-    html += `</div>`;
-
-    // Penetração por região — imediatamente após os KPIs
-    if (parsed.penetracao_regioes) {
-      const regs = [
-        { key: 'sudeste',      label: 'Sudeste',      icon: '🏙️' },
-        { key: 'sul',          label: 'Sul',           icon: '🌲' },
-        { key: 'nordeste',     label: 'Nordeste',      icon: '🌊' },
-        { key: 'centro_oeste', label: 'Centro-Oeste',  icon: '🌾' },
-        { key: 'norte',        label: 'Norte',         icon: '🌿' },
-      ];
-      html += `<div class="block-label">📍 Penetração digital do nicho por região do Brasil</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">`;
-      regs.forEach(r => {
-        const txt = parsed.penetracao_regioes[r.key];
-        if (!txt) return;
-        html += `<div style="padding:10px 12px;border:1px solid var(--line);border-radius:8px;${r.key==='nordeste'||r.key==='norte'?'grid-column:span 1':''}">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-            <span style="font-size:.9rem">${r.icon}</span>
-            <span style="font-size:.72rem;font-weight:700;color:var(--ink2)">${r.label}</span>
-          </div>
-          <div style="font-size:.78rem;color:var(--ink2);line-height:1.45">${txt}</div>
-        </div>`;
-      });
-      html += `</div>`;
-    }
-
-    // Perfil do comprador
-    if (parsed.perfil_comprador) {
-      html += `<div class="block-label">Perfil do comprador neste nicho</div>
-        <div class="insight-box" style="margin-bottom:16px">${parsed.perfil_comprador}</div>`;
-    }
-
-    // Sazonalidade
-    if (parsed.sazonalidade) {
-      html += `<div class="block-label">Sazonalidade e datas-chave</div>
-        <div class="warn-box" style="margin-bottom:16px">📅 ${parsed.sazonalidade}</div>`;
-    }
-
-    // Concorrência
-    if (parsed.concorrencia_digital) {
-      html += `<div class="block-label">Nível de concorrência digital</div>
-        <div style="font-size:.82rem;color:var(--ink2);line-height:1.55;margin-bottom:16px">${parsed.concorrencia_digital}</div>`;
-    }
-
-    // Fatores decisivos de compra
-    if (parsed.diferenciais_decisivos?.length) {
-      html += `<div class="block-label">O que realmente decide a compra neste nicho</div>`;
-      parsed.diferenciais_decisivos.forEach(d => {
-        html += `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px">
-          <span style="color:var(--teal);font-weight:700;flex-shrink:0">✓</span>
-          <span style="font-size:.82rem;color:var(--ink2);line-height:1.55">${d}</span>
-        </div>`;
-      });
-      html += `<div style="margin-bottom:16px"></div>`;
-    }
-
-    // Tendências específicas do nicho
-    if (parsed.tendencias_nicho?.length) {
-      html += `<div class="block-label">Tendências específicas — "${segmento}"</div>`;
-      parsed.tendencias_nicho.forEach(t => {
-        html += `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px">
-          <span style="color:var(--teal);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
-          <span style="font-size:.82rem;color:var(--ink2);line-height:1.55">${t}</span>
-        </div>`;
-      });
-      html += `<div style="margin-bottom:16px"></div>`;
-    }
-
-    // Marketplaces relevantes para o nicho
-    if (parsed.marketplaces_relevantes?.length) {
-      html += `<div class="block-label">Marketplaces relevantes para este nicho</div>
-        <div class="tag-row" style="margin-bottom:16px">`;
-      parsed.marketplaces_relevantes.forEach(mk => { html += `<span class="tag green">${mk}</span>`; });
-      html += `</div>`;
-    }
-
-    // Dores operacionais
-    if (parsed.dores_operacionais?.length) {
-      html += `<div class="block-label">Dores operacionais típicas de quem vende neste nicho</div>`;
-      parsed.dores_operacionais.forEach((d, i) => {
-        html += `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px">
-          <span style="background:var(--red-bg);color:var(--red);font-size:.7rem;font-weight:700;width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">${i+1}</span>
-          <span style="font-size:.82rem;color:var(--ink2);line-height:1.55">${d}</span>
-        </div>`;
-      });
-      html += `<div style="margin-bottom:16px"></div>`;
-    }
-
-    // Argumento Tray específico para o nicho
-    if (parsed.argumento_tray) {
-      html += `<div class="divider" style="margin:4px 0 16px"></div>
-        <div class="block-label">Argumento Tray específico para este nicho</div>
-        <div class="insight-box" style="margin-bottom:14px"><strong>Use na reunião:</strong> ${parsed.argumento_tray}</div>`;
-    }
-
-    // Pergunta gatilho
-    if (parsed.pergunta_gatilho) {
-      html += `<div class="block-label">Pergunta-gatilho para revelar a dor principal</div>
-        <div style="border:1.5px solid var(--badge-c);border-radius:8px;padding:14px 16px;background:var(--badge-h);margin-bottom:14px">
-          <span style="font-size:.83rem;font-style:italic;color:var(--ink)">"${parsed.pergunta_gatilho}"</span>
-        </div>`;
-    }
-
-    // Fonte / nota
-    if (parsed.fonte_nota) {
-      html += `<div style="font-size:.7rem;color:var(--muted)">${parsed.fonte_nota}</div>`;
-    }
-
-    loadEl.style.display = 'none';
-    contentEl.style.display = 'block';
-    contentEl.innerHTML = html;
-
-    // Atualiza sublabel da seção
-    const heads = document.querySelectorAll('.section-head');
-    heads.forEach(h => {
-      if (h.querySelector('.section-label')?.textContent === 'Dados de mercado do segmento') {
-        h.querySelector('.section-sublabel').textContent =
-          `Categoria: ${categoriaNome} · Análise específica: "${segmento}"`;
-      }
-    });
-
-  } catch (err) {
-    if (loadEl) {
-      const msg = err.message || String(err);
-      loadEl.innerHTML = `<div style="font-size:.8rem;color:var(--muted);line-height:1.5">
-        Não foi possível carregar a análise específica do nicho.<br>
-        <span style="font-size:.72rem;color:#aaa">${msg.slice(0,200)}</span><br><br>
-        Os dados da categoria acima continuam disponíveis.
+    } catch (err) {
+      const isCors = err.message === 'Failed to fetch' || (err.message||'').includes('NetworkError');
+      loadEl.innerHTML = `<div style="font-size:.82rem;color:var(--muted);line-height:1.6">
+        <strong>Nicho "${segmento}" não encontrado na base local.</strong><br>
+        ${isCors
+          ? 'A busca web complementar está disponível apenas dentro do Claude.ai. Os dados de categoria acima continuam disponíveis.'
+          : `Não foi possível buscar dados complementares na web.<br><span style="font-size:.72rem;color:#aaa">${(err.message||'').slice(0,150)}</span>`
+        }<br><br>
+        <span style="font-size:.75rem">💡 Tente descrever o nicho de forma mais específica ou use os dados de categoria acima como referência.</span>
       </div>`;
     }
   }
+}
+
+// ─────────────────────────────────────────────
+// RENDERIZA RESULTADO DO NICHO (LOCAL OU WEB)
+// ─────────────────────────────────────────────
+function renderNicho(segmento, categoriaNome, d, loadEl, contentEl, fromWeb = false) {
+  const kpisIA = [
+    { icon: '💰', label: 'Tamanho do nicho',    valor: d.tam },
+    { icon: '📈', label: 'Crescimento',          valor: d.cresc },
+    { icon: '🌐', label: 'Penetração digital',   valor: d.pen },
+    { icon: '🛒', label: 'Ticket médio do nicho', valor: d.ticket },
+  ];
+
+  let html = `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px">`;
+  kpisIA.forEach(k => {
+    html += `<div style="border:1.5px solid var(--teal);border-radius:10px;padding:14px 16px;background:var(--teal-bg)">
+      <div style="font-size:1.1rem;margin-bottom:4px">${k.icon}</div>
+      <div style="font-size:.7rem;font-weight:600;color:var(--teal-d);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">${k.label}</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:var(--ink);line-height:1.3">${k.valor}</div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  // Penetração por região
+  if (d.regioes) {
+    const regs = [
+      { key:'se', label:'Sudeste', icon:'🏙️' },
+      { key:'su', label:'Sul',     icon:'🌲' },
+      { key:'ne', label:'Nordeste',icon:'🌊' },
+      { key:'co', label:'Centro-Oeste', icon:'🌾' },
+      { key:'no', label:'Norte',   icon:'🌿' },
+    ];
+    html += `<div class="block-label">📍 Penetração digital do nicho por região do Brasil</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">`;
+    regs.forEach(r => {
+      const txt = d.regioes[r.key];
+      if (!txt) return;
+      html += `<div style="padding:10px 12px;border:1px solid var(--line);border-radius:8px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+          <span style="font-size:.9rem">${r.icon}</span>
+          <span style="font-size:.72rem;font-weight:700;color:var(--ink2)">${r.label}</span>
+        </div>
+        <div style="font-size:.78rem;color:var(--ink2);line-height:1.45">${txt}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // Perfil do comprador
+  html += `<div class="block-label">Perfil do comprador neste nicho</div>
+    <div class="insight-box" style="margin-bottom:16px">${d.perfil}</div>`;
+
+  // Sazonalidade
+  html += `<div class="block-label">Sazonalidade e datas-chave</div>
+    <div class="warn-box" style="margin-bottom:16px">📅 ${d.saz}</div>`;
+
+  // Concorrência
+  html += `<div class="block-label">Nível de concorrência digital</div>
+    <div style="font-size:.82rem;color:var(--ink2);line-height:1.55;margin-bottom:16px">${d.concorr}</div>`;
+
+  // Fatores decisivos
+  if (d.difs?.length) {
+    html += `<div class="block-label">O que realmente decide a compra neste nicho</div>`;
+    d.difs.forEach(item => {
+      html += `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px">
+        <span style="color:var(--teal);font-weight:700;flex-shrink:0">✓</span>
+        <span style="font-size:.82rem;color:var(--ink2);line-height:1.55">${item}</span>
+      </div>`;
+    });
+    html += `<div style="margin-bottom:16px"></div>`;
+  }
+
+  // Tendências
+  if (d.trends?.length) {
+    html += `<div class="block-label">Tendências específicas — "${segmento}"</div>`;
+    d.trends.forEach(t => {
+      html += `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px">
+        <span style="color:var(--teal);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+        <span style="font-size:.82rem;color:var(--ink2);line-height:1.55">${t}</span>
+      </div>`;
+    });
+    html += `<div style="margin-bottom:16px"></div>`;
+  }
+
+  // Marketplaces do nicho
+  if (d.mkts?.length) {
+    html += `<div class="block-label">Marketplaces relevantes para este nicho</div>
+      <div class="tag-row" style="margin-bottom:16px">`;
+    d.mkts.forEach(mk => { html += `<span class="tag green">${mk}</span>`; });
+    html += `</div>`;
+  }
+
+  // Dores operacionais
+  if (d.dores?.length) {
+    html += `<div class="block-label">Dores operacionais típicas de quem vende neste nicho</div>`;
+    d.dores.forEach((item, i) => {
+      html += `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px">
+        <span style="background:var(--red-bg);color:var(--red);font-size:.7rem;font-weight:700;width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">${i+1}</span>
+        <span style="font-size:.82rem;color:var(--ink2);line-height:1.55">${item}</span>
+      </div>`;
+    });
+    html += `<div style="margin-bottom:16px"></div>`;
+  }
+
+  if (d.arg) {
+    html += `<div class="divider" style="margin:4px 0 16px"></div>
+      <div class="block-label">Argumento Tray específico para este nicho</div>
+      <div class="insight-box" style="margin-bottom:14px"><strong>Use na reunião:</strong> ${d.arg}</div>`;
+  }
+
+  if (d.gtlh) {
+    html += `<div class="block-label">Pergunta-gatilho para revelar a dor principal</div>
+      <div style="border:1.5px solid var(--badge-c);border-radius:8px;padding:14px 16px;background:var(--badge-h);margin-bottom:14px">
+        <span style="font-size:.83rem;font-style:italic;color:var(--ink)">"${d.gtlh}"</span>
+      </div>`;
+  }
+
+  html += `<div style="font-size:.7rem;color:var(--muted)">${
+    fromWeb
+      ? `🔍 Dados buscados na web em tempo real${d._fonte ? ' · Fonte: '+d._fonte : ''} · Estimativas 2025. Confirme valores críticos antes da reunião.`
+      : 'Base local · Estimativas 2025 · ABComm, Euromonitor, SEBRAE e associações setoriais. Confirme dados críticos antes da reunião.'
+  }</div>`;
+
+  loadEl.style.display = 'none';
+  contentEl.style.display = 'block';
+  contentEl.innerHTML = html;
+
+  document.querySelectorAll('.section-head').forEach(h => {
+    if (h.querySelector('.section-label')?.textContent === 'Dados de mercado do segmento') {
+      h.querySelector('.section-sublabel').textContent = `Categoria: ${categoriaNome} · Análise${fromWeb ? ' (web)' : ''}: "${segmento}"`;
+    }
+  });
 }
 
 function labelTicket(v) {
@@ -1248,6 +1452,13 @@ const MERCADO = {
     crescimento: { valor: '+10,8%', detalhe: 'crescimento anual do e-commerce de moda 2024→2025 (estimativa)' },
     penetracao: { valor: '23%', detalhe: 'das vendas totais de moda já ocorrem online em 2025; 77% ainda em loja física' },
     ticket: { valor: 'R$ 197', detalhe: 'ticket médio de compras de moda online no Brasil (estimativa 2025)' },
+    regioes: {
+      se: { pct: 30, desc: 'Maior penetração do país — SP e RJ lideram em moda online. Consumidor urbano e digital nativo' },
+      su: { pct: 27, desc: 'RS, SC e PR com alta maturidade digital. Consumidor exigente e fiel a marcas regionais' },
+      ne: { pct: 18, desc: 'Crescimento acelerado — Fortaleza e Recife com e-commerce de moda em expansão acima da média nacional' },
+      co: { pct: 22, desc: 'Brasília concentra público AB com alto ticket. Interior ainda majoritariamente presencial' },
+      no: { pct: 12, desc: 'Penetração baixa mas crescente. Frete é barreira principal — logística é diferencial competitivo' },
+    },
     marketplaces: ['Shopee (líder em moda popular)', 'Mercado Livre', 'Shein', 'Renner Online', 'Dafiti'],
     tendencias: [
       'Social commerce em aceleração: 68% das descobertas de moda acontecem no Instagram e TikTok antes da compra',
@@ -1256,7 +1467,7 @@ const MERCADO = {
       'Tamanhos inclusivos (plus size, tall, petite) são o nicho de maior crescimento dentro do segmento — demanda 2× acima da oferta',
       'Personalização e drop de coleção limitada aumentam percepção de valor e reduzem guerra de preço'
     ],
-    oportunidade: 'Apenas 22% da moda brasileira está online — o mercado ainda tem 78% para conquistar. Lojistas que dominam social commerce + checkout sem atrito estão capturando a fatia digital antes dos grandes players.'
+    oportunidade: 'Apenas 23% da moda brasileira está online — o mercado ainda tem 77% para conquistar. Lojistas que dominam social commerce + checkout sem atrito estão capturando a fatia digital antes dos grandes players.'
   },
 
   calcados: {
@@ -1266,6 +1477,13 @@ const MERCADO = {
     crescimento: { valor: '+9,8%', detalhe: 'crescimento anual do canal online no segmento' },
     penetracao: { valor: '18%', detalhe: 'das vendas totais já ocorrem online; segmento ainda muito dependente do tato e provador' },
     ticket: { valor: 'R$ 224', detalhe: 'ticket médio de calçados online (Ebit|Nielsen 2024)' },
+    regioes: {
+      se: { pct: 24, desc: 'SP e RJ lideram — consumidor urbano compra tênis e bolsas online com frequência' },
+      su: { pct: 22, desc: 'RS referência em calçado nacional (Vale dos Sinos). Consumidor exigente e fiel' },
+      ne: { pct: 15, desc: 'Crescimento com clima quente — sandália e chinelo têm demanda constante online' },
+      co: { pct: 18, desc: 'Brasília com demanda por calçado social e esportivo premium' },
+      no: { pct: 10, desc: 'Penetração baixa — frete é barreira para produto volumoso' },
+    },
     marketplaces: ['Mercado Livre', 'Shopee', 'Netshoes', 'Zattini', 'Dafiti'],
     tendencias: [
       'Tabela de medidas precisa e guia de tamanho reduzem troca em 35% — diferencial competitivo direto',
@@ -1284,6 +1502,13 @@ const MERCADO = {
     crescimento: { valor: '+16,4%', detalhe: 'um dos segmentos de maior crescimento no e-commerce BR — acelera acima da média' },
     penetracao: { valor: '31%', detalhe: 'das vendas de beleza já ocorrem online — penetração acima da média do varejo' },
     ticket: { valor: 'R$ 142', detalhe: 'ticket médio de cosméticos online, com alto índice de recompra (Ebit|Nielsen 2024)' },
+    regioes: {
+      se: { pct: 38, desc: 'SP e RJ lideram — mercado de beleza mais sofisticado e digital do Brasil' },
+      su: { pct: 32, desc: 'RS e SC com consumidora exigente. Forte cultura de cuidado pessoal' },
+      ne: { pct: 26, desc: 'Nordeste tem clima quente que gera demanda específica por protetor e hidratante — crescimento acelerado' },
+      co: { pct: 28, desc: 'Brasília com público AB comprando cosméticos premium online' },
+      no: { pct: 16, desc: 'Penetração crescente — produtos para pele em clima úmido/quente têm demanda específica' },
+    },
     marketplaces: ['Mercado Livre', 'Shopee', 'Amazon', 'Beleza na Web', 'Época Cosméticos'],
     tendencias: [
       'Skincare é o subcategoria de maior crescimento: consumidor pesquisa ativos, INCI e dermatologista antes de comprar',
@@ -1302,6 +1527,13 @@ const MERCADO = {
     crescimento: { valor: '+19,1%', detalhe: 'o mercado pet é o de maior crescimento no e-commerce BR nos últimos 3 anos' },
     penetracao: { valor: '26%', detalhe: 'das vendas pet já ocorrem online, com aceleração pós-pandemia' },
     ticket: { valor: 'R$ 198', detalhe: 'ticket médio pet online; ração e medicamentos têm compra recorrente mensal' },
+    regioes: {
+      se: { pct: 32, desc: 'SP e RJ com maior densidade de pets por domicílio. Mercado mais desenvolvido' },
+      su: { pct: 29, desc: 'RS e SC com alto poder aquisitivo para gastos com pets. Humanização forte' },
+      ne: { pct: 20, desc: 'Crescimento acelerado — humanização dos pets chegou ao Nordeste com força' },
+      co: { pct: 24, desc: 'Brasília com alto poder aquisitivo — gastos com pets acima da média nacional' },
+      no: { pct: 14, desc: 'Penetração menor mas crescente. Poucas lojas especializadas = oportunidade' },
+    },
     marketplaces: ['Mercado Livre', 'Shopee', 'PetLove', 'Cobasi Online', 'Amazon'],
     tendencias: [
       'Humanização dos pets: produtos premium, orgânicos e naturais crescem 35% a.a. com margens 2× superiores',
@@ -1320,6 +1552,13 @@ const MERCADO = {
     crescimento: { valor: '+8,3%', detalhe: 'crescimento mais moderado por alta penetração já estabelecida' },
     penetracao: { valor: '48%', detalhe: 'quase metade das vendas de eletrônicos já ocorre online — segmento mais maduro digitalmente' },
     ticket: { valor: 'R$ 987', detalhe: 'maior ticket médio do e-commerce BR; parcelamento em 12× é padrão de mercado' },
+    regioes: {
+      se: { pct: 55, desc: 'Maior penetração do Brasil — SP e RJ com consumidor digital maduro' },
+      su: { pct: 52, desc: 'RS, SC e PR com alta renda e penetração digital acima da média' },
+      ne: { pct: 42, desc: 'Celular é prioridade de compra online no Nordeste — crescimento acelerado' },
+      co: { pct: 48, desc: 'Brasília com alto poder aquisitivo e demanda por eletrônicos premium' },
+      no: { pct: 38, desc: 'Celular domina — principal produto e acesso à internet. Penetração crescendo' },
+    },
     marketplaces: ['Mercado Livre (dominante)', 'Amazon', 'Magalu', 'Americanas', 'Kabum'],
     tendencias: [
       'Seminovos e recondicionados crescem 42% a.a. — consumidor busca custo-benefício em contexto de câmbio alto',
@@ -1338,6 +1577,13 @@ const MERCADO = {
     crescimento: { valor: '+12,7%', detalhe: 'crescimento impulsionado por busca visual e influência de reformas pós-pandemia' },
     penetracao: { valor: '19%', detalhe: 'penetração digital ainda baixa — maioria das compras ainda acontece presencialmente' },
     ticket: { valor: 'R$ 412', detalhe: 'ticket médio de casa e decoração online; produtos grandes têm ticket acima de R$800' },
+    regioes: {
+      se: { pct: 24, desc: 'SP lidera em busca online por móveis — apartamentos menores criam demanda por compactos' },
+      su: { pct: 22, desc: 'RS com polo moveleiro (Bento Gonçalves) — vantagem logística para consumidor da região' },
+      ne: { pct: 14, desc: 'Mercado imobiliário aquecido em Fortaleza e Recife — demanda crescente por móveis online' },
+      co: { pct: 18, desc: 'Brasília com apartamentos grandes e público de alta renda' },
+      no: { pct: 9, desc: 'Frete de item pesado é barreira principal — mercado local tem vantagem' },
+    },
     marketplaces: ['Mercado Livre', 'Magalu', 'Americanas', 'Tok&Stok Online', 'Leroy Merlin Online'],
     tendencias: [
       'Pinterest e Instagram são os maiores drivers de descoberta — 74% dos compradores buscam inspiração visual antes de comprar',
@@ -1356,6 +1602,13 @@ const MERCADO = {
     crescimento: { valor: '+21,3%', detalhe: 'segmento de maior crescimento percentual no e-commerce BR (dado 2024 — tendência continua em 2025)' },
     penetracao: { valor: '8%', detalhe: 'baixíssima penetração digital — enorme espaço para pioneiros do canal' },
     ticket: { valor: 'R$ 164', detalhe: 'ticket médio de alimentos online; assinaturas e kits têm ticket 2× superior' },
+    regioes: {
+      se: { pct: 12, desc: 'SP lidera com maior base de consumidores de alimentos saudáveis e delivery' },
+      su: { pct: 10, desc: 'RS e SC com forte cultura de alimentação natural e orgânica' },
+      ne: { pct: 6, desc: 'Mercado em formação — produtos regionais (castanha, mel, temperos) têm potencial nacional' },
+      co: { pct: 8, desc: 'Brasília com público consciente sobre alimentação saudável' },
+      no: { pct: 5, desc: 'Potencial enorme — produtos amazônicos (açaí, castanha, cupuaçu) têm demanda nacional' },
+    },
     marketplaces: ['Mercado Livre', 'Amazon', 'iFood (marketplace de alimentos)', 'Rappi'],
     tendencias: [
       'Alimentação saudável, vegana e sem glúten crescem 30%+ a.a. com margens superiores e cliente fiel',
@@ -1374,6 +1627,13 @@ const MERCADO = {
     crescimento: { valor: '+14,6%', detalhe: 'crescimento acima da média do e-commerce geral' },
     penetracao: { valor: '29%', detalhe: 'das vendas de esporte já ocorrem online — penetração acima da média' },
     ticket: { valor: 'R$ 276', detalhe: 'ticket médio de artigos esportivos online; equipamentos têm ticket acima de R$600' },
+    regioes: {
+      se: { pct: 36, desc: 'SP com maior mercado — corrida de rua e ciclismo muito ativos' },
+      su: { pct: 34, desc: 'RS e SC com forte cultura esportiva. Ciclismo, corrida e natação com grandes comunidades' },
+      ne: { pct: 24, desc: 'Corrida de rua chegou ao NE com força — Fortaleza e Recife com eventos grandes' },
+      co: { pct: 28, desc: 'Brasília com população muito ativa. Beach tennis e futebol society em alta' },
+      no: { pct: 18, desc: 'Futebol e artes marciais dominam. Penetração online crescendo com acesso' },
+    },
     marketplaces: ['Mercado Livre', 'Amazon', 'Netshoes', 'Centauro Online', 'Shopee'],
     tendencias: [
       'Corrida e ciclismo explodiram pós-pandemia e sustentam demanda por equipamentos premium',
@@ -1392,6 +1652,13 @@ const MERCADO = {
     crescimento: { valor: '+13,1%', detalhe: 'crescimento sustentado pela frota envelhecida e busca por preço' },
     penetracao: { valor: '23%', detalhe: 'das vendas de autopeças já ocorrem online — consumidor pesquisa antes de comprar' },
     ticket: { valor: 'R$ 318', detalhe: 'ticket médio de autopeças online; peças maiores têm ticket acima de R$800' },
+    regioes: {
+      se: { pct: 28, desc: 'SP concentra maior frota e mercado. Mecânicos e revendas compram em volume online' },
+      su: { pct: 25, desc: 'RS e PR com forte cultura automotiva — pick-ups e veículos pesados com demanda específica' },
+      ne: { pct: 20, desc: 'Crescimento com aumento da frota nas capitais. Fortaleza e Recife como hubs' },
+      co: { pct: 22, desc: 'GO e DF com frota grande — pick-ups dominam. Demanda por peças crescente' },
+      no: { pct: 15, desc: 'Moto é o principal veículo — peças de moto têm demanda forte. Carros menores' },
+    },
     marketplaces: ['Mercado Livre (dominante no segmento)', 'Amazon', 'Shopee', 'Parafuso (especialista)'],
     tendencias: [
       'Frota brasileira tem idade média de 10,9 anos — demanda por reposição sustentada por muitos anos',
@@ -1410,6 +1677,13 @@ const MERCADO = {
     crescimento: { valor: '+17,2%', detalhe: 'um dos segmentos de maior crescimento, impulsionado pelo envelhecimento da população' },
     penetracao: { valor: '24%', detalhe: 'das vendas de saúde já ocorrem online — regulamentação criou canal seguro e confiável' },
     ticket: { valor: 'R$ 192', detalhe: 'ticket médio de saúde online; equipamentos e ortopedia têm ticket acima de R$500' },
+    regioes: {
+      se: { pct: 30, desc: 'SP e RJ com maior base de planos de saúde e consumidores exigentes' },
+      su: { pct: 27, desc: 'RS com população mais envelhecida — demanda crescente por produtos de saúde e ortopedia' },
+      ne: { pct: 18, desc: 'Crescimento com aumento de acesso à saúde. Mercado de saúde sub-atendido online' },
+      co: { pct: 22, desc: 'Brasília com planos de saúde robustos e público que investe em bem-estar' },
+      no: { pct: 14, desc: 'Acesso limitado a produtos de saúde presencialmente — oportunidade online real' },
+    },
     marketplaces: ['Mercado Livre', 'Amazon', 'Ultrafarma', 'Droga Raia Online', 'Drogasil Online'],
     tendencias: [
       'Longevidade e saúde preventiva impulsionam demanda por suplementos, vitaminas e equipamentos de monitoramento',
@@ -1428,6 +1702,13 @@ const MERCADO = {
     crescimento: { valor: '+15,3%', detalhe: 'crescimento impulsionado por conveniência — mãe com bebê prefere comprar online' },
     penetracao: { valor: '33%', detalhe: 'uma das maiores penetrações digitais do varejo — mães são heavy users de e-commerce' },
     ticket: { valor: 'R$ 224', detalhe: 'ticket médio de infantil online; enxoval completo e carrinhos têm ticket acima de R$800' },
+    regioes: {
+      se: { pct: 40, desc: 'SP e RJ com mães heavy users de e-commerce. Maior mercado de produto infantil online' },
+      su: { pct: 36, desc: 'RS e SC com alto poder aquisitivo para produtos infantis premium' },
+      ne: { pct: 26, desc: 'Crescimento — grupos de mães no WhatsApp são canal de descoberta e indicação forte' },
+      co: { pct: 30, desc: 'Brasília com pais altamente escolarizados comprando produto infantil educativo' },
+      no: { pct: 20, desc: 'Penetração crescendo — produto infantil popular tem boa demanda online' },
+    },
     marketplaces: ['Mercado Livre', 'Shopee', 'Amazon', 'Ri Happy Online', 'Baby Mol'],
     tendencias: [
       'Mãe de primeira viagem pesquisa online em média 7 vezes antes de comprar produto para bebê — conteúdo especializado é decisivo',
@@ -1446,6 +1727,13 @@ const MERCADO = {
     crescimento: { valor: '+18,4%', detalhe: 'segmento supera a média do e-commerce, impulsionado por social commerce' },
     penetracao: { valor: '21%', detalhe: 'das vendas de joias já ocorrem online — compra de confiança ainda migra lentamente' },
     ticket: { valor: 'R$ 387', detalhe: 'ticket médio de joias online; ouro e joias finas têm ticket acima de R$1.500' },
+    regioes: {
+      se: { pct: 28, desc: 'SP com Limeira como polo produtor de semijoias. Maior mercado do Brasil' },
+      su: { pct: 24, desc: 'RS e SC com consumidora que valoriza qualidade e garantia do banho' },
+      ne: { pct: 18, desc: 'Crescimento acelerado — semijoia popular e acessível tem grande demanda' },
+      co: { pct: 20, desc: 'Brasília com público que compra semijoia premium e folheado de qualidade' },
+      no: { pct: 12, desc: 'Mercado crescendo — semijoia acessível com boa penetração online' },
+    },
     marketplaces: ['Mercado Livre', 'Amazon', 'Elo7 (artesanal)', 'Vivara Online', 'Rommanel Online'],
     tendencias: [
       'Instagram e TikTok são os maiores canais de descoberta — 78% das compras de semijoia começam por uma foto ou vídeo',
@@ -1464,6 +1752,13 @@ const MERCADO = {
     crescimento: { valor: '+9,1%', detalhe: 'crescimento estável, com pico sazonal no início do ano letivo' },
     penetracao: { valor: '38%', detalhe: 'uma das maiores penetrações — livro foi um dos primeiros produtos a migrar para o digital' },
     ticket: { valor: 'R$ 98', detalhe: 'ticket médio baixo unitariamente, mas kits e conjuntos elevam para R$180+' },
+    regioes: {
+      se: { pct: 46, desc: 'SP com maior mercado editorial do Brasil. Consumidor leitor digital muito ativo' },
+      su: { pct: 42, desc: 'RS e SC com alta taxa de escolarização — demanda por livro técnico e acadêmico' },
+      ne: { pct: 30, desc: 'Crescimento com acesso à educação — livro didático e concurso têm demanda' },
+      co: { pct: 34, desc: 'Brasília com grande base de servidores públicos — concurso e jurídico dominam' },
+      no: { pct: 24, desc: 'Menor penetração mas crescendo com acesso a e-commerce. Livro didático em destaque' },
+    },
     marketplaces: ['Amazon (dominante)', 'Mercado Livre', 'Saraiva Online', 'Estante Virtual'],
     tendencias: [
       'Livros de nicho e autoajuda têm margens superiores e menos concorrência de preço que best-sellers',
@@ -1482,6 +1777,13 @@ const MERCADO = {
     crescimento: { valor: '+10,5%', detalhe: 'crescimento do e-commerce BR em 2024 · projeção 2025: R$ 234,9 bi (+15%) (ABComm)' },
     penetracao: { valor: '55,4%', detalhe: 'das empresas brasileiras com operação online · 22,9% presentes em marketplaces (Conversion 2024)' },
     ticket: { valor: 'R$ 492', detalhe: 'ticket médio do e-commerce brasileiro em 2024 · 72% compras via mobile — dados mais recentes disponíveis (PCMI)' },
+    regioes: {
+      se: { pct: 62, desc: 'Sudeste concentra 43% do PIB e lidera em todas as categorias de e-commerce' },
+      su: { pct: 58, desc: 'Sul com maior renda per capita fora do Sudeste — alta penetração digital' },
+      ne: { pct: 42, desc: 'Crescimento acelerado — maior região em novos compradores online nos últimos 3 anos' },
+      co: { pct: 50, desc: 'Centro-Oeste com PIB per capita acima da média nacional. Brasília lidera' },
+      no: { pct: 32, desc: 'Menor penetração mas cresce — logística é o principal desafio do e-commerce regional' },
+    },
     marketplaces: ['Mercado Livre', 'Shopee', 'Amazon', 'Magalu', 'Americanas'],
     tendencias: [
       '91,3 milhões de compradores online no Brasil em 2024 — mercado cresce 7–10% em novos compradores a cada ano',
@@ -1597,6 +1899,40 @@ function gerar() {
       html += `<div class="divider"></div>
         <div class="block-label">Oportunidade comercial da categoria</div>
         <div class="insight-box" style="margin-bottom:0">${M.oportunidade}</div>`;
+    }
+
+    // ── Penetração por região (base estática) ──────────────────────
+    if (M.regioes) {
+      const regsEst = [
+        { key:'se', label:'Sudeste', icon:'🏙️', cor:'#00C4A0' },
+        { key:'su', label:'Sul',     icon:'🌲', cor:'#3B82F6' },
+        { key:'ne', label:'Nordeste',icon:'🌊', cor:'#F59E0B' },
+        { key:'co', label:'C-Oeste', icon:'🌾', cor:'#8B5CF6' },
+        { key:'no', label:'Norte',   icon:'🌿', cor:'#EF4444' },
+      ];
+      html += `<div class="divider"></div>
+        <div class="block-label">📍 Penetração digital por região do Brasil — ${M.nome}</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:4px">`;
+      regsEst.forEach(r => {
+        const info = M.regioes[r.key];
+        if (!info) return;
+        const pct  = info.pct  || 0;
+        const desc = info.desc || '';
+        html += `<div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="font-size:.85rem">${r.icon}</span>
+              <span style="font-size:.78rem;font-weight:700;color:var(--ink2)">${r.label}</span>
+            </div>
+            <span style="font-size:.78rem;font-weight:700;color:${r.cor}">${pct}%</span>
+          </div>
+          <div style="height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:4px">
+            <div style="height:100%;width:${pct}%;background:${r.cor};border-radius:4px;transition:width .6s ease"></div>
+          </div>
+          <div style="font-size:.72rem;color:var(--muted);line-height:1.4">${desc}</div>
+        </div>`;
+      });
+      html += `</div>`;
     }
 
     html += `<div style="margin-top:12px;font-size:.7rem;color:var(--muted)">
