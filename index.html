@@ -667,7 +667,7 @@ body {
 <footer style="background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:14px 0;margin-top:0">
   <div style="max-width:860px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between">
     <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:.04em">Tray Commerce · Time de Vendas</span>
-    <span style="font-size:.7rem;color:rgba(255,255,255,.25);font-family:'Inter',sans-serif">v2.3.1</span>
+    <span style="font-size:.7rem;color:rgba(255,255,255,.25);font-family:'Inter',sans-serif">v2.3.1 · Plano Ultra</span>
   </div>
 </footer>
 
@@ -743,6 +743,41 @@ function toggleChip(el, group) {
 }
 
 // ─────────────────────────────────────────────
+// PLANO ULTRA — recursos oficiais (fonte: apresentação Tray)
+// ─────────────────────────────────────────────
+const TRAY_ULTRA = {
+  nome: 'Plano Ultra',
+  diferenciais: [
+    'Implantação 360º — loja no ar e pronta para vender em até 15 dias úteis (novas e migrações)',
+    'Gerente de Contas dedicado para acompanhar totalmente sua operação',
+    'Estratégia de Alto Nível — Mentoria com Consultoria Completa (plano de negócio e vendas)',
+    'Taxas personalizadas — focadas na margem de lucro do seu negócio',
+    'Layout profissional de alta conversão (mais de 90 temas + customização de checkout)',
+    'Domínio + SSL gratuitos — credibilidade garantida desde o primeiro dia',
+    'Conhecimento Ilimitado — acesso a cursos exclusivos Tray para manter a equipe atualizada',
+    'Tray Pagamentos com Checkout Transparente gratuito — Pix (taxa mínima R$1,60), cartão, boleto e antifraude inclusos',
+    'Tray Envios — quanto mais envia, mais vantagens. Frete até 60% mais barato',
+    'Tray Pulse (IA) — inteligência para apoio à estratégia de negócios em segundos',
+    'Omnichannel — integração com Mercado Livre, Shopee, Amazon e até 3 grandes marketplaces',
+    'Google PMax, Meta Advantage+ e TikTok Ads — ativação de ferramentas de mídia paga',
+    'Servidor AWS com estabilidade de 99,7% — robustez e segurança',
+    'Analista de implantação dedicado + onboarding guiado',
+  ],
+  implantacao: {
+    prazo: 'Até 15 dias úteis após envio dos dados',
+    escopo: [
+      'Mais de 90 temas profissionais + customização de cores e checkout',
+      'Importação de produtos via planilha e estruturação de categorias',
+      'Apoio assistido para migração de outras plataformas',
+      'Integração estratégica com até 3 grandes marketplaces',
+      'Ativação de Google, Meta e TikTok Ads',
+      'Estrutura otimizada para escalabilidade',
+    ]
+  },
+  frase: '"Você foca nas vendas, nós construímos o seu império."'
+};
+
+// ─────────────────────────────────────────────
 // DATA: PERSONAS
 // ─────────────────────────────────────────────
 const PERSONAS = {
@@ -754,13 +789,15 @@ const PERSONAS = {
     gatilho_emocional: 'O primeiro pedido chegando na caixa de entrada. A sensação de "funcionou".',
     maior_medo: 'Investir e não ter retorno; não saber o que está fazendo; se perder na tecnologia sozinha.',
     o_que_atrai: [
-      'Tray IA — gera nome da loja, descrições de produto e banners sem precisar escrever nada',
-      '+550 layouts prontos: escolhe um, personaliza as cores, está no ar',
-      'Tray Pulse — painel simples que mostra vendas, estoque e clientes em tempo real, sem planilha',
-      'Tray Pagamentos integrado: Pix, cartão, parcelamento — sem contratar banco',
-      'Tray Envios: etiqueta gerada automaticamente, frete até 60% mais barato — sem ligar para transportadora',
-      'Sacolinha do Instagram e WhatsApp Commerce: seguidores viram compradores com um clique',
-      'Suporte por telefone e chat — nunca ficará sozinha para resolver um problema'
+      'Implantação 360º — equipe da Tray monta a loja em até 15 dias úteis, você só aprova',
+      'Tray IA (Pulse) — gera descrições de produto, landing pages e estratégia de negócio sem você precisar escrever nada',
+      'Mais de 90 layouts profissionais de alta conversão — escolhe um, personaliza as cores, está no ar',
+      'Gerente de Contas dedicado — alguém do seu lado acompanhando toda a operação',
+      'Tray Pagamentos com Checkout Transparente gratuito: Pix, cartão, parcelamento, antifraude incluso',
+      'Tray Envios: etiqueta gerada automaticamente, frete até 60% mais barato',
+      'Integração com Mercado Livre, Shopee e até 3 grandes marketplaces — sacolinha do Instagram inclusa',
+      'Cursos exclusivos Tray — sua equipe sempre atualizada sem custo extra',
+      'Suporte por telefone, chat e onboarding guiado — nunca ficará sozinha'
     ],
     motivacional: [
       { stat: '91,3 milhões', desc: 'de brasileiros compram online — o mercado está esperando por mais lojistas' },
@@ -769,10 +806,10 @@ const PERSONAS = {
       { stat: '550+', desc: 'layouts prontos: você não começa do zero, começa de um lugar bonito e profissional' }
     ],
     tray_facilidade: [
-      { titulo: 'Tray IA — ela faz o trabalho chato por você', desc: 'Gerou o nome da loja, escreveu as descrições dos produtos e criou os banners. Você só aprova. Sem saber escrever copy, sem contratar designer.' },
-      { titulo: 'Tray Pulse — painel simples, tudo em um lugar', desc: 'Vendas do dia, estoque, clientes — tudo numa tela. Sem planilha, sem módulo complicado. Você abre, entende, age.' },
-      { titulo: 'Setup guiado — a Tray te leva passo a passo', desc: 'O onboarding da Tray conduz você desde o cadastro do primeiro produto até o checkout funcionando. Você não precisa descobrir sozinha — tem um caminho pronto para seguir.' },
-      { titulo: 'Suporte humano — sempre tem alguém do outro lado', desc: 'Telefone, chat, central de tutoriais e comunidade ativa. Se travar em qualquer passo, em minutos tem alguém te ajudando.' }
+      { titulo: 'Implantação 360º — a equipe da Tray monta por você', desc: 'No plano Ultra, a equipe da Tray implanta a loja completa em até 15 dias úteis: layout, produtos, pagamento, frete e marketplaces. Você só aprova.' },
+      { titulo: 'Tray Pulse (IA) — inteligência em segundos', desc: 'O Tray Pulse transforma horas de operação em segundos. Gera landing pages, descrições de produtos, categorias e insights estratégicos de negócio. Sem saber escrever copy.' },
+      { titulo: 'Gerente de Contas dedicado — alguém do seu lado', desc: 'Com o plano Ultra você tem um Gerente de Contas que acompanha sua operação de perto. Não é suporte reativo — é um especialista que conhece o seu negócio.' },
+      { titulo: 'Mentoria e Consultoria Completa incluídas', desc: 'Plano de negócio, estratégia de vendas e cursos exclusivos Tray para você e sua equipe. O Ultra foi pensado para quem quer crescer com suporte especializado.' }
     ],
     questoes_sondagem: [
       { q: 'O que te fez querer começar agora? Teve algo que aconteceu e te deu esse empurrão?', tip: 'Se mencionar pressão financeira ou meta, anote — será o gatilho emocional da sua proposta.' },
@@ -787,8 +824,8 @@ const PERSONAS = {
       { q: 'Quanto custa de verdade? Só a mensalidade ou tem outros custos?', a: 'Sem surpresas. A Tray já inclui mais de 600 recursos nativos — pagamento, frete, IA, painel. O plano Start começa em R$19/mês no anual. Tudo dentro.' },
       { q: 'Posso crescer sem precisar trocar de plataforma no futuro?', a: 'Sim. A Tray foi feita para crescer com você. Do primeiro produto ao milésimo pedido, a plataforma acompanha — sem migrar.' }
     ],
-    argumento_fechamento: 'Você já tem o produto e a vontade. O que falta é a vitrine. A Tray cuida da tecnologia — a IA escreve, o Tray Envios despacha, o Tray Pagamentos recebe. Você só precisa começar. Cada dia sem a loja no ar é um pedido que vai para outra pessoa.',
-    wpp_pos: 'Oi [nome]! Foi muito bom conversar! Separei o link dos planos da Tray aqui: [link]. O Start começa em R$19/mês no anual — já vem com IA pra montar a loja, pagamento e frete inclusos. Quer que eu te ajude a dar o primeiro passo essa semana? 🌱'
+    argumento_fechamento: 'Você já tem o produto e a vontade. Com o plano Ultra da Tray, você não precisa montar nada sozinha — nossa equipe implanta em 15 dias, o Tray Pulse (IA) gera as descrições, o Gerente de Contas acompanha sua operação e a mentoria define a estratégia. "Você foca nas vendas, a Tray constrói o seu império."',
+    wpp_pos: 'Oi [nome]! Foi muito bom conversar! Com o plano Ultra da Tray, nossa equipe monta sua loja em até 15 dias — com Gerente de Contas dedicado, mentoria completa, Checkout Transparente e Tray Envios já inclusos. Posso marcar uma demonstração essa semana? 🌱'
   },
 
   roberto: {
@@ -798,7 +835,7 @@ const PERSONAS = {
     resumo: 'Já vende, já tem produto e operação. A dor central é dependência e custo dos canais terceiros. O argumento mais forte é o canal próprio com marca e margem preservada.',
     gatilho_emocional: 'Parar de pagar comissão e ter controle total das vendas.',
     maior_medo: 'Mudar e perder o que já funciona (anúncios, reputação, estoque).',
-    o_que_atrai: ['Integração nativa com +30 marketplaces', 'Integração com +1.000 ERPs incluindo Bling', 'Tray Envios — frete até 60% mais barato', 'Gestão centralizada: estoque, pedidos e faturamento', 'Canal próprio com sua marca e sua base de clientes', 'Para quem vem do Mercado Shops: mantém ML + expande para outros canais'],
+    o_que_atrai: ['Implantação 360º — loja no ar em até 15 dias úteis com analista dedicado', 'Integração com Mercado Livre, Shopee, Amazon e até 3 grandes marketplaces no Ultra', 'Integração com +1.000 ERPs incluindo Bling — importa cadastros e anúncios automaticamente', 'Tray Envios — frete até 60% mais barato, quanto mais envia mais vantagens ganha', 'Gerente de Contas dedicado — acompanha sua operação e estratégia de crescimento', 'Tray Pulse (IA) — gestão centralizada com insights estratégicos em segundos', 'Google PMax, Meta Advantage+ e TikTok Ads ativados na implantação'],
     questoes_sondagem: [
       { q: 'Qual é o percentual de comissão que você paga hoje? Você já calculou quanto isso representa por mês?', tip: 'Deixe o silêncio trabalhar. Quando ele calcula, o custo de NÃO sair fica maior que o custo de migrar.' },
       { q: 'Quando alguém compra de você no marketplace, essa pessoa se torna seu cliente ou do marketplace?', tip: 'Toca no ponto de posse do cliente — Roberto não tem a base, o marketplace tem.' },
@@ -811,8 +848,8 @@ const PERSONAS = {
       { q: 'A integração com o Bling é automática?', a: '100% automática e nativa. O Bling é parceiro homologado da Tray. Você importa todos os cadastros e anúncios sem começar do zero.' },
       { q: 'Tenho pouco tempo. Não vou conseguir cuidar de mais um canal.', a: 'É exatamente por isso que a Tray centraliza tudo em um painel. Você não administra canais separados — administra o estoque uma vez e ele se distribui para todos os canais automaticamente.' }
     ],
-    argumento_fechamento: 'Hoje você paga entre 10% e 20% de comissão em cada venda. Com a Tray, esse valor fica com você. Com o seu faturamento atual, a mensalidade da Tray se paga com poucas vendas a mais no canal próprio. E o marketplace continua funcionando em paralelo.',
-    wpp_pos: 'Oi [nome], conforme conversamos: a Tray integra com o Mercado Livre, Shopee, Bling e mais 30 marketplaces — tudo em um painel. Montei um resumo rápido: [link]. Posso te mostrar uma demo de 20 min essa semana? Qual dia fica melhor?'
+    argumento_fechamento: 'Hoje você paga entre 10% e 20% de comissão em cada venda. Com o plano Ultra da Tray, esse valor fica com você — canal próprio no ar em até 15 dias com Gerente de Contas dedicado, integração com até 3 grandes marketplaces, Google PMax e Meta Advantage+ ativados. O marketplace continua funcionando em paralelo, agora com você no controle.',
+    wpp_pos: 'Oi [nome], conforme conversamos: com o plano Ultra da Tray sua loja fica no ar em até 15 dias — Gerente de Contas dedicado, integração com ML/Shopee/Amazon, Google PMax e Meta Ads ativados na implantação. Posso te mostrar uma demo de 20 min essa semana?'
   },
 
   rodrigo: {
@@ -822,7 +859,7 @@ const PERSONAS = {
     resumo: 'Já tem e-commerce, tem operação rodando e está frustrado. A conversa é sobre o custo de ficar parado e sobre migração sem trauma. Ele precisa de um parceiro, não só de uma plataforma.',
     gatilho_emocional: 'Operação que não trava mais. Crescimento sem retrabalho.',
     maior_medo: 'Loja fora do ar, perda de posicionamento no Google, time sem saber usar a nova ferramenta.',
-    o_que_atrai: ['Migração Assistida (implantação em até 15 dias úteis)', 'Checkout que aprova até 43% mais pedidos', 'SEO nativo avançado + redirecionamento de URLs', 'Infraestrutura para picos de acesso', 'Consultor de Sucesso dedicado pós-implantação', 'Liberdade total de layout: HTML/CSS/JS'],
+    o_que_atrai: ['Implantação 360º (migração assistida) — loja no ar em até 15 dias, equipe Tray assume tudo', 'Checkout Transparente gratuito que aprova até 43% mais pedidos', 'SEO nativo avançado + redirecionamento de URLs — ranking preservado na migração', 'Gerente de Contas dedicado + Mentoria Completa — estratégia de negócio e vendas', 'Taxas personalizadas focadas na margem de lucro do seu negócio', 'Google PMax, Meta Advantage+ e TikTok Ads ativados na implantação', 'Servidor AWS com 99,7% de estabilidade — infraestrutura para picos de acesso', 'Cursos exclusivos Tray para manter a equipe sempre atualizada'],
     questoes_sondagem: [
       { q: 'Qual foi a gota d\'água? Quando você disse "chega" da plataforma atual?', tip: 'O problema que ele citar é exatamente o que a Tray precisa resolver primeiro na sua apresentação.' },
       { q: 'Quanto você acha que já perdeu em vendas por causa das limitações da plataforma atual?', tip: 'Deixe o silêncio trabalhar. Quando ele calcula, o custo de NÃO migrar fica maior que o custo de migrar.' },
@@ -835,8 +872,8 @@ const PERSONAS = {
       { q: 'E se eu migrar e perder pedidos durante a transição?', a: 'Esse medo é legítimo e é exatamente por isso que existe a Migração Assistida. Nossa equipe cuida de toda a estrutura técnica. A transição é feita de forma que não haja quebra operacional.' },
       { q: 'Meu time vai ter dificuldade para aprender a nova plataforma?', a: 'Não será difícil porque treinamos sua equipe. Como parte do processo de implantação, o time recebe treinamento direto com nossos especialistas.' }
     ],
-    argumento_fechamento: 'Cada mês que você permanece na plataforma atual é um mês pagando o custo invisível das limitações: carrinho abandonado, lentidão em pico, retrabalho da equipe. A Tray entrega Migração Assistida — você não migra sozinho. E do outro lado tem checkout que aprova 43% mais pedidos.',
-    wpp_pos: 'Oi [nome]! Seguindo nossa conversa — separei aqui um resumo do que discutimos sobre a migração: [link]. A Migração Assistida resolve exatamente o que você mencionou sobre [dor específica]. Podemos agendar a próxima etapa ainda essa semana?'
+    argumento_fechamento: 'Cada mês na plataforma atual é um mês pagando o custo invisível das limitações: carrinho abandonado, lentidão em pico, retrabalho da equipe. Com o plano Ultra da Tray: migração assistida em 15 dias, checkout que aprova 43% mais pedidos, Gerente de Contas dedicado, taxas personalizadas e Google PMax ativado. "Você foca nas vendas, a Tray constrói o seu império."',
+    wpp_pos: 'Oi [nome]! Seguindo nossa conversa — com o plano Ultra da Tray a migração acontece em até 15 dias, com equipe dedicada, Gerente de Contas e Checkout Transparente já incluso. O ranking do Google é preservado e as taxas são personalizadas para o seu negócio. Posso agendar a próxima etapa ainda essa semana?'
   },
 
   jose: {
@@ -847,14 +884,15 @@ const PERSONAS = {
     gatilho_emocional: 'Vender para o Brasil inteiro sem depender do fluxo da rua — e sem precisar fazer isso sozinho.',
     maior_medo: 'Perder o controle do que já funciona; se perder na tecnologia; investir e não ter retorno.',
     o_que_atrai: [
-      'Pacote Loja Pronta — equipe da Tray monta a loja em 15 a 45 dias úteis, você só aprova',
-      'Gerente de Contas especialista no segmento — acompanha a operação do início ao crescimento',
-      'Consultor de Sucesso dedicado — não é suporte reativo, é um especialista do seu lado',
-      'Tray Pulse — painel unificado: vendas, estoque, pedidos físico + online em tempo real',
+      'Implantação 360º — equipe da Tray monta a loja completa em até 15 dias úteis, você só aprova',
+      'Gerente de Contas dedicado especialista no seu segmento — acompanha toda a operação',
+      'Mentoria com Consultoria Completa — plano de negócio e estratégia de vendas inclusos no Ultra',
+      'Tray Pulse (IA) — gestão unificada físico + online com insights estratégicos em segundos',
       'Tray PDV — físico e online com estoque sincronizado automaticamente',
-      'Integração com o ERP ou PDV que já usa — sem redigitar nada',
-      '+30 marketplaces conectados — sua marca em mais canais, gestão em um só lugar',
-      'Tray Pagamentos e Tray Envios já inclusos — sem contratar banco nem transportadora'
+      'Integração com o ERP ou PDV que já usa — produtos importados sem redigitar nada',
+      'Integração com até 3 grandes marketplaces + Google PMax e Meta Ads ativados',
+      'Tray Pagamentos com Checkout Transparente gratuito e Tray Envios com até 60% de desconto',
+      'Cursos exclusivos Tray para manter você e sua equipe sempre atualizados'
     ],
     seguranca_operacional: [
       { titulo: 'Loja Pronta — você não monta nada', desc: 'A equipe da Tray assume a implantação completa: layout, produtos, pagamento, frete, integração com ERP. Em 15 a 45 dias úteis, a loja está no ar. Você só aprova o visual e abre.' },
@@ -876,8 +914,8 @@ const PERSONAS = {
       { q: 'Como vou acompanhar vendas sem me perder em sistemas complicados?', a: 'O Tray Pulse mostra tudo em uma tela: vendas, estoque, pedidos — físico e online juntos. Simples, visual, em tempo real. Você abre e entende na hora.' },
       { q: 'E se der problema? Fico sozinho?', a: 'Não. A Tray tem suporte por telefone, chat e Consultor de Sucesso dedicado. Qualquer problema, tem alguém especializado do seu lado para resolver.' }
     ],
-    argumento_fechamento: 'Você já tem o mais difícil: produto, estoque, fornecedores e clientes. A Tray monta a vitrine digital por você — com uma equipe especialista no seu segmento do seu lado. Não é você virando expert em tecnologia. É a Tray cuidando do digital para você focar no que já sabe fazer.',
-    wpp_pos: 'Oi [nome]! Ótima conversa hoje. Fiz um resumo do que discutimos: [link]. O pacote Loja Pronta resolve exatamente o que você mencionou — nossa equipe monta tudo, você aprova e abre. E você fica com um Gerente de Contas do seu segmento do seu lado. Podemos marcar a próxima etapa essa semana?'
+    argumento_fechamento: 'Você já tem o mais difícil: produto, estoque, fornecedores e clientes. Com o plano Ultra da Tray, nossa equipe monta a vitrine digital em até 15 dias — você só aprova. Do outro lado: Gerente de Contas dedicado no seu segmento, mentoria completa, Google PMax e Meta Ads ativados, Checkout Transparente e Tray Envios já inclusos. "Você foca nas vendas, a Tray constrói o seu império."',
+    wpp_pos: 'Oi [nome]! Ótima conversa hoje. Com o plano Ultra da Tray: nossa equipe monta tudo em até 15 dias, você tem um Gerente de Contas do seu segmento do seu lado, mentoria completa e Google PMax ativado na implantação. Podemos marcar a próxima etapa essa semana?'
   }
 };
 
@@ -1396,56 +1434,61 @@ const ROTEIROS = {
 // ─────────────────────────────────────────────
 const RESUMO_CLIENTE = {
   marisa: {
-    titulo: 'Seu próximo passo no e-commerce',
-    intro: 'Conversamos sobre seu projeto de começar a vender online. Aqui vai um resumo do que a Tray entrega para quem está começando:',
+    titulo: 'Seu próximo passo no e-commerce — Plano Ultra Tray',
+    intro: 'Conversamos sobre seu projeto de começar a vender online. Aqui vai o que o plano Ultra da Tray entrega para você:',
     pontos: [
-      'Loja no ar sem precisar ser programadora ou contratar designer',
-      '+550 layouts profissionais prontos para personalizar',
-      'Tray Pagamentos integrado — Pix, cartão, parcelamento, sem contratar banco',
-      'Tray Envios com fretes até 60% mais baratos, sem negociar com transportadora',
-      'Sacolinha do Instagram e WhatsApp Commerce para transformar seguidores em compradores',
-      'Suporte humanizado + tutoriais + onboarding — você não fica sozinha'
+      'Implantação 360º — nossa equipe monta a loja completa em até 15 dias úteis, você só aprova',
+      'Mais de 90 layouts profissionais de alta conversão + domínio e SSL gratuitos',
+      'Gerente de Contas dedicado que acompanha sua operação do início ao crescimento',
+      'Mentoria Completa com plano de negócio e estratégia de vendas inclusa',
+      'Tray Pulse (IA) — gera landing pages, descrições e insights em segundos',
+      'Tray Pagamentos com Checkout Transparente gratuito + Tray Envios com até 60% de desconto',
+      'Integração com até 3 grandes marketplaces + Google PMax e Meta Ads ativados',
+      'Cursos exclusivos Tray para manter você e sua equipe sempre atualizados'
     ],
-    fechamento: 'O plano Start começa em R$19/mês no anual e já inclui tudo acima. Quando você estiver pronta para dar o próximo passo, estou aqui.'
+    fechamento: '"Você foca nas vendas, a Tray constrói o seu império." Quando estiver pronta para o próximo passo, estou aqui.'
   },
   roberto: {
-    titulo: 'Canal próprio sem abandonar o marketplace',
-    intro: 'Seguindo nossa conversa: montar um canal próprio na Tray não significa sair do Mercado Livre ou da Shopee — significa ter mais um canal, com mais margem e mais controle.',
+    titulo: 'Canal próprio + marketplaces — Plano Ultra Tray',
+    intro: 'Seguindo nossa conversa: o plano Ultra da Tray entrega canal próprio + integração com marketplaces + mídia paga ativada — tudo em até 15 dias.',
     pontos: [
-      'Seus anúncios no ML continuam ativos — a Tray integra os dois canais',
-      'Integração nativa com Bling, mais de 30 marketplaces e +1.000 ERPs',
-      'Tray Envios com até 60% de desconto nas principais transportadoras',
-      'Gestão centralizada: um painel para todos os canais, estoque único',
-      'Sua marca, sua base de clientes — os dados ficam com você, não com o marketplace',
-      'Frete competitivo sem depender da política de frete subsidiado de terceiros'
+      'Implantação 360º em até 15 dias — equipe Tray assume, seus anúncios no ML continuam ativos',
+      'Gerente de Contas dedicado + Mentoria Completa com plano de negócio incluso',
+      'Integração com até 3 grandes marketplaces (ML, Shopee, Amazon) + +1.000 ERPs',
+      'Google PMax, Meta Advantage+ e TikTok Ads ativados na implantação',
+      'Tray Envios com até 60% de desconto + Checkout Transparente gratuito',
+      'Taxas personalizadas focadas na sua margem de lucro',
+      'Sua marca, sua base de clientes — os dados ficam com você, não com o marketplace'
     ],
-    fechamento: 'Posso te mostrar como funciona a integração com o que você já usa em uma demo de 20 minutos. Quando fica melhor?'
+    fechamento: 'Posso te mostrar como funciona em uma demo de 20 minutos. Quando fica melhor?'
   },
   rodrigo: {
-    titulo: 'Migração sem trauma — e com crescimento',
-    intro: 'Aqui vai o que a Tray entrega para quem está migrando de plataforma e não pode se dar ao luxo de travar:',
+    titulo: 'Migração sem trauma + crescimento acelerado — Plano Ultra Tray',
+    intro: 'Aqui vai o que o plano Ultra da Tray entrega para quem está migrando e quer crescer sem travar:',
     pontos: [
-      'Migração Assistida: nossa equipe assume, sua loja atual continua vendendo',
-      'Implantação em até 15 dias úteis — com treinamento do time incluído',
+      'Implantação 360º (migração assistida) em até 15 dias — equipe Tray assume tudo',
       'SEO preservado com redirecionamento automático de URLs — sem perder ranking',
-      'Checkout Transparente que aprova até 43% mais pedidos',
-      'Infraestrutura para picos de acesso sem travamento',
-      'Consultor de Sucesso dedicado no pós-implantação'
+      'Checkout Transparente gratuito que aprova até 43% mais pedidos',
+      'Gerente de Contas dedicado + Mentoria Completa — plano de negócio e estratégia',
+      'Taxas personalizadas focadas na sua margem de lucro',
+      'Google PMax, Meta Advantage+ e TikTok Ads ativados na implantação',
+      'Servidor AWS com 99,7% de estabilidade + cursos exclusivos para sua equipe'
     ],
-    fechamento: 'O próximo passo é um diagnóstico técnico da sua loja atual sem custo. Posso agendar ainda essa semana?'
+    fechamento: '"Você foca nas vendas, a Tray constrói o seu império." Posso agendar o diagnóstico ainda essa semana?'
   },
   jose: {
-    titulo: 'Sua loja física, agora também no Brasil inteiro',
-    intro: 'O que você já tem — estoque, fornecedores, clientes — é a parte mais difícil. A Tray cuida do resto:',
+    titulo: 'Sua loja física para o Brasil inteiro — Plano Ultra Tray',
+    intro: 'O que você já tem — estoque, fornecedores, clientes — é a parte mais difícil. Com o plano Ultra, a Tray cuida do resto:',
     pontos: [
+      'Implantação 360º — nossa equipe monta tudo em até 15 dias úteis, você só aprova',
+      'Gerente de Contas dedicado especialista no seu segmento — do início ao crescimento',
+      'Mentoria Completa com plano de negócio e estratégia de vendas inclusa no Ultra',
       'Tray PDV: físico e online com estoque unificado — uma gestão só',
-      'Nossa equipe monta a loja por você em 15 a 45 dias úteis (pacote Loja Pronta)',
-      'Tray Pagamentos integrado — Pix, cartão, boleto, sem complicação',
-      'Tray Envios para enviar para qualquer canto do Brasil com desconto',
-      'Integração com o ERP ou PDV que você já usa',
-      'Suporte por telefone, onboarding e acompanhamento na transição'
+      'Tray Pulse (IA) + Tray Pagamentos com Checkout Transparente + Tray Envios com até 60% de desconto',
+      'Google PMax, Meta Advantage+ e TikTok Ads ativados na implantação',
+      'Integração com até 3 grandes marketplaces + seu ERP atual'
     ],
-    fechamento: 'Você não precisa montar nada. Nossa equipe cuida da implantação. Podemos marcar uma visita técnica para ver o que você já tem e como conectar com a Tray?'
+    fechamento: '"Você foca nas vendas, a Tray constrói o seu império." Nossa equipe cuida da implantação. Podemos marcar a próxima etapa essa semana?'
   }
 };
 
@@ -2267,32 +2310,32 @@ function addBadge(container, text, type) {
 function buildArgumentos(persona, segmento, canais, faturamento) {
   const args = {
     marisa: [
-      `Você não precisa ser programadora nem contratar designer. A Tray tem +550 layouts prontos para ${segmento || 'qualquer segmento'} — você escolhe um, configura em minutos e já começa a receber pedidos.`,
-      `Tray Pagamentos e Tray Envios já vêm integrados. Você não precisa negociar com banco nem com transportadora — fretes até 60% mais baratos, sem burocracia.`,
-      `Começar pequeno não significa ficar pequeno. A Tray foi feita para crescer com você — quando seu negócio escalar, não vai precisar trocar de plataforma.`,
-      `Com a Sacolinha do Instagram e o WhatsApp Commerce, seus seguidores viram compradores com um clique — direto para o checkout seguro, sem precisar de link na bio.`,
-      `O suporte da Tray atende por telefone, chat e tutoriais. Você não vai estar sozinha no início — tem uma equipe inteira do seu lado.`
+      `Com o plano Ultra da Tray, nossa equipe monta a loja completa de ${segmento || 'qualquer segmento'} em até 15 dias úteis — você só aprova. Mais de 90 layouts de alta conversão, sem precisar ser programadora ou contratar designer.`,
+      `O Tray Pulse usa IA para gerar landing pages, descrições de produtos e insights estratégicos em segundos. Você não precisa saber escrever copy — a plataforma faz o trabalho chato por você.`,
+      `Com o plano Ultra, você tem um Gerente de Contas dedicado e Mentoria Completa incluída — plano de negócio e estratégia de vendas do seu lado desde o primeiro dia.`,
+      `Checkout Transparente gratuito com Pix, cartão e parcelamento, Tray Envios com até 60% de desconto e integração com Instagram, Shopee e até 3 grandes marketplaces — tudo já incluso.`,
+      `"Você foca nas vendas, a Tray constrói o seu império." Servidor AWS com 99,7% de estabilidade e cursos exclusivos para manter sua equipe sempre atualizada.`
     ],
     roberto: [
-      `Você paga entre 10% e 19% de comissão em cada venda no marketplace. Com um canal próprio na Tray, esse percentual fica com você. Com o seu volume, a mensalidade da Tray se paga com poucas vendas a mais no canal próprio.`,
-      `A Tray integra nativamente com Mercado Livre, Shopee, Magalu e mais 30 marketplaces. Você não sai de lugar nenhum — adiciona um canal que é 100% seu, com sua marca e seus dados.`,
-      `Integração nativa com o Bling: importa todos os seus cadastros e anúncios automaticamente. Você não começa do zero — começa de onde já está, só com mais poder.`,
-      `Tray Envios com até 60% de desconto nas principais transportadoras, sem negociar contrato. Enquanto você paga frete cheio hoje, a Tray já tem o volume negociado por você.`,
-      `No marketplace, o cliente é deles. Na Tray, o cliente é seu — e-mail, histórico de compra, preferência de produto. Essa base vale mais do que qualquer campanha paga.`
+      `Você paga entre 10% e 20% de comissão em cada venda no marketplace. Com o plano Ultra da Tray, esse percentual fica com você — canal próprio no ar em até 15 dias com Gerente de Contas dedicado e taxas personalizadas.`,
+      `No Ultra, a Tray integra com Mercado Livre, Shopee, Amazon e até 3 grandes marketplaces + Google PMax e Meta Advantage+ ativados na implantação. Você não sai de nenhum canal — adiciona um que é 100% seu.`,
+      `Integração nativa com o Bling e +1.000 ERPs: importa todos os seus cadastros e anúncios automaticamente. Você começa de onde já está, com mais poder e sem retrabalho.`,
+      `Tray Envios com até 60% de desconto. Tray Pulse (IA) com gestão centralizada de todos os canais em segundos. Quanto mais você cresce, mais vantagens o Ultra entrega.`,
+      `No marketplace o cliente é deles. Na Tray o cliente é seu — e-mail, histórico, preferências. Essa base, combinada com o Gerente de Contas dedicado do Ultra, vale muito mais que qualquer comissão paga.`
     ],
     rodrigo: [
-      `Cada mês que você fica na plataforma atual tem um custo invisível: carrinho abandonado, pedidos não aprovados, lentidão em pico, retrabalho da equipe. O Checkout Transparente da Tray aprova até 43% mais pedidos — isso é faturamento que está escapando hoje.`,
-      `A Migração Assistida da Tray significa que nossa equipe assume a implantação em até 15 dias úteis. Sua loja atual continua vendendo. Você não migra sozinho — e não perde nem um dia de venda.`,
-      `A Tray tem redirecionamento automático de URLs — todo o seu ranking no Google é preservado. Migrar de plataforma não significa perder o SEO que você construiu.`,
-      `Integração oficial com +1.000 ERPs, +30 marketplaces e centenas de meios de pagamento. Você mantém tudo que já usa — a Tray entra como o centro organizador da operação.`,
-      `Você recebe um Consultor de Sucesso dedicado no pós-implantação. Não é suporte reativo — é um especialista que acompanha sua operação para garantir que o crescimento aconteça.`
+      `Cada mês na plataforma atual tem um custo invisível: carrinho abandonado, lentidão em pico, retrabalho da equipe. O Checkout Transparente da Tray aprova até 43% mais pedidos — isso é faturamento que está escapando hoje.`,
+      `Com o plano Ultra, a Migração Assistida acontece em até 15 dias úteis — nossa equipe assume tudo, sua loja atual continua vendendo. Taxas personalizadas focadas na sua margem de lucro.`,
+      `A Tray tem redirecionamento automático de URLs — todo o seu ranking no Google é preservado. Gerente de Contas dedicado e Mentoria Completa do Ultra garantem que a migração vire crescimento.`,
+      `Google PMax, Meta Advantage+ e TikTok Ads ativados na implantação. Servidor AWS com 99,7% de estabilidade. Integração com até 3 grandes marketplaces. O Ultra é a operação que você precisava desde o começo.`,
+      `"Você foca nas vendas, a Tray constrói o seu império." Cursos exclusivos para sua equipe, analista de implantação dedicado e Consultoria Completa — do planejamento ao crescimento sem limites.`
     ],
     jose: [
-      `Você já tem o mais difícil: produto, estoque e fornecedores. A Tray cuida do resto — nossa equipe monta a loja por você em 15 a 45 dias úteis, você só aprova o visual e abre.`,
-      `Com o Tray PDV, físico e online compartilham o mesmo estoque. Vendeu uma peça na loja? O sistema atualiza online automaticamente. Sem retrabalho, sem susto de vender produto que não tem.`,
-      `Sua loja física vende para quem passa na frente. A loja online vende para qualquer pessoa no Brasil, 24 horas por dia, sem precisar de você lá. É a sua operação atual trabalhando enquanto você descansa.`,
-      `A Tray conecta sua loja a mais de 30 marketplaces — Mercado Livre, Shopee, Amazon, Magalu. Um painel único para gerenciar tudo. Sua marca em todos os lugares, gestão em um só lugar.`,
-      `Tray Pagamentos integrado desde o primeiro dia: Pix, cartão, boleto, parcelamento — sem contratar banco, sem complicação. A tarifa já está incluída na mensalidade.`
+      `Você já tem o mais difícil: produto, estoque e fornecedores. Com o plano Ultra da Tray, nossa equipe monta a vitrine digital em até 15 dias — você só aprova. Analista de implantação dedicado e onboarding guiado.`,
+      `Com o Tray PDV e integração com seu ERP atual, físico e online compartilham o mesmo estoque. Vendeu na loja? Atualiza online automaticamente. Sem retrabalho, sem susto.`,
+      `Sua loja física vende para quem passa na frente. A loja online vende para o Brasil inteiro, 24h por dia, sem precisar de você lá — com Google PMax e Meta Ads ativados na implantação do Ultra.`,
+      `Gerente de Contas dedicado especialista no seu segmento + Mentoria Completa incluída no Ultra. Não é suporte genérico — é alguém que entende do seu mercado e acompanha sua operação.`,
+      `Tray Pagamentos com Checkout Transparente gratuito + Tray Envios com até 60% de desconto + integração com até 3 grandes marketplaces. Tudo incluso no Ultra, sem contratar nada separado.`
     ]
   };
   return args[persona] || [];
